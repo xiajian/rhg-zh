@@ -4,53 +4,53 @@ layout: post
 
 [Ruby Hacking Guide](http://i.loveruby.net/ja/rhg/book) （简称RHG），是青木峰郎(Minero AOKI)创作的一本剖析ruby实现的书。
 
-Ruby Hacking Guide中文版 就是将[Ruby Hacking Guide](/en/index.html)这本书翻译成中文，让更多对Ruby有兴趣的人了解Ruby语言的实现。
+Ruby Hacking Guide中文版 就是将[Ruby Hacking Guide](/rhg-zh/en/index.html)这本书翻译成中文，让更多对Ruby有兴趣的人了解Ruby语言的实现。
 
 ###  **目 录**
 ----
-- [前言](/zh/0-0-preface)
-- [导读](/zh/0-1-intro)
+- [前言](/rhg-zh/zh/0-0-preface)
+- [导读](/rhg-zh/zh/0-1-intro)
 
 ## **第一部分：对象**
 ----
 
-- [第一章：Ruby语言最小化](/zh/01-minimum)
-- [第二章：对象](/zh/02-object)
-- [第三章：名称与名称表](/zh/03-name)
-- [第四章：类与模块](/zh/04-class)
-- [第五章 垃圾回收](/zh/05-gc)
-- [第六章：变量和常量](/zh/06-variable)
-- [第七章：安全](/zh/07-security)
+- [第一章：Ruby语言最小化](/rhg-zh/zh/01-minimum)
+- [第二章：对象](/rhg-zh/zh/02-object)
+- [第三章：名称与名称表](/rhg-zh/zh/03-name)
+- [第四章：类与模块](/rhg-zh/zh/04-class)
+- [第五章 垃圾回收](/rhg-zh/zh/05-gc)
+- [第六章：变量和常量](/rhg-zh/zh/06-variable)
+- [第七章：安全](/rhg-zh/zh/07-security)
 
 ## **第二部分：语法解析**
 ----
 
-- [第八章：Ruby语言详解](/zh/08-spec)
-- [第九章：yacc快速教程](/zh/09-yacc)
-- [第十章：解析器](/zh/10-parser)
-- [第十一章：上下文相关的扫描器](/zh/11-contextual)
-- [第十二章：构建语法树](/zh/12-syntree)
+- [第八章：Ruby语言详解](/rhg-zh/zh/08-spec)
+- [第九章：yacc快速教程](/rhg-zh/zh/09-yacc)
+- [第十章：解析器](/rhg-zh/zh/10-parser)
+- [第十一章：上下文相关的扫描器](/rhg-zh/zh/11-contextual)
+- [第十二章：构建语法树](/rhg-zh/zh/12-syntree)
 
 ## **第三部分：评估**
 ----
 
-- [第十三章：评估器的结构](/zh/13-evaluator)
-- [第十四章：上下文](/zh/14-module)
-- [第十五章：方法](/zh/15-method)
-- [第十六章：代码块](/zh/16-iterator)
-- [第十七章：动态评估](/zh/17-anyeval)
+- [第十三章：评估器的结构](/rhg-zh/zh/13-evaluator)
+- [第十四章：上下文](/rhg-zh/zh/14-module)
+- [第十五章：方法](/rhg-zh/zh/15-method)
+- [第十六章：代码块](/rhg-zh/zh/16-iterator)
+- [第十七章：动态评估](/rhg-zh/zh/17-anyeval)
 
 ## **第四部分：评估器的周边**
 ----
 
-- [第十九章：加载](/zh/18-load)
-- [第二十章：线程](/zh/19-thread)
+- [第十九章：加载](/rhg-zh/zh/18-load)
+- [第二十章：线程](/rhg-zh/zh/19-thread)
 
-- [Ruby的未来](/zh/20-fin)
+- [Ruby的未来](/rhg-zh/zh/20-fin)
 
 ## **杂记**
 ----
-- [翻译杂记](/zh/misc)
+- [翻译杂记](/rhg-zh/zh/misc)
 
 ## **致谢**
 ----
@@ -79,7 +79,7 @@ RHG中文版制作采用了RHG英文版 的脚本。 第二、三、四和六章
 
 审校: [axgle](http://axgle.github.com/)
 
-第2部分至最后，[邪王真眼的夏](/zh/)打算全部翻译下来,一切尽在计划中。。。
+第2部分至最后，[邪王真眼的夏]()打算全部翻译下来,一切尽在计划中。。。
 
 ## 加入我们
 ----

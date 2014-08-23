@@ -50,6 +50,13 @@ end
 > Content Cell | Content Cell  | Content Cell
 > Content Cell | Content Cell  | Content Cell
 
+放置到远程github上时,出现了一些问题,获得了一些经验,首先:
+
+- Github利用Jekyll生成静态页时，其使用的是gh-pages分支
+- Github Pages分为用户相关和项目相关，前置的URL为http://name.github.io ，后者为http://name.github.io/projectname
+- 如果已经存在name.github.io时，出现如下问题:
+     *  项目相关的css会乱掉，需要设置_config.yml中的baseurl: /projectiname
+     *  md中的html路径也需要重新设置
 
 jekyll自己生成的文件的中的样式,具有借鉴意义:
 
