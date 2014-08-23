@@ -1,0 +1,18 @@
+# Site settings
+title: Ruby Hacking Guide 中文版
+email: jhqy2011@gmail.com
+description: 本指南最初是由青木峰郎(Copyright © 2002 - 2004 Minero AOKI)完成, 英文翻译由<a href="https://github.com/ruby-hacking-guide/ruby-hacking-guide.github.com" >Vincent ISAMBART和Clifford Escobar CAOILE贡献</a>。中文翻译第一部分源自<a href="https://github.com/axgle" >axgle</a>,其余部分的我打算翻译下来，不知能走多远。本指南采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.5/">Creative Commons Attribution-NonCommercial-ShareAlike2.5 License</a>发布
+
+baseurl: ""
+url: "http://yourdomain.com"
+twitter_username: jekyllrb
+github_username:  jekyll
+
+# 指定本地服务器运行端口
+port:  5000
+# source: zh
+# Build settings
+markdown: kramdown
+permalink: pretty
+redcloth: 
+  hard_breaks: true
