@@ -1,5 +1,6 @@
 ---
 layout: post
+title: 前言
 ---
 
 ## 前言

@@ -58,6 +58,10 @@ end
      *  项目相关的css会乱掉，需要设置_config.yml中的baseurl: /projectiname
      *  md中的html路径也需要重新设置
 
+MarkDown语法相关的资料:
+1.[Markdown 语法说明](http://wowubuntu.com/markdown/)
+2.[MarkDown语法小结 ](http://www.myexception.cn/program/1629426.html)
+
 jekyll自己生成的文件的中的样式,具有借鉴意义:
 
 You'll find this post in your `_posts` directory - edit this post and re-build (or run with the `-w` switch) to see your changes!
