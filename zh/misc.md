@@ -62,6 +62,14 @@ MarkDown语法相关的资料:
 1.[Markdown 语法说明](http://wowubuntu.com/markdown/)
 2.[MarkDown语法小结 ](http://www.myexception.cn/program/1629426.html)
 
+Jekyll错误: `Liquid Exception: Syntax Error in tag 'highlight' while parsing the following markup: Valid syntax: highlight <lang> [linenos] in zh/0-1-intro.md`
+发现错误的起因: 自己在相关的页面编辑添加图片时，总是不成功，查看了生成的html中没有包含img的标签，尝试很几种方法，都没能解决，最后打算重启Jekyll时，看到了上述错误，修复后，发现图片可以引用了。
+解决方法:就是将相关的错误的highlight全部删除掉。
+副产品: 
+- 在搜图片显示时，从Vex上看到一个不错的Jekyll的博客:<http://yansu.org>
+- Jekyll编译出错后，将会影响剩余的页面内容的处理。
+
+
 jekyll自己生成的文件的中的样式,具有借鉴意义:
 
 You'll find this post in your `_posts` directory - edit this post and re-build (or run with the `-w` switch) to see your changes!

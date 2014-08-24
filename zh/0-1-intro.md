@@ -265,25 +265,30 @@ ruby的线程是独创的`用户级线程`。这使得它在规范和实现两�
 
 #### Tracer
 
-如果想了解代码经过了哪些过程，那就应该使用tracer。 如果是C话，有一个叫ctrace的工具。 此外，系统提供的tracer还有strace, truss, ktrace等工具。
-到处打印
+如果想了解代码经过了哪些过程，那就应该使用tracer(*NIX下用来追踪系统调用的工具)。 如果是C话，有一个叫ctrace的工具。 此外，系统提供的tracer还有strace(*NIX下用来追踪系统调用的命令行工具), truss, ktrace等工具。
 
-有一种说法叫“打印调试”。即便算不上什么调试技术，这种方法依然很有用。 观察特定变量的变化时，与其一点点的用调试器追踪，不如嵌入打印语句， 这样，只要把结果搜集起来就可以了。
-改写后运行
+#### 到处打印
+
+有一种说法叫“打印调试”。即便算不上什么调试技术，这种方法依然很有用(尤其是调试动态语言时，比如JavaScript)。 观察特定变量的变化时，与其一点点的用调试器追踪，不如嵌入打印语句， 这样，只要把结果搜集起来就可以了。
+
+#### 边改边运行
 
 对于程序不易理解的地方，可以稍微修改参数和代码，尝试运行。 修改可以运行的话，就可以推测出代码的行为。
 
 不用说，应该预留原来的二进制文件，让二者去做同样的事情。
-静态分析
+
+### 静态分析
 名称的重要性
 
-静态分析就是通过阅读代码进行分析，对源码的分析就是对名称的调查： 文件名、函数名、变量名、类型名、参数名等等，程序本身就是一个名称的集合。 名称是程序抽象化的最大武器，如果认识到这一点，那么阅读的效率就会有很大的不同。
+静态分析就是通过阅读代码进行分析，对源码的分析就是对名称的调查： 文件名、函数名、变量名、类型名、参数名等等，`程序本身就是一个名称的集合`。 名称是程序抽象化的最大武器(想想早期的机器码编程和汇编编程的区别)，如果认识到这一点，那么阅读的效率就会有很大的不同。
 
-另外，还要注意编码规则。比如，如果是C的函数名， 为了区分函数种类，会给extern函数加上许多前缀。 如果程序是面向对象的风格，函数的归属信息都会放在前缀中，使之成为重要的信息（比如：rb_str_length)。
-阅读文档
+另外，还要注意`编码规则`。比如，如果是C的函数名， 为了区分函数种类，会给extern函数加上许多前缀。 如果程序是面向对象的风格，函数的归属信息都会放在前缀中，使之成为重要的信息（比如：rb_str_length)。
+
+#### 阅读文档
 
 也许会有解释内部构造的文档。特别要注意名为“HACKING”的文件。
-阅读目录结构
+
+#### 阅读目录结构
 
 通常目录都是根据某些策略进行划分的。 了解程序可以分为哪些部分，把握各部分的概要。
 阅读文件构成
@@ -291,50 +296,59 @@ ruby的线程是独创的`用户级线程`。这使得它在规范和实现两�
 结合文件中的函数（名），了解文件划分的策略。 类似于程序注释，文件名是一种保质期很长的东西，应该得到特别的重视。
 
 另外，如果文件中还有模块（module），构成这个模块的函数在文件中应该放到接近的地方。 也就是说，根据函数的排列顺序就可以了解模块的组成。
-调查缩略语
+
+####调查缩略语
 
 若有晦涩难懂的缩略语，应预先列出，提早调查。 比如，“GC”究竟是Garbage Collection，还是Graphic Context,二者的含义相去甚远。
 
 程序相关的缩略语大多是通过“取单词的首字母，省略元音字母”的方法形成的。 特别要注意的是，目标程序的领域中一些已广为接受的缩略语应该预先弄清楚。
-了解数据结构
+
+####了解数据结构
 
 如果数据和代码放在一起，应该首先从数据构造看起。 也就是说，如果是C的话，从头文件入手是个不错的选择。 这时，可以最大限度的发挥想象力，根据文件名进行推测。 比如，在语言处理系统中有一个叫frame.h的头文件，它可能就定义了栈帧（stack frame）。
 
 此外，结构体的类型和成员的名称也会给人许多启示。 比如，如果结构体中有一个指向结构体自身的指针next，会联想到这可能是一个链表。 同样，如果存在诸如parent/children/sibling等元素，该结构体十有八九是树（tree）。 如果有prev，可能就是堆栈。
-把握函数间的调用关系
 
-函数之间的关系是仅次于名称的重要信息。 有一种表现函数间调用关系的图，称为调用图（call graph），它的确很方便。
+####把握函数间的调用关系
+
+函数之间的关系是仅次于名称的重要信息。 有一种表现函数间调用关系的图，称为`调用图（call graph）`，它的确很方便。
 
 对于这个工具，基于文本的方式已经够用了，但如果能用图的话，那就更没得说了。 只是这么方便的工具很少（自由的尤其少）。 我为本书分析ruby时，用Ruby写了一个小命令语言解析器， 然后，将结果传给那个叫做graphviz的工具，进行半自动生成。
-阅读函数
+
+####阅读函数
 
 阅读函数的动作，用一句话来概括它的行为。 看着函数关系图来阅读函数的各个部分还是不错的。
 
 阅读函数时候，重要的不是“读什么”，而是“不读什么”。 可以说，削减了多少代码决定了阅读的难易程度。 具体如何进行正确的削减，很难在这里演示，因此，这部分会放在正文中解释。
 
 编码风格不符合自己的习惯时，可以用indent之类的工具进行转换。
-按个人喜好改写代码
 
-人体很奇妙，尽可能使用身体的各个部分去做的事情，很容易留下记忆。 认为“草稿纸好于PC键盘”的大有人在，我想，如果不是单纯的怀古，与此还是有些关系的。
+####按个人喜好改写代码
+
+人体很奇妙，尽可能使用身体的各个部分去做的事情，很容易留下记忆。 认为`“草稿纸好于PC键盘”`的大有人在，我想，如果不是单纯的怀古，与此还是有些关系的。
 
 所以，仅仅对着屏幕阅读是无法记忆到身体中的， 应该尝试一下边读边改，代码就会比较快的融入身体之中。
 
 遇到不顺眼的名字和代码就要毫不犹豫的改写。 将那些晦涩难懂的缩略语以它未省略的形式替换掉。
 
 当然，改写时应该单独预留一个原有代码的备份。 修改途中遇到问题，可以通过对比原有代码进行确认。 为一个简单的错误而陷入几小时苦恼的困境中，得不偿失。 改写是为了熟悉代码，改写本身不是我们的目的，希望不会投入太多热情。
-阅读历史
+
+##阅读历史
 
 程序一般都会有一个文档，记载着变更的历史。 比如，GNU的软件必定有一个名为Changlog的文件，对于了解“程序演变的原因”很有帮助。
 
-如果使用了诸如CVS和SCCS这样的版本管理系统，并可以直接进行访问的话，会比Changelog更具价值。 以CVS为例，了解特定行最近的修改用cvs annotate，比较特定版本的差异用cvs diff，等等。
+如果使用了诸如CVS和SCCS这样的版本管理系统，并可以直接进行访问的话，会比Changelog更具价值。 以CVS为例，了解特定行最近的修改用cvs annotate，比较特定版本的差异用cvs diff，等等。(当然，现在可以使用更为先进的git)
 
 此外，最好能够直接从开发用的邮件列表和新闻组中检索过往的记录，其中常常记载了变更的理由。 当然，如果能直接从Web上搜索就更好了。
-用于静态分析的工具
 
-不同的目的有不同的工具对应，不能一概而论。如果只让我选一个的话，我会推荐global。
+> 注: 读史使人明智，知道代码做了什么还不够，还要知道为什么这么做。所谓，知其然，然后知其所以然。
+
+##用于静态分析的工具
+
+不同的目的有不同的工具对应，不能一概而论。如果只让我选一个的话，我会推荐global(*nix下的命令行工具，用来打印特定对象在程序文件中的位置，支持 C, C++, Yacc, Java, PHP以及汇编)。
 
 这么选择是因为它很容易用于其它的用途。 比如，其中包含的gctags原本是为了制作tag文件，不过，也可以用它取出“文件所包含的函数”的名称列表。
-
+{% highlight ruby %}
 ~/src/ruby % gctags class.c | awk '{print $1}'
 SPECIAL_SINGLETON
 SPECIAL_SINGLETON
@@ -346,20 +360,26 @@ ins_methods_prot_i
 method_list
         ：
         ：
+{% endhighlight %}
 
 虽说如此，这只不过是我的推荐，读者使用何种工具取决于个人喜好。 不过，选择的工具至少应该具备以下功能：
 
-    能够列出“文件所包含的函数”的名称
-    能够搜索函数名、变量的位置（能够直接跳转到那的更好）
-    函数的交叉索引
+-  能够列出“文件所包含的函数”的名称
+-  能够搜索函数名、变量的位置（能够直接跳转到那的更好）
+-  函数的交叉索引
 
-构建
-目标版本
+## 构建
+----
+
+### 目标版本
 
 本书解说的ruby版本为1.7的2002-09-12版。 对于ruby来说，minor版本号为偶数是稳定版，奇数是开发版，所以，1.7是开发版。 而9月12日的这个版本没有什么特殊含义，所以，并没有对应官方发布包。 这个版本可以通过CD-ROM或本书的支持站点（ http://i.loveruby.net/ja/rhg ）获得， 或者后面提到的CVS。
 
 没有选择稳定版1.6而选择1.7，是因为1.7在规范和实现两个方面都经过重新整理，更容易处理。 其次，最新的开发版使用CVS更容易。再者，下一个稳定版1.8即将推出。 最后，阅读最新代码的心情会比较好。
-获取源代码
+
+> 书写的比较早，所以其引用的版本也是比较早的
+
+### 获取源代码
 
 附赠的CD-ROM里收录了这次解说的目标版本。在CD-ROM的顶级目录下有
 
@@ -369,16 +389,17 @@ method_list
 
 这里放置了三种类型的文件，请自行挑选使用。 当然，其内容是一致的。以tar.gz的包为例，这样展开：
 
-~/src % mount /mnt/cdrom
-~/src % gzip -dc /mnt/cdrom/ruby-rhg.tar.gz | tar xf -
-~/src % umount /mnt/cdrom
+    ~/src % mount /mnt/cdrom
+    ~/src % gzip -dc /mnt/cdrom/ruby-rhg.tar.gz | tar xf -
+    ~/src % umount /mnt/cdrom
 
-编译源码
+###编译源码
 
 仅仅“看”代码也算是阅读。但是，为了了解程序，实际的使用、改造，以及做一些试验也是必要的。 实验时只用原来的代码就失去了意义，自然要自己来编译。
 
 这里说明一下编译的方法。首先从UNIX类的OS说起。在Windows上编译有不少差异，在随后一节中讨论。 不过，我还是希望你继续读下去，因为Windows上的Cygwin与UNIX非常接近。
-在UNIX类OS上构建
+
+#### 在UNIX类OS上构建
 
 在UNIX类OS上，C编译器是标准配置，按照下面的顺序来做，基本都能通过。这里假设源码解开到~/src/ruby。
 
@@ -394,14 +415,15 @@ method_list
 ~/src/ruby % ./configure --enable-shared
 
 附赠CD-ROM中的doc/build.html中有一个详尽的教程，可以边读边尝试一下。
-在Windows上构建
+
+#### 在Windows上构建
 
 在Windows上的构建比较复杂，问题的根源在于有许多构建环境。
 
-    Visual C++
-    MinGW
-    Cygwin
-    Borland C++ Compiler
+-  Visual C++
+-  MinGW
+-  Cygwin
+-  Borland C++ Compiler
 
 首先是Cygwin环境，它与UNIX环境非常接近，遵循UNIX类的构建方法就可以了。
 
@@ -414,27 +436,29 @@ MinGW, Minimalist GNU for Windows，是将GNU的编译环境（包括gcc和binut
 如何在上述4个环境中做出选择呢？首先，推荐Visual C++，因为基本上它极少出问题。 如果有UNIX经验，放上一套完整的Cygwin，使用Cygwin也是个不错的选择。 没有UNIX经验，也没有Visual C++，不妨试试MinGW。
 
 下面说明一下Visual C++和MinGW的构建方法，不过，只是一些概要。 更详尽的解释和在Borland C++ Compiler上的构建方法，请适当参考附赠CD-ROM中的doc/build.html。
-Visual C++
+
+#### Visual C++
 
 谈到Visual C++，通常并不使用IDE，而是在DOS提示符下进行构建。 为了运行Visual C++本身，首先要初始化环境变量。 Visual C++中有完成这个工作的批处理文件，先来执行它。
-
-C:\> cd "\Program Files\Microsoft Visual Studio .NET\Vc7\bin" 
-C:\Program Files\Microsoft Visual Studio .NET\Vc7\bin> vcvars32
+>  C:\> cd "\Program Files\Microsoft Visual Studio .NET\Vc7\bin" 
+>  C:\Program Files\Microsoft Visual Studio .NET\Vc7\bin> vcvars32
 
 这是Visual C++ .NET的情况。版本6在下面这个位置。
 
-C:\Program Files\Microsoft Visual Studio\VC98\bin\
+> C:\Program Files\Microsoft Visual Studio\VC98\bin\
 
 执行过vcvar32，转到ruby源码树的win32文件夹，构建就可以了。以下假定源码树在c:\src。
 
-C:\> cd src\ruby
-C:\src\ruby> cd win32
-C:\src\ruby\win32> configure
-C:\src\ruby\win32> nmake
-C:\src\ruby\win32> nmake DESTDIR="C:\Program Files\ruby" install
+>  C:\> cd src\ruby
+>  C:\src\ruby> cd win32
+>  C:\src\ruby\win32> configure
+>  C:\src\ruby\win32> nmake
+>  C:\src\ruby\win32> nmake DESTDIR="C:\Program Files\ruby" install
+
 
 这样执行之后，ruby命令安装到C:\Program Files\ruby\bin下，ruby的程序库安装到C:\ Program Files\ruby\lib下。 因为ruby完全没有使用注册表，卸载的话，只要删除C:\Program Files\ruby即可。
-MinGW
+
+#### MinGW
 
 如前所述，MinGW只是一个编译环境，它没有一般UNIX的一些工具，比如sed, sh。 不过，构建ruby需要它们，因此，要从别的地方获得。有两种方法，Cygwin或者MSYS(Minimal SYStem)。
 
@@ -442,92 +466,103 @@ MinGW
 
 将Cygwin的setup.exe同MinGW及开发工具集放在一起。Cygwin和MinGW都在附赠的CD-ROM中。 之后，在Cygwin的bash提示符下这样敲：
 
-~/src/ruby % ./configure --with-gcc='gcc -mno-cygwin' \
-                                 --enable-shared i386-mingw32
-~/src/ruby % make
-~/src/ruby % make install
+>  ~/src/ruby % ./configure --with-gcc='gcc -mno-cygwin' \
+>                                   --enable-shared i386-mingw32
+>  ~/src/ruby % make
+>  ~/src/ruby % make install
 
 就是这样。虽然这里configure所在行换行了，但它实际是一行，反斜线其实并不需要。 安装的位置是编译驱动器的\usr\local\下。这个部分比较麻烦，说明比较长，更多细节请参照附赠CD-ROM中的doc/build.html。
-构建详解
+
+## 构建详解
+----
 
 到这里都是些类似于README的说明。这次要试着深入一下，看看具体做了些什么。 然而，这里的内容可能需要部分高级知识。遇到不理解的地方，可以先跳到下面一节。读完全书之后再回来看，应该就可以理解了。
 
 无论什么平台，ruby的构建都可以分为3个阶段，即：configure, make, make install。 这里抛开make install，对configure, make进行解说。
-configure
+
+### configure
 
 首先是configure。其内容是一个shell脚本，用它检测系统参数。 比如，检查“头文件setjmp.h是否存在”、“alloca()能否使用”。 检查的方法出乎意料的简单。
-检查目标 	方法
-命令 	实际运行并查看$?
-头文件 	if [ -f $includedir/stdio.h ]
-函数 	试着编译一些小程序，看是否可以成功连接
+
+ 检查目标 |	方法
+--------- | ------------------------------
+命令 	    | 实际运行并查看$?
+头文件 	  | if [ -f $includedir/stdio.h ]
+函数 	    | 试着编译一些小程序，看是否可以成功连接
 
 找出差异之后，无论如何都要传出来。至于方法，首先可以用Makefile。 在Makefile.in中留下类似于@PARAM@的嵌入参数，生成Makefile时会把它转换为一个实际的值。 比如像下面这样。
 
-Makefile.in:  CFLAGS = @CFLAGS@
-                     ↓
-Makefile   :  CFLAGS = -g -O2
+> Makefile.in:  CFLAGS = @CFLAGS@
+>                     ↓
+> Makefile   :  CFLAGS = -g -O2
+
 
 再有一种方法，将函数和头文件是否存在的信息输出到头文件中。输出文件的名字根据程序而不同， 在ruby中是config.h。执行configure之后，确认是否生成了这个文件。内容大概是这样。
+
 ▼ config.h
 
-         ：
-         ：
-#define HAVE_SYS_STAT_H 1
-#define HAVE_STDLIB_H 1
-#define HAVE_STRING_H 1
-#define HAVE_MEMORY_H 1
-#define HAVE_STRINGS_H 1
-#define HAVE_INTTYPES_H 1
-#define HAVE_STDINT_H 1
-#define HAVE_UNISTD_H 1
-#define _FILE_OFFSET_BITS 64
-#define HAVE_LONG_LONG 1
-#define HAVE_OFF_T 1
-#define SIZEOF_INT 4
-#define SIZEOF_SHORT 2
-         ：
-         ：
+             ：
+             ：
+    #define HAVE_SYS_STAT_H 1
+    #define HAVE_STDLIB_H 1
+    #define HAVE_STRING_H 1
+    #define HAVE_MEMORY_H 1
+    #define HAVE_STRINGS_H 1
+    #define HAVE_INTTYPES_H 1
+    #define HAVE_STDINT_H 1
+    #define HAVE_UNISTD_H 1
+    #define _FILE_OFFSET_BITS 64
+    #define HAVE_LONG_LONG 1
+    #define HAVE_OFF_T 1
+    #define SIZEOF_INT 4
+    #define SIZEOF_SHORT 2
+             ：
+             ：
 
 每个都很容易理解。HAVE_xxxx_H用以检查头文件是否存在，SIZEOF_SHORT表示C的short类型是多少个字节。 同样，SIZEOF_INT是int的字节长，HAVE_OFF_T表示是否定义了offset_t类型。 在configure中，“有/没有”的信息都定义成HAVE_xxxx宏。
 
 从上面可以了解到，configure可以检测出差异，但是，差异并不能自动处理。 使用这里定义的值，填补这些差异是程序员的工作。
 ▼ HAVE_宏的典型用法
-
+{% highlight ruby %}
   24  #ifdef HAVE_STDLIB_H
   25  # include <stdlib.h>
   26  #endif
 
 (ruby.h)
+{% endhighlight %}
 
-autoconf
+### autoconf
 
 configure并非ruby的专用工具。是否有这个函数，是否有这个头文件……的试验明显都是有规则的， 大家各写一份显然是浪费。
 
 这里就该autoconf登场了。在configure.in或configure.ac中写下“做这样的检查”， 然后用autoconf处理，生成适当的configure。configure.in中的.in是input的缩写。 等同于Makefile和Makefile.in的关系。.ac当然是autoconf的缩写。
 
-图1显示了迄今为止的过程。
+图1显示了迄今为止的过程:
 
-直至Makefile完成
+![直至Makefile完成]({{ site.url }}/images/ch_abstract_build.jpg)  
 图1: 直至Makefile完成
 
 对于希望进一步了解的读者，推荐《GNU Autoconf/Automake/Libtool》。
 
-对了，据说ruby的configure是用autoconf生成的，世间的configure未必都是用autoconf生成的。 也有用手写的，或是其它自动生成工具的。无论如何，只要最终生成Makefile、config.h或其它变体就好。
-make
+虽然ruby的configure是用autoconf生成的，但世间的configure未必都是用autoconf生成的。 也有用手写的，或是其它自动生成工具的。无论如何，只要最终生成Makefile、config.h或其它变体就好。
+
+### make
 
 第二阶段，make做了些什么呢？当然，应该是编译ruby的源码，但查看make的输出信息， 可以看到还做了其它一些事情。简单说明一下这个过程。
 
-    编译构成ruby自身的源码。
-    创建聚集了ruby主要部分的静态程序库libruby.a。
-    创建经常用于静态连接的ruby(miniruby)。
-    --enable-shared的时候创建共享程序库libruby.so。
-    使用miniruby编译扩展程序库（ext/下面）。
-    最后，生成真正的ruby。
+-  编译构成ruby自身的源码。
+-  创建聚集了ruby主要部分的静态程序库libruby.a。
+-  创建经常用于静态连接的ruby(miniruby)。
+-  --enable-shared的时候创建共享程序库libruby.so。
+-  使用miniruby编译扩展程序库（ext/下面）。
+-  最后，生成真正的ruby。
 
 将miniruby和ruby分开生成有两个原因。一是编译扩展程序库需要ruby。 在--enable-shared的情况下，ruby本身是动态连接的，由于程序库加载路径的关系， 不能立即运行。创建出静态连接的miniruby就可以用于构建过程。
 
 第二个原因是，在一些不能使用扩展程序库的平台上，扩展程序库可能要静态连接到ruby上。 在这种情况下，ruby要在编译全部扩展程序库之后才能创建出来，但是，没有ruby又不能编译扩展程序库。 为了消除这个矛盾，用到了miniruby。
-CVS
+
+## CVS
+----
 
 无论是本书附增CD-ROM中的ruby存档，还是官方发布包，都不过是ruby程序不停变化中一个瞬间的快照。 其中并没有描述ruby如何变化以及为什么变化。那么要了解包括过去在内的全部该怎么办呢？ 使用CVS就可以做到。
 什么是CVS
@@ -540,165 +575,187 @@ ruby使用了CVS进行管理，这里稍微解释一下CVS的机制和使用方�
 
 另一方面，从repository选择的某个点取出的文件叫做working copy。 repository只有一个，而working copy可以有很多。（图2）
 
-repository和working copy
+![repository和working copy]({{site.url}}/images/ch_abstract_repo.jpg)  
 图2: repository和working copy
 
 想修改源码时，先取出一个working copy，用编辑器编辑之后，再“返还”到repository。 随即变更就会记录在repository中。从repository取出working copy叫做checkout， 返还到repository叫做checkin或commit。检入时repository会记录变更， 这样，无论何时都可以取出。
 
-checkin和checkout
+![heckin和checkout]({{site.url}}/images/ch_abstract_ci.jpg)  
 图3: checkin和checkout
 
 CVS的最大特征就是跨越网络访问CVS repository。也就是说，只要有一个维护repository的服务器， 每个人在任何地方都可以通过互联网进行检入检出。然而，通常checkin会受到访问限制，而不是无限制的。
-修订版
+
+### 修订版
 
 怎样从repository中取出特定的版本呢？有一种方法是指定时间。 “给出当时最新的版本”，它按请求做出选择。然而，实际中指定时间的方法不大常用。 一般会使用“修订版（revision）”。
 
 “修订版”和“版本”的意义几乎相同。因为项目本身都会有一个“版本”，所以，版本这个词容易造成混淆。 在这里，用“修订版”这个词表示更细小的单位。
 
 在CVS中，刚放到repository的文件其修订版是1.1。检出，修改，检入，修订版就成了1.2。 接着是1.3，接着是1.4。
-CVS使用的简单例子
+
+###CVS使用的简单例子
 
 基于上面的讨论，再来谈谈CVS的使用方法。首先，没有cvs命令什么都做不了，所以，需要先安装。 cvs的源码收录在附赠的CD-ROM中。cvs的安装方法偏离了本书的主题，这里就不介绍了。
 
 安装之后，可以试着检出ruby的源码。在接入互联网的情况下，如下键入。
 
-% cvs -d :pserver:anonymous@cvs.ruby-lang.org:/src login
-CVS Password: anonymous
-% cvs -d :pserver:anonymous@cvs.ruby-lang.org:/src checkout ruby
+    % cvs -d :pserver:anonymous@cvs.ruby-lang.org:/src login
+    CVS Password: anonymous
+    % cvs -d :pserver:anonymous@cvs.ruby-lang.org:/src checkout ruby
 
 没有选项的话，会自动检出最新的版本，所以，ruby/下面应该出现真正最新版的ruby。
 
 要取出某天的版本，给cvs checkout加上-D就可以了。 像下面这样键入可以取出本书解释这个版本的working copy。
 
-% cvs -d :pserver:anonymous@cvs.ruby-lang.org:/src checkout -D2002-09-12 ruby
+    % cvs -d :pserver:anonymous@cvs.ruby-lang.org:/src checkout -D2002-09-12 ruby
 
 这个时候需要注意，参数必须紧接着写在checkeout后面。 先写“ruby”的话，会出现“没有组件”的奇怪错误。
 
 顺便说一下，像例子这样以anonymous访问是不能检入的。 要练习检入，不妨在本地建立一个repository，试着将Hello, World!程序放入其中也不错。 具体放入的方法就不在这里写了。cvs附带的手册就很不错。
-ruby的组成
-物理结构
+
+## ruby的组成
+----
+
+### 物理结构
 
 接下来可以看看源码了，不过，什么是必须先做的事呢？ 那就是查看目录结构。一般情况下，目录结构表示的就是源码树的模块组成。 直接grep出main()，以此开头读按顺序读下去，这种做法并不明智。 当然，查找main()也很重要，但首先应该用ls和head去把握全貌。
 
 以下是从CVS repository中检出之后顶层目录的样子。“/”结尾的是子目录。
-COPYING 	compar.c 	gc.c 	numeric.c 	sample
-COPYING.ja 	config.guess 	hash.c 	object.c 	signal.c
-CVS/ 	config.sub 	inits.c 	pack.c 	sprintf.c
-ChangeLog 	configure.in 	install-sh 	parse.y 	st.c
-GPL 	cygwin/ 	instruby.rb 	prec.c 	st.h
-LEGAL 	defines.h 	intern.h 	process.c 	string.c
-LGPL 	dir.c 	io.c 	random.c 	struct.c
-MANIFEST 	djgpp/ 	keywords 	range.c 	time.c
-Makefile.in 	dln.c 	lex.c 	re.c 	util.c
-README 	dln.h 	lib/ 	re.h 	util.h
-README.EXT 	dmyext.c 	main.c 	regex.c 	variable.c
-README.EXT.ja 	doc/ 	marshal.c 	regex.h 	version.c
-README.ja 	enum.c 	math.c 	ruby.1 	version.h
-ToDo 	env.h 	misc/ 	ruby.c 	vms/
-array.c 	error.c 	missing/ 	ruby.h 	win32/
-bcc32/ 	eval.c 	missing.h 	rubyio.h 	x68/
-bignum.c 	ext/ 	mkconfig.rb 	rubysig.h
-class.c 	file.c 	node.h 	rubytest.rb
+
+    COPYING 	compar.c 	gc.c 	numeric.c 	sample
+    COPYING.ja 	config.guess 	hash.c 	object.c 	signal.c
+    CVS/ 	config.sub 	inits.c 	pack.c 	sprintf.c
+    ChangeLog 	configure.in 	install-sh 	parse.y 	st.c
+    GPL 	cygwin/ 	instruby.rb 	prec.c 	st.h
+    LEGAL 	defines.h 	intern.h 	process.c 	string.c
+    LGPL 	dir.c 	io.c 	random.c 	struct.c
+    MANIFEST 	djgpp/ 	keywords 	range.c 	time.c
+    Makefile.in 	dln.c 	lex.c 	re.c 	util.c
+    README 	dln.h 	lib/ 	re.h 	util.h
+    README.EXT 	dmyext.c 	main.c 	regex.c 	variable.c
+    README.EXT.ja 	doc/ 	marshal.c 	regex.h 	version.c
+    README.ja 	enum.c 	math.c 	ruby.1 	version.h
+    ToDo 	env.h 	misc/ 	ruby.c 	vms/
+    array.c 	error.c 	missing/ 	ruby.h 	win32/
+    bcc32/ 	eval.c 	missing.h 	rubyio.h 	x68/
+    bignum.c 	ext/ 	mkconfig.rb 	rubysig.h
+    class.c 	file.c 	node.h 	rubytest.rb
 
 近来，随着程序本身变大，也划分出更多细小的子目录，ruby在相当长一段时间里都只有一个顶层目录。 有大量的文件当然麻烦，但是如果是这种程度，应该算不了什么。
 顶层文件可以分为六类。也就是
 
-    文档
-    ruby自身的源码
-    构建ruby所需的工具
-    标准扩展程序库
-    标准Ruby程序库
-    其它
+-  文档
+-  ruby自身的源码
+-  构建ruby所需的工具
+-  标准扩展程序库
+-  标准Ruby程序库
+-  其它
 
 确实，源码和构建工具很重要，还有其它一些很有用的东西。
 
-    ChangeLog
+>    ChangeLog
 
 ruby的变更记录。了解变更的理由也很重要。
 
-    README.EXT README.EXT.ja
+>    README.EXT README.EXT.ja
 
 记录着扩展程序库的编写方法，作为其中的一环，其中记录了ruby的一些实现。
-源码分类
+
+### 源码分类
 
 这里要对ruby自身的源码进行更细小的划分。 主要文件的分类都写在README.EXT里，只需遵循即可。我把其中一些没有记录的文件也进行了分类。
-Ruby语言的核心
-class.c 	类相关API
-error.c 	异常相关API
-eval.c 	评估器
-gc.c 	垃圾回收器
-lex.c 	保留字一览
-object.c 	对象系统
-parse.y 	解析器
-variable.c 	常量、全局变量、类变量
-ruby.h 	ruby主要的宏和函数原型
-intern.h 	ruby C API的函数远行, 一般认为intern是internal的简写，扩展程序库使用这里记录的函数也没有问题
-rubysig.h 	存放信号相关宏的头文件
-node.h 	语法树节点相关定义
-env.h 	表示评估器上下文结构的定义
+
+####Ruby语言的核心
+
+---------- | ----------------------------------------
+  class.c   |	类相关API
+  error.c   |	异常相关API
+  eval.c 	  | 评估器
+  gc.c 	    | 垃圾回收器
+  lex.c 	  | 保留字一览
+  object.c  |	对象系统
+  parse.y   |	解析器
+  variable.c| 	常量、全局变量、类变量
+  ruby.h 	  | ruby主要的宏和函数原型
+  intern.h 	| ruby C API的函数远行, 一般认为intern是internal的简写，扩展程序库使用这里记录的函数也没有问题
+  rubysig.h |	存放信号相关宏的头文件
+  node.h 	  | 语法树节点相关定义
+  env.h 	  | 表示评估器上下文结构的定义
 
 这些就是ruby解释器的核心部分。这里的文件就是本书解说的主要部分。 同ruby的文件总数相比，这只是很小的一部分，不过，按字节算，则占了近50%。 特别是，200K字节的eval.c和100K字节的parse.y都很大。
-实用程序
-dln.c 	动态加载器
-regex.c 	正则表达引擎
-st.c 	hash表
-util.c 	基数转换、排序等程序库。
+
+#### 实用程序
+
+    dln.c 	动态加载器
+    regex.c 	正则表达引擎
+    st.c 	hash表
+    util.c 	基数转换、排序等程序库。
 
 这是对ruby而言的实用程序。从实用程序这个词很难想到其中也有大东西。 比如，regex.c有120K字节。
-ruby命令的实现
-dmyext.c 	dummy扩展（DumMy EXTention）程序库的初始化例程
-inits.c 	核心和程序库初始化例程的入口点
-main.c 	命令的入口点（无需libruby）
-ruby.c 	ruby命令的主要部分（需要libruby）
-version.c 	ruby的版本
+
+#### ruby命令的实现
+
+    dmyext.c 	dummy扩展（DumMy EXTention）程序库的初始化例程
+    inits.c 	核心和程序库初始化例程的入口点
+    main.c 	命令的入口点（无需libruby）
+    ruby.c 	ruby命令的主要部分（需要libruby）
+    version.c 	ruby的版本
 
 在命令行键入ruby执行时需要有ruby的实现。这个部分解释命令行的选项。 在ruby命令以外，使用ruby核心的命令包括mod_ruby和vim等等。 这些命令链接了libruby程序库（.a/.so/.dll）。
-类库
-array.c 	class Array
-bignum.c 	class Bignum
-compar.c 	module Comparable
-dir.c 	class Dir
-enum.c 	module Enumerable
-file.c 	class File
-hash.c 	class Hash（实际是st.c）
-io.c 	class IO
-marshal.c 	module Marshal
-math.c 	module Math
-numeric.c 	class Numeric、Integer、Fixnum、Float
-pack.c 	Array#pack、String#unpack
-prec.c 	module Precision
-process.c 	module Process
-random.c 	Kernel#srand()、rand()
-range.c 	class Range
-re.c 	class Regexp（实际是regex.c）
-signal.c 	module Signal
-sprintf.c 	ruby专用的sprintf()
-string.c 	class String
-struct.c 	class Struct
-time.c 	class Time
+
+#### 类库
+
+    array.c 	class Array
+    bignum.c 	class Bignum
+    compar.c 	module Comparable
+    dir.c 	class Dir
+    enum.c 	module Enumerable
+    file.c 	class File
+    hash.c 	class Hash（实际是st.c）
+    io.c 	class IO
+    marshal.c 	module Marshal
+    math.c 	module Math
+    numeric.c 	class Numeric、Integer、Fixnum、Float
+    pack.c 	Array#pack、String#unpack
+    prec.c 	module Precision
+    process.c 	module Process
+    random.c 	Kernel#srand()、rand()
+    range.c 	class Range
+    re.c 	class Regexp（实际是regex.c）
+    signal.c 	module Signal
+    sprintf.c 	ruby专用的sprintf()
+    string.c 	class String
+    struct.c 	class Struct
+    time.c 	class Time
 
 Ruby的类库实现。这里的东西基本上采用与通常Ruby扩展程序库同样的方法实现。 也就是说，这里的程序库可以作为编写扩展程序库的例子。
-平台相关文件
-bcc32/ 	Borland C++（Win32）
-beos/ 	BeOS
-cygwin/ 	Cygwin（Win32的UNIX仿真层）
-djgpp/ 	djgpp（DOS下的自由开发环境）
-vms/ 	VMS（以前DEC发布的OS）
-win32/ 	Visual C++（Win32）
-x68/ 	Sharp X680×0系列（OS是Human68k）
+
+#### 平台相关文件
+
+    bcc32/ 	Borland C++（Win32）
+    beos/ 	BeOS
+    cygwin/ 	Cygwin（Win32的UNIX仿真层）
+    djgpp/ 	djgpp（DOS下的自由开发环境）
+    vms/ 	VMS（以前DEC发布的OS）
+    win32/ 	Visual C++（Win32）
+    x68/ 	Sharp X680×0系列（OS是Human68k）
 
 这里是平台相关的代码。
-fall back函数
-missing/
+
+#### fall back函数
+
+> missing/
 
 弥补各个平台缺失的文件，主要是libc函数居多。
-逻辑组成
+### 逻辑组成
 
 上面核心的四组大致可以分为三类。第一类创建出Ruby的对象世界，“对象空间（object space）”。 第二类是将Ruby程序（文本）转换为内部形式的解析器（parser）。 第三类是驱动Ruby程序的评估器（evaluator）。解析器和评估器都建立在对象空间之上， 解析器将程序转换为内部形式，评价器驱动着程序。下面就按顺序解释一下。
-对象空间
+
+#### 对象空间
 
 首先是对象空间。这个非常容易理解。这么说是因为，其操作的所有东西基本上都在内存之中， 用到它们的函数可以直接显示和操作。因此，本书就先从这里开始解释。 第2章到第7章是第一部分。
-解析器（parser）
+
+#### 解析器（parser）
 
 其次是解析器。这个有必要解释一下。
 
@@ -706,11 +763,11 @@ ruby命令就是Ruby语言的解释器。也就是说，启动时分析输入的
 
 所谓内部结构具体来说就是“语法树”。语法树就是将程序表现为树的结构。 比如，if语句就会表现为图4这样。
 
-if语句，及其对应的语法树
+![if语句，及其对应的语法树]({{site.url}}/images/ch_abstract_syntree.jpg)  
 图4: if语句，及其对应的语法树
 
 在第二部分“语法分析”中，会对解析器进行解释。第二部分从第10章到第12章。 解释的对象只有一个文件：parse.y。
-评估器（evaluator）
+### 评估器（evaluator）
 
 对象可以实际接触到，比较容易弄懂。解析器做的实际上是数据格式转换，也好理解。 至于第三个的评估器则完全不知从何下手。
 

@@ -2,9 +2,9 @@
 layout: post
 ---
 
-[Ruby Hacking Guide](http://i.loveruby.net/ja/rhg/book) （简称RHG），是青木峰郎(Minero AOKI)创作的一本剖析ruby实现的书。
+[Ruby Hacking Guide](http://i.loveruby.net/ja/rhg/book) （简称RHG,原版为日文），是青木峰郎(Minero AOKI)创作的一本剖析ruby实现的书。
 
-Ruby Hacking Guide中文版 就是将[Ruby Hacking Guide](/rhg-zh/en/index.html)这本书翻译成中文，让更多对Ruby有兴趣的人了解Ruby语言的实现。
+Ruby Hacking Guide中文版 就是将[Ruby Hacking Guide](http://ruby-hacking-guide.github.io)这本书翻译成中文，让更多对Ruby有兴趣的人了解Ruby语言的实现。
 
 ###  **目 录**
 ----
@@ -18,7 +18,7 @@ Ruby Hacking Guide中文版 就是将[Ruby Hacking Guide](/rhg-zh/en/index.html)
 - [第二章：对象](/rhg-zh/zh/02-object)
 - [第三章：名称与名称表](/rhg-zh/zh/03-name)
 - [第四章：类与模块](/rhg-zh/zh/04-class)
-- [第五章 垃圾回收](/rhg-zh/zh/05-gc)
+- [第五章：垃圾回收](/rhg-zh/zh/05-gc)
 - [第六章：变量和常量](/rhg-zh/zh/06-variable)
 - [第七章：安全](/rhg-zh/zh/07-security)
 
@@ -79,7 +79,7 @@ RHG中文版制作采用了RHG英文版 的脚本。 第二、三、四和六章
 
 审校: [axgle](http://axgle.github.com/)
 
-第2部分至最后，[邪王真眼的夏]()打算全部翻译下来,一切尽在计划中。。。
+第2部分至最后，[邪王真眼的夏]({{site.url}})打算全部翻译下来,一切尽在计划中。。。
 
 ## 加入我们
 ----
@@ -94,6 +94,6 @@ RHG中文版制作采用了RHG英文版 的脚本。 第二、三、四和六章
 
 如果你对Ruby的实现感兴趣，欢迎阅读已完成的部分。阅读过程中发现的任何问题，都可以报告给我们，以便我们今后的发布中进行修改，让译稿更加完美。
 
-这是原先项目主页(估计已废弃)： http://code.google.com/p/rhgchs/ 
-新的项目主页: https://github.com/xiajian/rhg-zh
+这是原先项目主页(估计已废弃)： <http://code.google.com/p/rhgchs/>
+新的项目主页: <https://github.com/xiajian/rhg-zh>
 
