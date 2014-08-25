@@ -59,8 +59,9 @@ end
      *  md中的html路径也需要重新设置
 
 MarkDown语法相关的资料:
-1.[Markdown 语法说明](http://wowubuntu.com/markdown/)
-2.[MarkDown语法小结 ](http://www.myexception.cn/program/1629426.html)
+
+1. [Markdown 语法说明](http://wowubuntu.com/markdown/)
+2. [MarkDown语法小结 ](http://www.myexception.cn/program/1629426.html)
 
 Jekyll错误: `Liquid Exception: Syntax Error in tag 'highlight' while parsing the following markup: Valid syntax: highlight <lang> [linenos] in zh/0-1-intro.md`
 发现错误的起因: 自己在相关的页面编辑添加图片时，总是不成功，查看了生成的html中没有包含img的标签，尝试很几种方法，都没能解决，最后打算重启Jekyll时，看到了上述错误，修复后，发现图片可以引用了。
@@ -70,26 +71,26 @@ Jekyll错误: `Liquid Exception: Syntax Error in tag 'highlight' while parsing t
 - Jekyll编译出错后，将会影响剩余的页面内容的处理。
 
 
-jekyll自己生成的文件的中的样式,具有借鉴意义:
+jekyll自己生成的文件的中的样式,具有借鉴意义的格式:
 
-You'll find this post in your `_posts` directory - edit this post and re-build (or run with the `-w` switch) to see your changes!
-To add new posts, simply add a file in the `_posts` directory that follows the convention: YYYY-MM-DD-name-of-post.ext.
+1. 取消Markdown元字符的解释含义的 `_post char* ` 符号 
+2. 语法高亮格式
+> {% highlight ruby %}...{% endhighlight %}
 
-Jekyll also offers powerful support for code snippets:
-
-{% highlight ruby %}
-def print_hi(name)
-  puts "Hi, #{name}"
-end
-print_hi('Tom')
-#=> prints 'Hi, Tom' to STDOUT.
-{% endhighlight %}
-
-Check out the [Jekyll docs][jekyll] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll's GitHub repo][jekyll-gh].
-
-[jekyll-gh]: https://github.com/jekyll/jekyll
+3. 新的超链接的写法 [Jekyll docs][jekyll]
 [jekyll]:    http://jekyllrb.com
 
+## 后记
+----
+现在的我要比四年前的我更有耐心，在还没开始翻译之前，先是各种处理HTML到markdown格式的装换，这其实是一件相当繁琐的事情，我居然有耐心做了下去。看来自己确实是慢下来了，尽管之前也不快，但是特别急躁，什么事都赶着去似的。
+
+多亏了看了介绍诸时健的相关文章，勾起了我对建立下一个十年的计划的想法，尽管不知道下一个十年后会变成什么样，我有预感，我以后会很NB，哈哈。
+
+14年五月份时，最初看到RHG及其中文版翻译状况时，就想到将其翻译下来。不过，彼时既不会用git，也不会用Jekyll。等到了14八月时，两个工具都差不过会折腾了，出于深入学习Ruby的想法，就开始着手翻译的准备工作。
+
+仔细想想，自己工作还是相当的轻松的，不然，也不会有时间来翻译。Ruby和Rails都学的不怎么样，工作做的事情也是少少的(由于自己是新手,磕磕伴伴的学习和试错，又是好几天纠结在某一点上)，希望以后会顺畅些。
+
 ## 参考文献
+----
 1.[六种用ruby调用执行shell命令的方法](http://blackanger.blog.51cto.com/140924/43730/)
 
