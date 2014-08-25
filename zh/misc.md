@@ -70,6 +70,25 @@ Jekyll错误: `Liquid Exception: Syntax Error in tag 'highlight' while parsing t
 - 在搜图片显示时，从Vex上看到一个不错的Jekyll的博客:<http://yansu.org>
 - Jekyll编译出错后，将会影响剩余的页面内容的处理。
 
+迷惑: 
+自己写个jekyll的shell函数，居然把系统给崩溃了，我觉的这个函数很正常啊:
+{% highlight ruby %}
+function jekyll() {
+   if [  $# ==  0  ] ; then
+      jekyll serve -w
+   else
+      jekyll "$@"
+   fi
+ }
+{% endhighlight %}
+> 思：别名可以运行，而函数不可以运行，我想这和自己使用rvm安装的ruby环境有关。Jekyll这个命令行工具存在于rvm加载到当前shell进程的环境中。别名是在当前进程中运行，而函数则是另开一个子进程运行。问题在于，新开的子进程没有加rvm环境。但是，崩溃的行为就很奇怪。
+
+Liquid模板中的for语句和if语句格式
+
+    {% for page in site.pages %}
+      {% if page.title %}<a class="page-link" href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>{% endif %}
+    {% endfor %}
+
 
 jekyll自己生成的文件的中的样式,具有借鉴意义的格式:
 

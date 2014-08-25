@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: A Minimal Introduction to Ruby
 ---
 Translated by Sebastian Krause

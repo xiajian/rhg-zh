@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: Ruby Language Details
 ---
 h1(#chapter). Chapter 8 : Ruby Language Details

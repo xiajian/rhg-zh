@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 ---
 
 h1. Final Chapter: Ruby's future

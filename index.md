@@ -51,6 +51,8 @@ Ruby Hacking Guide中文版 就是将[Ruby Hacking Guide](http://ruby-hacking-gu
 ## **杂记**
 ----
 - [翻译杂记](/rhg-zh/zh/misc)
+- [Markdown语法](/rhg-zh/zh/markdown)
+- [Liquid模板语言](/rhg-zh/zh/liquid)
 
 ## **致谢**
 ----

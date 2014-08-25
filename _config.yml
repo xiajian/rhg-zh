@@ -8,7 +8,7 @@ baseurl: /rhg-zh
 url: http://xiajian.github.io/rhg-zh
 
 # 指定本地服务器运行端口,运行多个Jekyll时特别有用
-# port:  5000
+port:  5000
 # source: zh
 # Build settings
 markdown: kramdown
