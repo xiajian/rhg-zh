@@ -20,16 +20,17 @@ title: 第四章：类与模块
 类的定义
 
 rb_define_class() 在顶层定义一个类。让我们以Ruby数组类Array为例。
-▼ Array类的定义
 
-  19  VALUE rb_cArray;
-
-1809  void
-1810  Init_Array()
-1811  {
-1812      rb_cArray  = rb_define_class("Array", rb_cObject);
-
-(array.c)
+    ▼ Array类的定义
+    
+      19  VALUE rb_cArray;
+    
+    1809  void
+    1810  Init_Array()
+    1811  {
+    1812      rb_cArray  = rb_define_class("Array", rb_cObject);
+    
+    (array.c)
 
 rb_cObject和rb_cArray分别对应着在Ruby的层次上Object和Array。 前缀rb表示它属于ruby，c表示它是一个类对象。这个命名规则在ruby中随处可见。
 
@@ -41,15 +42,16 @@ class Array < Object
 嵌套类的定义
 
 之后是rb_define_class_under()。这个函数定义了一个嵌套在其它类或模块中的类。 这次的例子是stat(2)返回的类，File::Stat。
-▼ File::Stat的定义
 
-  78  VALUE rb_cFile;
-  80  static VALUE rb_cStat;
-
-2581      rb_cFile = rb_define_class("File", rb_cIO);
-2674      rb_cStat = rb_define_class_under(rb_cFile, "Stat", rb_cObject);
-
-(file.c)
+    ▼ File::Stat的定义
+    
+      78  VALUE rb_cFile;
+      80  static VALUE rb_cStat;
+    
+    2581      rb_cFile = rb_define_class("File", rb_cIO);
+    2674      rb_cStat = rb_define_class_under(rb_cFile, "Stat", rb_cObject);
+    
+    (file.c)
 
 这段代码对应着下面的Ruby程序：
 
@@ -60,107 +62,113 @@ class File < IO
 模块的定义
 
 rb_define_module()很简单，让我们快点结束它。
-▼ Enumerable的定义
 
-  17  VALUE rb_mEnumerable;
-
- 492      rb_mEnumerable = rb_define_module("Enumerable");
-
-(enum.c)
+    ▼ Enumerable的定义
+    
+      17  VALUE rb_mEnumerable;
+    
+     492      rb_mEnumerable = rb_define_module("Enumerable");
+    
+    (enum.c)
 
 rb_mEnumerable的m类似于class的c：它表示这是一个模块（module）。 对应的Ruby程序是：
 
-module Enumerable
+> module Enumerable
 
 rb_define_module_under()不常用，我们略过它。
 方法的定义
 
 这次的函数用以定义方法，rb_define_method()。它很常用。 我们再从Array中找个例子。
-▼ Array#to_s的定义
 
-1818  rb_define_method(rb_cArray, "to_s", rb_ary_to_s, 0);
-
-(array.c)
+    ▼ Array#to_s的定义
+    
+    1818  rb_define_method(rb_cArray, "to_s", rb_ary_to_s, 0);
+    
+    (array.c)
 
 这个to_s方法定义在Array中。方法体由函数指针（rb_ary_to_s）指定。 第四个参数是方法参数的个数。因为to_s没有参数，所以它是0。如果我们编写对应的Ruby程序， 会是这样：
 
-class Array < Object
-  def to_s
-    # rb_ary_to_s()的内容
-  end
-end
+    class Array < Object
+      def to_s
+        # rb_ary_to_s()的内容
+      end
+    end
 
 当然，class部分不包含在rb_define_method()中，只有def是准确的。 但是，如果没有class部分，它看上去像个一般的函数，因此我也写了用于封装的class部分。
 
 再来一个例子，这次有一个参数：
-▼ Array#concat的定义
 
-1835  rb_define_method(rb_cArray, "concat", rb_ary_concat, 1);
-
-(array.c)
+    ▼ Array#concat的定义
+    
+    1835  rb_define_method(rb_cArray, "concat", rb_ary_concat, 1);
+    
+    (array.c)
 
 这里定义的类是rb_cArray（Array），方法名是concat，它的主体是rb_ary_concat()， 参数个数是1。它对应的Ruby程序是这样：
 
-class Array < Object
-  def concat( str )
-    # rb_ary_concat()的内容
-  end
-end
+    class Array < Object
+      def concat( str )
+        # rb_ary_concat()的内容
+      end
+    end
 
 Singleton方法定义
 
 我们可以为一个特定的对象实例定义方法。这种方法称为singleton方法。 在第一章《Ruby语言最小化》中，我曾以File.unlink为例，我本想在这里先看一下它， 但是由于一些特殊原因，我们来看File.link。
-▼ File.link的定义
 
-2624  rb_define_singleton_method(rb_cFile, "link", rb_file_s_link, 2);
-
-(file.c)
+    ▼ File.link的定义
+    
+    2624  rb_define_singleton_method(rb_cFile, "link", rb_file_s_link, 2);
+    
+    (file.c)
 
 它的用法很像rb_define_method()。唯一的差别在于第一个参数，它是方法所属的对象。 这里是rb_cFile。
 入口点
 
 能够像前面那样进行定义当然好，但是这些函数在哪调用，又以何种方式执行呢？ 这些定义放到名为Init_xxxx()的函数中。比如，对于Array来说，这个函数是Init_Array()， 它是这个样子：
-▼ Init_Array
 
-1809  void
-1810  Init_Array()
-1811  {
-1812      rb_cArray  = rb_define_class("Array", rb_cObject);
-1813      rb_include_module(rb_cArray, rb_mEnumerable);
-1814
-1815      rb_define_singleton_method(rb_cArray, "allocate",
-                                     rb_ary_s_alloc, 0);
-1816      rb_define_singleton_method(rb_cArray, "[]", rb_ary_s_create, -1);
-1817      rb_define_method(rb_cArray, "initialize", rb_ary_initialize, -1);
-1818      rb_define_method(rb_cArray, "to_s", rb_ary_to_s, 0);
-1819      rb_define_method(rb_cArray, "inspect", rb_ary_inspect, 0);
-1820      rb_define_method(rb_cArray, "to_a", rb_ary_to_a, 0);
-1821      rb_define_method(rb_cArray, "to_ary", rb_ary_to_a, 0);
-1822      rb_define_method(rb_cArray, "frozen?",  rb_ary_frozen_p, 0);
-
-(array.c)
+    ▼ Init_Array
+    
+    1809  void
+    1810  Init_Array()
+    1811  {
+    1812      rb_cArray  = rb_define_class("Array", rb_cObject);
+    1813      rb_include_module(rb_cArray, rb_mEnumerable);
+    1814
+    1815      rb_define_singleton_method(rb_cArray, "allocate",
+                                         rb_ary_s_alloc, 0);
+    1816      rb_define_singleton_method(rb_cArray, "[]", rb_ary_s_create, -1);
+    1817      rb_define_method(rb_cArray, "initialize", rb_ary_initialize, -1);
+    1818      rb_define_method(rb_cArray, "to_s", rb_ary_to_s, 0);
+    1819      rb_define_method(rb_cArray, "inspect", rb_ary_inspect, 0);
+    1820      rb_define_method(rb_cArray, "to_a", rb_ary_to_a, 0);
+    1821      rb_define_method(rb_cArray, "to_ary", rb_ary_to_a, 0);
+    1822      rb_define_method(rb_cArray, "frozen?",  rb_ary_frozen_p, 0);
+    
+    (array.c)
 
 ruby启动时会显式调用内建程序库的Init函数。这在inits.c中完成。
-▼ rb_call_inits()
 
-  47  void
-  48  rb_call_inits()
-  49  {
-  50      Init_sym();
-  51      Init_var_tables();
-  52      Init_Object();
-  53      Init_Comparable();
-  54      Init_Enumerable();
-  55      Init_Precision();
-  56      Init_eval();
-  57      Init_String();
-  58      Init_Exception();
-  59      Init_Thread();
-  60      Init_Numeric();
-  61      Init_Bignum();
-  62      Init_Array();
-
-(inits.c)
+    ▼ rb_call_inits()
+    
+      47  void
+      48  rb_call_inits()
+      49  {
+      50      Init_sym();
+      51      Init_var_tables();
+      52      Init_Object();
+      53      Init_Comparable();
+      54      Init_Enumerable();
+      55      Init_Precision();
+      56      Init_eval();
+      57      Init_String();
+      58      Init_Exception();
+      59      Init_Thread();
+      60      Init_Numeric();
+      61      Init_Bignum();
+      62      Init_Array();
+    
+    (inits.c)
 
 这样，Init_Array()就得到了正确的调用。
 
@@ -171,39 +179,41 @@ require "myextension"
 以同样的方法，如果加载的扩展程序是myextension.so，在加载时， 会调用名为Init_myextension()的（extern）函数。如果超出本章的范围， 它们又是如何调用的呢？你应该读读第18章《加载》。让我们以一个Init的例子结束这里的讲解。
 
 下面的例子来自stringio，ruby提供的一个扩展程序库，也就是说，它不属于内建程序库。
-▼ Init_stringio() (起始部分)
 
- 895  void
- 896  Init_stringio()
- 897  {
- 898      VALUE StringIO = rb_define_class("StringIO", rb_cData);
- 899      rb_define_singleton_method(StringIO, "allocate",
-                                     strio_s_allocate, 0);
- 900      rb_define_singleton_method(StringIO, "open", strio_s_open, -1);
- 901      rb_define_method(StringIO, "initialize", strio_initialize, -1);
- 902      rb_enable_super(StringIO, "initialize");
- 903      rb_define_method(StringIO, "become", strio_become, 1);
- 904      rb_define_method(StringIO, "reopen", strio_reopen, -1);
-
-(ext/stringio/stringio.c)
+    ▼ Init_stringio() (起始部分)
+    
+     895  void
+     896  Init_stringio()
+     897  {
+     898      VALUE StringIO = rb_define_class("StringIO", rb_cData);
+     899      rb_define_singleton_method(StringIO, "allocate",
+                                         strio_s_allocate, 0);
+     900      rb_define_singleton_method(StringIO, "open", strio_s_open, -1);
+     901      rb_define_method(StringIO, "initialize", strio_initialize, -1);
+     902      rb_enable_super(StringIO, "initialize");
+     903      rb_define_method(StringIO, "become", strio_become, 1);
+     904      rb_define_method(StringIO, "reopen", strio_reopen, -1);
+    
+    (ext/stringio/stringio.c)
 
 Singleton类
 rb_define_singleton_method()
 
 现在，你应该或多或少的了解了如何定义普通方法。编写方法主体，然后在m_tbl注册就成了。 但是singlton方法呢？我们先来看看singleton方法的定义。
-▼ rb_define_singleton_method()
 
- 721  void
- 722  rb_define_singleton_method(obj, name, func, argc)
- 723      VALUE obj;
- 724      const char *name;
- 725      VALUE (*func)();
- 726      int argc;
- 727  {
- 728      rb_define_method(rb_singleton_class(obj), name, func, argc);
- 729  }
-
-(class.c)
+    ▼ rb_define_singleton_method()
+    
+     721  void
+     722  rb_define_singleton_method(obj, name, func, argc)
+     723      VALUE obj;
+     724      const char *name;
+     725      VALUE (*func)();
+     726      int argc;
+     727  {
+     728      rb_define_method(rb_singleton_class(obj), name, func, argc);
+     729  }
+    
+    (class.c)
 
 我已经解释过了，rb_define_method()是一个用来定义普通方法的函数， 因此同普通方法的差异仅仅在于使用rb_singleton_class()。 但是究竟什么是singleton类呢？
 

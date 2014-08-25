@@ -173,132 +173,137 @@ st_init_table()是这样一个函数，它完成表内存分配等工作。type_
 st_lookup()
 
 接下来，我们看一下使用这个数据结构的函数。首先，从搜索的函数看起是个好主意。 下面就是搜索hash表的函数st_lookup()。
-▼ st_lookup()
 
- 247  int
- 248  st_lookup(table, key, value)
- 249      st_table *table;
- 250      register char *key;
- 251      char **value;
- 252  {
- 253      unsigned int hash_val, bin_pos;
- 254      register st_table_entry *ptr;
- 255
- 256      hash_val = do_hash(key, table);
- 257      FIND_ENTRY(table, ptr, hash_val, bin_pos);
- 258
- 259      if (ptr == 0) {
- 260          return 0;
- 261      }
- 262      else {
- 263          if (value != 0)  *value = ptr->record;
- 264          return 1;
- 265      }
- 266  }
-
-(st.c)
+    ▼ st_lookup()
+    
+     247  int
+     248  st_lookup(table, key, value)
+     249      st_table *table;
+     250      register char *key;
+     251      char **value;
+     252  {
+     253      unsigned int hash_val, bin_pos;
+     254      register st_table_entry *ptr;
+     255
+     256      hash_val = do_hash(key, table);
+     257      FIND_ENTRY(table, ptr, hash_val, bin_pos);
+     258
+     259      if (ptr == 0) {
+     260          return 0;
+     261      }
+     262      else {
+     263          if (value != 0)  *value = ptr->record;
+     264          return 1;
+     265      }
+     266  }
+    
+    (st.c)
 
 重要的部分几乎都在do_hash()和FIND_ENTRY()中。让我们按顺序看一下。
-▼ do_hash()
 
-  68  #define do_hash(key,table) (unsigned int)(*(table)->type->hash)((key))
+    ▼ do_hash()
 
-(st.c)
+      68  #define do_hash(key,table) (unsigned int)(*(table)->type->hash)((key))
+
+    (st.c)
 
 慎重起见，我们记下这个难于理解的宏的主体：
 
-(table)->type->hash
+> (table)->type->hash
 
 是一个函数指针，key作为参数传递给它。这是调用函数的语法。*不是用在表上。换句话说，这个宏是一个hash值产生器， 每个数据类型都有事先预备好的hash函数type->hash，用它对键值产生一个hash值。
 
 下面，继续来看FIND_ENTRY()。
-▼ FIND_ENTRY()
 
- 235  #define FIND_ENTRY(table, ptr, hash_val, bin_pos) do {\
- 236      bin_pos = hash_val%(table)->num_bins;\
- 237      ptr = (table)->bins[bin_pos];\
- 238      if (PTR_NOT_EQUAL(table, ptr, hash_val, key)) {\
- 239          COLLISION;\
- 240          while (PTR_NOT_EQUAL(table, ptr->next, hash_val, key)) {\
- 241              ptr = ptr->next;\
- 242          }\
- 243          ptr = ptr->next;\
- 244      }\
- 245  } while (0)
-
- 227  #define PTR_NOT_EQUAL(table, ptr, hash_val, key) ((ptr) != 0 && \
-          (ptr->hash != (hash_val) || !EQUAL((table), (key), (ptr)->key)))
-
-  66  #define EQUAL(table,x,y) \
-          ((x)==(y) || (*table->type->compare)((x),(y)) == 0)
-
-(st.c)
+    ▼ FIND_ENTRY()
+    
+     235  #define FIND_ENTRY(table, ptr, hash_val, bin_pos) do {\
+     236      bin_pos = hash_val%(table)->num_bins;\
+     237      ptr = (table)->bins[bin_pos];\
+     238      if (PTR_NOT_EQUAL(table, ptr, hash_val, key)) {\
+     239          COLLISION;\
+     240          while (PTR_NOT_EQUAL(table, ptr->next, hash_val, key)) {\
+     241              ptr = ptr->next;\
+     242          }\
+     243          ptr = ptr->next;\
+     244      }\
+     245  } while (0)
+    
+     227  #define PTR_NOT_EQUAL(table, ptr, hash_val, key) ((ptr) != 0 && \
+              (ptr->hash != (hash_val) || !EQUAL((table), (key), (ptr)->key)))
+    
+      66  #define EQUAL(table,x,y) \
+              ((x)==(y) || (*table->type->compare)((x),(y)) == 0)
+    
+    (st.c)
 
 COLLISION是一个调试宏，所以，我们（应该）忽略它。
 
 FIND_ENTRY()的参数，从左开始是：
 
-    st_table
-    这个参数指向的找到项
-    hash值
-    临时变量
+-  st_table
+-  这个参数指向的找到项
+-  hash值
+-  临时变量
 
-第二个参数会指向找到的st_table_entry*。
+第二个参数会指向找到的`st_table_entry*`。
 
 在最外层的，do .. while(0)用于对多表达式的宏进行安全封装。与其说是ruby， 不如说这是C语言预处理器的一种常用手法。在if(1)的情况下，可能需要附加else。 在while(1)的情况下，可能需要在最后添加一个break。
 
 还有，while(0)后面没有分号。说到原因
 
-FIND_ENTRY();
+> FIND_ENTRY();
 
 这样就不会让出现在通常表达式后的逗号成为徒劳。
-st_add_direct()
+> st_add_direct()
 
 继续，让我们来看看st_add_direct()，它向hash表中添加一个新的关系。 这个函数并不检查键值是否已经存在。它总会添加一个新的项。这就是函数名中direct的含义所在。
-▼ st_add_direct()
 
- 308  void
- 309  st_add_direct(table, key, value)
- 310      st_table *table;
- 311      char *key;
- 312      char *value;
- 313  {
- 314      unsigned int hash_val, bin_pos;
- 315
- 316      hash_val = do_hash(key, table);
- 317      bin_pos = hash_val % table->num_bins;
- 318      ADD_DIRECT(table, key, value, hash_val, bin_pos);
- 319  }
-
-(st.c)
+    ▼ st_add_direct()
+    
+     308  void
+     309  st_add_direct(table, key, value)
+     310      st_table *table;
+     311      char *key;
+     312      char *value;
+     313  {
+     314      unsigned int hash_val, bin_pos;
+     315
+     316      hash_val = do_hash(key, table);
+     317      bin_pos = hash_val % table->num_bins;
+     318      ADD_DIRECT(table, key, value, hash_val, bin_pos);
+     319  }
+    
+    (st.c)
 
 如同前面一样，这里调用do_hash()宏获取一个值。随后，下一个计算等同于FIND_ENTRY()开始的部分， 它以hash值得到真正的索引。
 
 插入操作看上去是以ADD_DIRECT()实现的，既然名字全部大写，我们期待它是一个宏。
-▼ ADD_DIRECT()
 
- 268  #define ADD_DIRECT(table, key, value, hash_val, bin_pos) \
- 269  do {                                                     \
- 270      st_table_entry *entry;                               \
- 271      if (table->num_entries / (table->num_bins)           \
-                              > ST_DEFAULT_MAX_DENSITY) {      \
- 272          rehash(table);                                   \
- 273          bin_pos = hash_val % table->num_bins;            \
- 274      }                                                    \
- 275                                                           \
-          /* (A) */                                            \
- 276      entry = alloc(st_table_entry);                       \
- 277                                                           \
- 278      entry->hash = hash_val;                              \
- 279      entry->key = key;                                    \
- 280      entry->record = value;                               \
-          /* (B) */                                            \
- 281      entry->next = table->bins[bin_pos];                  \
- 282      table->bins[bin_pos] = entry;                        \
- 283      table->num_entries++;                                \
- 284  } while (0)
-
-(st.c)
+    ▼ ADD_DIRECT()
+    
+     268  #define ADD_DIRECT(table, key, value, hash_val, bin_pos) \
+     269  do {                                                     \
+     270      st_table_entry *entry;                               \
+     271      if (table->num_entries / (table->num_bins)           \
+                                  > ST_DEFAULT_MAX_DENSITY) {      \
+     272          rehash(table);                                   \
+     273          bin_pos = hash_val % table->num_bins;            \
+     274      }                                                    \
+     275                                                           \
+              /* (A) */                                            \
+     276      entry = alloc(st_table_entry);                       \
+     277                                                           \
+     278      entry->hash = hash_val;                              \
+     279      entry->key = key;                                    \
+     280      entry->record = value;                               \
+              /* (B) */                                            \
+     281      entry->next = table->bins[bin_pos];                  \
+     282      table->bins[bin_pos] = entry;                        \
+     283      table->num_entries++;                                \
+     284  } while (0)
+    
+    (st.c)
 
 第一个if是一个异常情况，我稍后解释它。
 
@@ -312,54 +317,57 @@ list_beg = entry;
 将一个项插入到列表的前端。这类似于Lisp语言中的“cons-ing”。自己检查一下， 即便list_beg为空，这段代码也是正确的。
 
 现在，让我来解释一下我留下的那段代码。
-▼ ADD_DIRECT()-rehash
 
- 271      if (table->num_entries / (table->num_bins)           \
-                              > ST_DEFAULT_MAX_DENSITY) {      \
- 272          rehash(table);                                   \
- 273          bin_pos = hash_val % table->num_bins;            \
- 274      }                                                    \
-
-(st.c)
+    ▼ ADD_DIRECT()-rehash
+    
+     271      if (table->num_entries / (table->num_bins)           \
+                                  > ST_DEFAULT_MAX_DENSITY) {      \
+     272          rehash(table);                                   \
+     273          bin_pos = hash_val % table->num_bins;            \
+     274      }                                                    \
+    
+    (st.c)
 
 DENSITY is“浓度”。换句话说，这个条件检查hash表是否“拥挤”。在st_table中， 随着使用相同bin_pos的增长，链表会变得更长。换句话说，搜索会变慢。 如果bin中的元素过多，那么就应该增加bin的数量，降低拥挤程度。
 
 当前ST_DEFAULT_MAX_DENSITY是
-▼ ST_DEFAULT_MAX_DENSITY
 
-  23  #define ST_DEFAULT_MAX_DENSITY 5
-
-(st.c)
+    ▼ ST_DEFAULT_MAX_DENSITY
+    
+      23  #define ST_DEFAULT_MAX_DENSITY 5
+    
+    (st.c)
 
 因为这个设置，如果在所有的bin_pos都有5个st_table_entries，那么大小就要增加。
 st_insert()
 
 st_insert()只是将st_add_direct()和st_lookup()组合了起来，因此， 如果你理解了那两个，这个就容易了。
-▼ st_insert()
 
- 286  int
- 287  st_insert(table, key, value)
- 288      register st_table *table;
- 289      register char *key;
- 290      char *value;
- 291  {
- 292      unsigned int hash_val, bin_pos;
- 293      register st_table_entry *ptr;
- 294
- 295      hash_val = do_hash(key, table);
- 296      FIND_ENTRY(table, ptr, hash_val, bin_pos);
- 297
- 298      if (ptr == 0) {
- 299          ADD_DIRECT(table, key, value, hash_val, bin_pos);
- 300          return 0;
- 301      }
- 302      else {
- 303          ptr->record = value;
- 304          return 1;
- 305      }
- 306  }
-
-(st.c)
+    ▼ st_insert()
+    
+     286  int
+     287  st_insert(table, key, value)
+     288      register st_table *table;
+     289      register char *key;
+     290      char *value;
+     291  {
+     292      unsigned int hash_val, bin_pos;
+     293      register st_table_entry *ptr;
+     294
+     295      hash_val = do_hash(key, table);
+     296      FIND_ENTRY(table, ptr, hash_val, bin_pos);
+     297
+     298      if (ptr == 0) {
+     299          ADD_DIRECT(table, key, value, hash_val, bin_pos);
+     300          return 0;
+     301      }
+     302      else {
+     303          ptr->record = value;
+     304          return 1;
+     305      }
+     306  }
+    
+    (st.c)
 
 它会检查元素是否已经在表中存在。只有它不存在时，才会添加。如果插入，返回0，否则，返回1。
 ID和符号
@@ -368,35 +376,36 @@ ID和符号
 从char*到ID
 
 字符串到ID的转换由rb_intern()完成。这个函数相当长，让我们省略掉中间的部分。
-▼ rb_intern() (simplified)
 
-5451  static st_table *sym_tbl;       /*  char* to ID   */
-5452  static st_table *sym_rev_tbl;   /*  ID to char*   */
-
-5469  ID
-5470  rb_intern(name)
-5471      const char *name;
-5472  {
-5473      const char *m = name;
-5474      ID id;
-5475      int last;
-5476
-          /* If for a name, there is a corresponding ID that is already
-          registered, then return that ID */
-5477      if (st_lookup(sym_tbl, name, &id))
-5478          return id;
-
-          /* omitted ... create a new ID */
-
-          /* register the name and ID relation */
-5538    id_regist:
-5539      name = strdup(name);
-5540      st_add_direct(sym_tbl, name, id);
-5541      st_add_direct(sym_rev_tbl, id, name);
-5542      return id;
-5543  }
-
-(parse.y)
+    ▼ rb_intern() (simplified)
+    
+    5451  static st_table *sym_tbl;       /*  char* to ID   */
+    5452  static st_table *sym_rev_tbl;   /*  ID to char*   */
+    
+    5469  ID
+    5470  rb_intern(name)
+    5471      const char *name;
+    5472  {
+    5473      const char *m = name;
+    5474      ID id;
+    5475      int last;
+    5476
+              /* If for a name, there is a corresponding ID that is already
+              registered, then return that ID */
+    5477      if (st_lookup(sym_tbl, name, &id))
+    5478          return id;
+    
+              /* omitted ... create a new ID */
+    
+              /* register the name and ID relation */
+    5538    id_regist:
+    5539      name = strdup(name);
+    5540      st_add_direct(sym_tbl, name, id);
+    5541      st_add_direct(sym_rev_tbl, id, name);
+    5542      return id;
+    5543  }
+    
+    (parse.y)
 
 字符串和ID的对应关系由st_table完成。这里可能没有什么特别难的部分。
 
@@ -406,18 +415,19 @@ ID和符号
 rb_intern()的反向操作是rb_id2name()，它用一个ID产生一个char*。你或许已经知道， id2name中2是“to”。“To”和“Two”同音，因此用“2”表示“to”。这种用法很常见。
 
 这个函数也要设置ID分类标志，因此它也很长，让我们简化一下。
-▼ rb_id2name() （简化版）
 
-char *
-rb_id2name(id)
-    ID id;
-{
-    char *name;
-
-    if (st_lookup(sym_rev_tbl, id, &name))
-        return name;
-    return 0;
-}
+    ▼ rb_id2name() （简化版）
+    
+    char *
+    rb_id2name(id)
+        ID id;
+    {
+        char *name;
+    
+        if (st_lookup(sym_rev_tbl, id, &name))
+            return name;
+        return 0;
+    }
 
 或许它看上去有些过于简化，但事实上，如果我们去掉了细节，它真的就是这么简单。
 
@@ -427,42 +437,43 @@ rb_id2name(id)
 VALUE和ID的转换
 
 在Ruby的层次上，ID是一个Symbol类的实例。可以这样得到它："string".intern。 String#intern的实现是rb_str_intern()。
-▼ rb_str_intern()
 
-2996  static VALUE
-2997  rb_str_intern(str)
-2998      VALUE str;
-2999  {
-3000      ID id;
-3001
-3002      if (!RSTRING(str)->ptr || RSTRING(str)->len == 0) {
-3003          rb_raise(rb_eArgError, "interning empty string");
-3004      }
-3005      if (strlen(RSTRING(str)->ptr) != RSTRING(str)->len)
-3006          rb_raise(rb_eArgError, "string contains `\\0'");
-3007      id = rb_intern(RSTRING(str)->ptr);
-3008      return ID2SYM(id);
-3009  }
-
-(string.c)
+    ▼ rb_str_intern()
+    
+    2996  static VALUE
+    2997  rb_str_intern(str)
+    2998      VALUE str;
+    2999  {
+    3000      ID id;
+    3001
+    3002      if (!RSTRING(str)->ptr || RSTRING(str)->len == 0) {
+    3003          rb_raise(rb_eArgError, "interning empty string");
+    3004      }
+    3005      if (strlen(RSTRING(str)->ptr) != RSTRING(str)->len)
+    3006          rb_raise(rb_eArgError, "string contains `\\0'");
+    3007      id = rb_intern(RSTRING(str)->ptr);
+    3008      return ID2SYM(id);
+    3009  }
+    
+    (string.c)
 
 作为ruby类库代码的样例，这个函数相当合理。注意使用RSTRING()转型的地方，这里访问了数据结构的成员。
 
 我们来读读代码。首先，rb_raise()只是一个错误处理，我们暂时忽略它。这里有我们之前看过的rb_intern()。 ID2SYM() 是一个宏，它将ID转换为Symbol。
 
 反向操作由Symbol#to_s完成，实现在sym_to_s中。
-▼ sym_to_s()
 
- 522  static VALUE
- 523  sym_to_s(sym)
- 524      VALUE sym;
- 525  {
- 526      return rb_str_new2(rb_id2name(SYM2ID(sym)));
- 527  }
-
-(object.c)
+    ▼ sym_to_s()
+    
+     522  static VALUE
+     523  sym_to_s(sym)
+     524      VALUE sym;
+     525  {
+     526      return rb_str_new2(rb_id2name(SYM2ID(sym)));
+     527  }
+    
+    (object.c)
 
 SYM2ID()是一个宏，它将Symbol（VALUE）转换为一个ID。
 
-看上去，这个函数什么都没做。然而，可能需要注意一下内存处理的部分。rb_id2name()返回一个char*， 它不能用 free()释放。rb_str_new2()复制了参数的char*，使用的是它的拷贝。按照这种方式，如果采用一致的策略，就允许以链的方式编写函数。
-
+看上去，这个函数什么都没做。然而，可能需要注意一下内存处理的部分。`rb_id2name()`返回一个`char*`， 它不能用 free()释放。`rb_str_new2()`复制了参数的char*，使用的是它的拷贝。按照这种方式，如果采用一致的策略，就允许以链的方式编写函数。
