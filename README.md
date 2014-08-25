@@ -1,6 +1,6 @@
 Ruby Hacking Guide 中文翻译
 ==============================
-[阅读该翻译文档](http://rhg-zh.io)
+[阅读该翻译文档](http://xiajian.github.io/rhg-zh/)
 备注: 原本是自己新建的版本库，初次建立，没有经验，README都是参考的英文版的RHG翻译的。
 
 本地运行
@@ -18,7 +18,7 @@ For Bundler users
 ```sh
 $ git clone https://github.com/ruby-hacking-guide/ruby-hacking-guide.github.com
 $ bundle install
-$ jekyll serve # this compiles files and starts a server on localhost:4000.
+$ jekyll serve -w  # this compiles files and starts a server on localhost:4000.
 ```
 
 

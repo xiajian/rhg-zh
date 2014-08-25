@@ -35,3 +35,8 @@ permalink: /about/
 *  [jhqy2011@gmail.com](mailto:jhqy2011@gmail.com)
 *  [CSDN的博客](http://blog.csdn.net/xiajian2010/)
 *  [邪王真眼的夏](http:xiajian.github.io)
+
+### 呓语
+----
+
+1. 每当我折腾一个新的东西时，我总是要自我欣赏一番，几乎达到无可复加的境界，我在想，是不是太自恋？？
