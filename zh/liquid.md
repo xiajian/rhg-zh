@@ -12,11 +12,11 @@ Jekyll使用Liquid模板，因此，想要用好Jekyll，需要了解一些关�
 Liquid中存在两种类型的标签(markup): Output and Tag
 - Output markup (which may resolve to text) is surrounded by
 
-> {{ matched pairs of curly brackets (ie, braces) }}
+> {% raw %} {{ 匹配成对出现的大括号 }} {% endraw %}
 
 - Tag markup (which cannot resolve to text) is surrounded by
 
-> {% matched pairs of curly brackets and percent signs %}
+> {% raw %} {% 匹配成对出现的大括号以及百分号 %} {% endraw %}
 
 ## Output
 ----

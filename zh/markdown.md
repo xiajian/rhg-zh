@@ -3,8 +3,9 @@ layout: post
 title: Markdown语法小结
 ---
 
-== 概述
+## 概述
 ----
+
 Markdown的优点:
 
 - 纯文本，所以兼容性极强，可以用所有文本编辑器打开。
