@@ -403,16 +403,15 @@ method_list
 
 在UNIX类OS上，C编译器是标准配置，按照下面的顺序来做，基本都能通过。这里假设源码解开到~/src/ruby。
 
-~/src/ruby % ./configure
-~/src/ruby % make
-~/src/ruby % su
-~/src/ruby # make install
+    ~/src/ruby % ./configure
+    ~/src/ruby % make
+    ~/src/ruby % su
+    ~/src/ruby # make install
 
 接下来说说应该注意的几点。
 
 在Cygwin、UX/4800等一部分的平台上，configure不加-enable-shared选项会导致连接失败。 -enable-shared是“将ruby的主要部分作为共享程序库（libruby.so）提供给外部”的选项。
-
-~/src/ruby % ./configure --enable-shared
+```~/src/ruby % ./configure --enable-shared``
 
 附赠CD-ROM中的doc/build.html中有一个详尽的教程，可以边读边尝试一下。
 
@@ -449,10 +448,10 @@ MinGW, Minimalist GNU for Windows，是将GNU的编译环境（包括gcc和binut
 
 执行过vcvar32，转到ruby源码树的win32文件夹，构建就可以了。以下假定源码树在c:\src。
 
->  C:\> cd src\ruby
->  C:\src\ruby> cd win32
->  C:\src\ruby\win32> configure
->  C:\src\ruby\win32> nmake
+>  C:\> cd src\ruby  
+>  C:\src\ruby> cd win32  
+>  C:\src\ruby\win32> configure  
+>  C:\src\ruby\win32> nmake  
 >  C:\src\ruby\win32> nmake DESTDIR="C:\Program Files\ruby" install
 
 
@@ -466,9 +465,9 @@ MinGW, Minimalist GNU for Windows，是将GNU的编译环境（包括gcc和binut
 
 将Cygwin的setup.exe同MinGW及开发工具集放在一起。Cygwin和MinGW都在附赠的CD-ROM中。 之后，在Cygwin的bash提示符下这样敲：
 
->  ~/src/ruby % ./configure --with-gcc='gcc -mno-cygwin' \
->                                   --enable-shared i386-mingw32
->  ~/src/ruby % make
+>  ~/src/ruby % ./configure --with-gcc='gcc -mno-cygwin' \  
+>                                   --enable-shared i386-mingw32  
+>  ~/src/ruby % make  
 >  ~/src/ruby % make install
 
 就是这样。虽然这里configure所在行换行了，但它实际是一行，反斜线其实并不需要。 安装的位置是编译驱动器的\usr\local\下。这个部分比较麻烦，说明比较长，更多细节请参照附赠CD-ROM中的doc/build.html。
@@ -523,6 +522,7 @@ MinGW, Minimalist GNU for Windows，是将GNU的编译环境（包括gcc和binut
 
 从上面可以了解到，configure可以检测出差异，但是，差异并不能自动处理。 使用这里定义的值，填补这些差异是程序员的工作。
 ▼ HAVE_宏的典型用法
+
 {% highlight ruby %}
   24  #ifdef HAVE_STDLIB_H
   25  # include <stdlib.h>
@@ -564,8 +564,9 @@ configure并非ruby的专用工具。是否有这个函数，是否有这个头�
 ## CVS
 ----
 
-无论是本书附增CD-ROM中的ruby存档，还是官方发布包，都不过是ruby程序不停变化中一个瞬间的快照。 其中并没有描述ruby如何变化以及为什么变化。那么要了解包括过去在内的全部该怎么办呢？ 使用CVS就可以做到。
-什么是CVS
+无论是本书附增CD-ROM中的ruby存档，还是官方发布包，都不过是ruby程序不停变化中一个瞬间的快照。 其中并没有描述ruby如何变化以及为什么变化。那么要了解包括过去在内的全部该怎么办呢？ 使用CVS就可以做到(本书写于2004年)。
+
+### 什么是CVS
 
 一句话概括，CVS就是编辑器的undo列表。如果预先源码放到CVS下管理，无论何时， 都可以让它返回到之前的样子，立刻可以知道谁在什么时候改变了哪里。 开放源码的世界中，最著名的源码管理系统就是CVS。
 
@@ -667,7 +668,7 @@ ruby的变更记录。了解变更的理由也很重要。
 
 ####Ruby语言的核心
 
----------- | ----------------------------------------
+----------- | ----------------------------------------
   class.c   |	类相关API
   error.c   |	异常相关API
   eval.c 	  | 评估器
@@ -747,6 +748,7 @@ Ruby的类库实现。这里的东西基本上采用与通常Ruby扩展程序库
 > missing/
 
 弥补各个平台缺失的文件，主要是libc函数居多。
+
 ### 逻辑组成
 
 上面核心的四组大致可以分为三类。第一类创建出Ruby的对象世界，“对象空间（object space）”。 第二类是将Ruby程序（文本）转换为内部形式的解析器（parser）。 第三类是驱动Ruby程序的评估器（evaluator）。解析器和评估器都建立在对象空间之上， 解析器将程序转换为内部形式，评价器驱动着程序。下面就按顺序解释一下。
