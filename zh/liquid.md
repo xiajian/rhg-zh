@@ -117,6 +117,7 @@ Raw temporarily disables tag processing. This is useful for generating content (
 
 if / else should be well-known from any other programming language. Liquid allows you to write simple expressions in the if or unless (and optionally, elsif and else) clause:
 
+    {% raw %}
     {% if user %}
       Hello {{ user.name }}
     {% endif %}
@@ -173,6 +174,7 @@ if / else should be well-known from any other programming language. Liquid allow
     {% if string contains 'hello' %}
        string includes 'hello'
     {% endif %}
+    {% endraw %}
 
 ### Case Statement
 
