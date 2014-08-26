@@ -22,33 +22,44 @@ Liquid中存在两种类型的标签(markup): Output and Tag
 ----
 
 Here is a simple example of Output:
-
+下面是一些Output标签的简单例子: 
 Hello {{name}}
 Hello {{user.name}}
 Hello {{ 'tobi' }}
+Hello ,this is {{site.title}}
 
-### Advanced output: Filters
+### 高级Output标签：过滤器(Filters)
 
 Output markup takes filters. Filters are simple methods. The first parameter is always the output of the left side of the filter. The return value of the filter will be the new left value when the next filter is run. When there are no more filters, the template will receive the resulting string.
+Output标签中可以使用过滤器。所谓的过滤器，其实就是一些简单的方法。过滤器总是将左边输出作为第一个参数，其返回值将作为下一个过滤器的输入。一旦处理结束，即没有更多的过滤器时，模板处理器将接受最后的处理结果(字符串)。
 
-Hello {{ 'tobi' | upcase }}
-Hello tobi has {{ 'tobi' | size }} letters!
-Hello {{ '*tobi*' | textilize | upcase }}
-Hello {{ 'now' | date: "%Y %h" }}
+示例如下:
+{% raw %}
+Hello {{ 'tobi' | upcase }}  
+Hello tobi has {{ 'tobi' | size }} letters!  
+Hello {{ '*tobi*' | textilize | upcase }}  
+Hello {{ 'now' | date: "%Y %h" }}  
+{% endraw %}
 
-### Standard Filters
+处理结果为： 
+Hello {{ 'tobi' | upcase }}  
+Hello tobi has {{ 'tobi' | size }} letters!  
+Hello {{ '*tobi*' | textilize | upcase }}  
+Hello {{ 'now' | date: "%Y %h" }}  
 
-    date - reformat a date (syntax reference)
-    capitalize - capitalize words in the input sentence
-    downcase - convert an input string to lowercase
-    upcase - convert an input string to uppercase
-    first - get the first element of the passed in array
-    last - get the last element of the passed in array
+### 标准过滤器(Standard Filters)
+
+    date - 格式化日期 (syntax reference)
+    capitalize - 将输入句子中的单词大写
+    downcase - 将输入字符串转为小写
+    upcase - 将输入字符串转为大写
+    first - 获取传递的数组中的第一个元素get the first element of the passed in array
+    last - 获取传递的数组中的最后一个元素
     join - join elements of the array with certain character between them
-    sort - sort elements of the array
+    sort - 数组元素排序
     map - map/collect an array on a given property
-    size - return the size of an array or string
-    escape - escape a string
+    size - 返回字符串或者数组的大小
+    escape - 转义字符串
     escape_once - returns an escaped version of html without affecting existing escaped entities
     strip_html - strip html from string
     strip_newlines - strip all newlines (\n) from string
@@ -65,18 +76,20 @@ Hello {{ 'now' | date: "%Y %h" }}
     plus - addition e.g. {{ '1' | plus:'1' }} #=> '11', {{ 1 | plus:1 }} #=> 2
     times - multiplication e.g {{ 5 | times:4 }} #=> 20
     divided_by - division e.g. {{ 10 | divided_by:2 }} #=> 5
-    split - split a string on a matching pattern e.g. {{ "a~b" | split:"~" }} #=> ['a','b']
-    modulo - remainder, e.g. {{ 3 | modulo:2 }} #=> 1
+    split - 以给定的模式分隔字符串 e.g. {{ "a~b" | split:"~" }} #=> ['a','b']
+    modulo - 求余remainder, e.g. {{ 3 | modulo:2 }} #=> 1
 
 ## Tags
 ----
 
 Tags are used for the logic in your template. New tags are very easy to code, so I hope to get many contributions to the standard tag library after releasing this code.
+Tags标签用作模板的逻辑。Tag实现很简单，所以很容易扩展出新的Tag。所以，原作者希望在发布Liquid之后，能有更多贡献者的编写tag并添加到tab库中。
 
 Here is a list of currently supported tags:
+如下是当前支持的一些标签:
 
-    assign - Assigns some value to a variable
-    capture - Block tag that captures text into a variable
+    assign - 赋值给某个变量Assigns some value to a variable
+    capture - 可江文本捕获到变量中的块标签 Block tag that captures text into a variable
     case - Block tag, its the standard case...when block
     comment - Block tag, comments out the text in the block
     cycle - Cycle is usually used within a loop to alternate between values, like colors or DOM classes.
@@ -104,75 +117,75 @@ Raw temporarily disables tag processing. This is useful for generating content (
 
 if / else should be well-known from any other programming language. Liquid allows you to write simple expressions in the if or unless (and optionally, elsif and else) clause:
 
-{% if user %}
-  Hello {{ user.name }}
-{% endif %}
-
-# Same as above
-{% if user != null %}
-  Hello {{ user.name }}
-{% endif %}
-
-{% if user.name == 'tobi' %}
-  Hello tobi
-{% elsif user.name == 'bob' %}
-  Hello bob
-{% endif %}
-
-{% if user.name == 'tobi' or user.name == 'bob' %}
-  Hello tobi or bob
-{% endif %}
-
-{% if user.name == 'bob' and user.age > 45 %}
-  Hello old bob
-{% endif %}
-
-{% if user.name != 'tobi' %}
-  Hello non-tobi
-{% endif %}
-
-# Same as above
-{% unless user.name == 'tobi' %}
-  Hello non-tobi
-{% endunless %}
-
-# Check for the size of an array
-{% if user.payments == empty %}
-   you never paid !
-{% endif %}
-
-{% if user.payments.size > 0  %}
-   you paid !
-{% endif %}
-
-{% if user.age > 18 %}
-   Login here
-{% else %}
-   Sorry, you are too young
-{% endif %}
-
-# array = 1,2,3
-{% if array contains 2 %}
-   array includes 2
-{% endif %}
-
-# string = 'hello world'
-{% if string contains 'hello' %}
-   string includes 'hello'
-{% endif %}
+    {% if user %}
+      Hello {{ user.name }}
+    {% endif %}
+    
+    # Same as above
+    {% if user != null %}
+      Hello {{ user.name }}
+    {% endif %}
+    
+    {% if user.name == 'tobi' %}
+      Hello tobi
+    {% elsif user.name == 'bob' %}
+      Hello bob
+    {% endif %}
+    
+    {% if user.name == 'tobi' or user.name == 'bob' %}
+      Hello tobi or bob
+    {% endif %}
+    
+    {% if user.name == 'bob' and user.age > 45 %}
+      Hello old bob
+    {% endif %}
+    
+    {% if user.name != 'tobi' %}
+      Hello non-tobi
+    {% endif %}
+    
+    # Same as above
+    {% unless user.name == 'tobi' %}
+      Hello non-tobi
+    {% endunless %}
+    
+    # Check for the size of an array
+    {% if user.payments == empty %}
+       you never paid !
+    {% endif %}
+    
+    {% if user.payments.size > 0  %}
+       you paid !
+    {% endif %}
+    
+    {% if user.age > 18 %}
+       Login here
+    {% else %}
+       Sorry, you are too young
+    {% endif %}
+    
+    # array = 1,2,3
+    {% if array contains 2 %}
+       array includes 2
+    {% endif %}
+    
+    # string = 'hello world'
+    {% if string contains 'hello' %}
+       string includes 'hello'
+    {% endif %}
 
 ### Case Statement
 
 If you need more conditions, you can use the case statement:
 
-{% case condition %}
-{% when 1 %}
-hit 1
-{% when 2 or 3 %}
-hit 2 or 3
-{% else %}
-... else ...
-{% endcase %}
+    {% case condition %}
+    {% when 1 %}
+    hit 1
+    {% when 2 or 3 %}
+    hit 2 or 3
+    {% else %}
+    ... else ...
+    {% endcase %}
 
 Example:
 
@@ -190,10 +203,10 @@ Example:
 
 Often you have to alternate between different colors or similar tasks. Liquid has built-in support for such operations, using the cycle tag.
 
-{% cycle 'one', 'two', 'three' %}
-{% cycle 'one', 'two', 'three' %}
-{% cycle 'one', 'two', 'three' %}
-{% cycle 'one', 'two', 'three' %}
+    {% cycle 'one', 'two', 'three' %}
+    {% cycle 'one', 'two', 'three' %}
+    {% cycle 'one', 'two', 'three' %}
+    {% cycle 'one', 'two', 'three' %}
 
 will result in
 
@@ -206,10 +219,10 @@ If no name is supplied for the cycle group, then it's assumed that multiple call
 
 If you want to have total control over cycle groups, you can optionally specify the name of the group. This can even be a variable.
 
-{% cycle 'group 1': 'one', 'two', 'three' %}
-{% cycle 'group 1': 'one', 'two', 'three' %}
-{% cycle 'group 2': 'one', 'two', 'three' %}
-{% cycle 'group 2': 'one', 'two', 'three' %}
+    {% cycle 'group 1': 'one', 'two', 'three' %}
+    {% cycle 'group 1': 'one', 'two', 'three' %}
+    {% cycle 'group 2': 'one', 'two', 'three' %}
+    {% cycle 'group 2': 'one', 'two', 'three' %}
 
 will result in
 
@@ -222,9 +235,9 @@ two
 
 Liquid allows for loops over collections:
 
-{% for item in array %}
-  {{ item }}
-{% endfor %}
+    {% for item in array %}
+      {{ item }}
+    {% endfor %}
 
 When iterating a hash, item[0] contains the key, and item[1] contains the value:
 
@@ -296,5 +309,9 @@ If you want to combine a number of strings into a single string and save it to a
     <option value="green">Green</option>
     <option value="blue">Blue</option>
   </select>
+
+## 后记
+----
+Liquid模板还是相当的简洁好学的，剩下的就剩如何使用了。
 
 [liquid]: https://github.com/shopify/liquid/wiki/liquid-for-designers
