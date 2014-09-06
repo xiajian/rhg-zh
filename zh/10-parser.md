@@ -6,9 +6,9 @@ Translated by Robert GRAVINA & ocha-
 
 h1. Chapter 10: Parser
 
-h2. Outline of this chapter
+## Outline of this chapter
 
-h3. Parser construction
+### Parser construction
 
 The main source of the parser is `parser.y`.
 Because it is `*.y`, it is the input for `yacc`
@@ -27,7 +27,7 @@ the C pre-processor.
 
 !images/ch_parser_build.jpg(Parser construction process)!
 
-h3. Dissecting `parse.y`
+### Dissecting `parse.y`
 
 Let's now look at `parse.y` in a bit more detail. The following figure presents
 a rough outline of the contents of `parse.y`.
@@ -72,9 +72,9 @@ explained in this book.
 |Local variable management|Chapter 12 "Syntax tree construction"|Section 4 "Local variables"|
 |`ID` implementation|Chapter 3 "Names and name tables"|Section 2 "`ID` and symbols"|
 
-h2. General remarks about grammar rules
+## General remarks about grammar rules
 
-h3. Coding rules
+### Coding rules
 
 The grammar of `ruby` conforms to a coding standard and is thus easy to read
 once you are familiar with it.
@@ -101,7 +101,7 @@ here stands for `large`. Since the reserved words `begin` and `end` already
 exist (naturally, with symbol names `kBEGIN` and `kEND`), these non-standard
 symbol names were required.
 
-h3. Important symbols
+### Important symbols
 
 `parse.y` contains both grammar rules and actions, however, for now I would like
 to concentrate on the grammar rules alone. The script sample/exyacc.rb can be
@@ -182,7 +182,7 @@ such as Lisp and Scheme, since everything is an expression,
 they do not have statements in the first place.
 Ruby is close to Lisp's design in this regard.
 
-h3. Program structure
+### Program structure
 
 Now let's turn our attention to the grammar rules of `ruby`. Firstly,
 in `yacc`, the left hand side of the first rule represents the entire grammar.
@@ -310,7 +310,7 @@ rule does hold.
 In the next section I will cover the contents of the important elements one by
 one.
 
-h3. `program`
+### `program`
 
 ▼ `program`
 <pre class="longlist">
@@ -368,7 +368,7 @@ By the way, although we said that `program` is the same as `compstmt`, if that w
 
 To generalize this point, the grammar rules can be divided into 2 groups: those which are needed for parsing the program structure, and those which are needed for execution of semantic actions. The `none` rule which was mentioned earlier when talking about `stmts` is another one which exists for executing actions -- it's used to return a `NULL` pointer for an empty list of type `NODE*`.
 
-h3. `stmt`
+### `stmt`
 
 Next is `stmt`. This one is rather involved, so we'll look into it a bit at a time.
 
@@ -449,7 +449,7 @@ Lastly, it joins to `expr`.
 
 
 
-h3. `expr`
+### `expr`
 
 
 <p class="caption">▼ `expr` </p>
@@ -513,7 +513,7 @@ Obviously, this would end up a parse error.
 
 
 
-h3. `arg`
+### `arg`
 
 
 <p class="caption">▼ `arg` </p>
@@ -620,7 +620,7 @@ The conclusion is all requirements are met and this grammar does not conflict.
 We could say it's a matter of course.
 
 
-h3. `primary`
+### `primary`
 
 Because `primary` has a lot of grammar rules, we'll split them up and show them in parts.
 
@@ -869,7 +869,7 @@ These are, well, not important from the viewpoint of grammar.
 
 
 
-h3. Conflicting Lists
+### Conflicting Lists
 
 
 In the previous section, the question "is it all right that `if` is in such
@@ -972,10 +972,10 @@ That's why `yacc` could not be used for ordinary HTML at all.
 
 
 
-h2. Scanner
+## Scanner
 
 
-h3. Parser Outline
+### Parser Outline
 
 
 I'll explain about the outline of the parser before moving on to the scanner.
@@ -1025,7 +1025,7 @@ Therefore, the whole structure of `yylex` can be depicted as Figure 7.
 
 
 
-h3. The input buffer
+### The input buffer
 
 
 Let's start with the input buffer. Its interfaces are only the three: `nextc()`, `pushback()`, `peek()`.
@@ -1055,7 +1055,7 @@ Apparently, this buffer seems a simple single-line string buffer (Figure 8).
 
 
 
-h4. `nextc()`
+#### `nextc()`
 
 
 Then, let's look at the places using them.
@@ -1234,7 +1234,7 @@ and absorbed. There was also a similar method of `st_table`.
 
 
 
-h4. `pushback()`
+#### `pushback()`
 
 
 With the knowledge of the physical structure of the buffer and `nextc`,
@@ -1256,7 +1256,7 @@ we can understand the rest easily.
 
 
 
-h4. `peek()`
+#### `peek()`
 
 `peek()` checks the next character without moving the pointer forward.
 
@@ -1272,7 +1272,7 @@ h4. `peek()`
 
 
 
-h3. The Token Buffer
+### The Token Buffer
 
 
 The token buffer is the buffer of the next level.
@@ -1390,7 +1390,7 @@ There's probably no question.
 
 
 
-h3. `yylex()`
+### `yylex()`
 
 
 `yylex()` is very long. Currently, there are more than 1000 lines.
@@ -1480,7 +1480,7 @@ but it is easy if you will amplify the same pattern.
 
 
 
-h4. `'!'`
+#### `'!'`
 
 
 Let's start with what is simple first.
@@ -1540,7 +1540,7 @@ its next symbol is the beginning of an expression.
 
 
 
-h4. `'<'`
+#### `'<'`
 
 
 Next, we'll try to look at `'<'` as an example of using `yylval` (the value of a symbol).
@@ -1596,7 +1596,7 @@ It is because they differs in their precedences.
 
 
 
-h4. `':'`
+#### `':'`
 
 
 If scanning is completely independent from parsing, this talk would be simple.
@@ -1645,7 +1645,7 @@ This is as I explained at `primary` in the previous section.
 
 
 
-h4. Identifier
+#### Identifier
 
 
 Until now, since there were only symbols,
@@ -1755,7 +1755,7 @@ Sometimes, you can refuse it.
 
 
 
-h4. The reserved words
+#### The reserved words
 
 
 After scanning the identifiers, there are about 100 lines of the code further
@@ -1867,7 +1867,7 @@ This is the place where actually looking up.
 
 
 
-h3. Strings
+### Strings
 
 
 The double quote (`"`) part of `yylex()` is this.
@@ -2032,7 +2032,7 @@ if `bison` is assumed, it causes a little cumbersome.
 
 
 
-h4. `lex_strterm`
+#### `lex_strterm`
 
 
 As we've seen, when you consider `lex_stream` as a boolean value,
@@ -2122,7 +2122,7 @@ Each meaning of `enum string_type` is as follows:
 
 
 
-h4. String scan function
+#### String scan function
 
 
 The rest is reading `yylex()` in the string mode,
@@ -2171,7 +2171,7 @@ I'd like readers who are interested in to try to look over it.
 
 
 
-h4. Here Document
+#### Here Document
 
 
 In comparison to the ordinary strings, here documents are fairly interesting.

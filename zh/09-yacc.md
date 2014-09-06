@@ -6,9 +6,9 @@ Translated by Vincent ISAMBART & ocha-
 
 h1. Chapter 9: `yacc` crash course
 
-h2. Outline
+## Outline
 
-h3. Parser and scanner
+### Parser and scanner
 
 How to write parsers for programming languages has been an active area
 of research for a long time, and there is a quite firm established
@@ -36,7 +36,7 @@ By the way, it seems the reason white spaces had not meaning in
 Fortran 77 was that when writing programs on punch cards it was easy
 to make errors in the number of spaces.
 
-h3. List of symbols
+### List of symbols
 
 I said that the scanner spits out a list of words (tokens), but, to be
 exact, what the scanner creates is a list of "symbols", not words.
@@ -55,7 +55,7 @@ these symbols are. For example, `NUMBER` or `DIGIT` for numbers,
 `IDENTIFIER` for names like "`name`", `IF` for the reserved word
 `if`. These symbols are then given to the next phase.
 
-h3. Parser generator
+### Parser generator
 
 The list of words and symbols spitted out by the scanner are going to
 be used to form a tree. This tree is called a syntax tree.
@@ -106,9 +106,9 @@ satisfied, you can also read "Compilers" (also known as the "dragon
 book" because of the dragon on its cover) by Alfred V. Aho, Ravi Sethi
 and Jeffrey D. Ullman.
 
-h2. Grammar
+## Grammar
 
-h3. Grammar file
+### Grammar file
 
 The input file for `yacc` is called "grammar file", as it's the file
 where the grammar is written. The convention is to name this grammar
@@ -158,7 +158,7 @@ by the user. `yacc` just copies this part verbatim in the output
 file. It's used for example to put auxiliary routines needed by the
 parser.
 
-h3. What does `yacc` do.
+### What does `yacc` do.
 
 What `yacc` takes care of is mainly this rules part in the
 middle. `yacc` takes the grammar written there and use it to make a
@@ -177,7 +177,7 @@ survived to this day even though we keep complaining about it.
 
 But what on earth is this core part? That's what we're going to see.
 
-h3. BNF
+### BNF
 
 When we want to write a parser in C, its code will be "cut the string
 this way, make this an `if` statement..." When using parser
@@ -324,7 +324,7 @@ ones for which the boxes where filled correctly. Parser and government
 office are strangely similar for instance in the fact that they care
 about details in specification and that they use complicated terms.
 
-h3. Terminal symbols and nonterminal symbols
+### Terminal symbols and nonterminal symbols
 
 Well, in the confusion of the moment I used without explaining it the
 expression "symbols coming from the scanner". So let's explain this. I
@@ -345,7 +345,7 @@ exist in the parser. Nonterminal symbols also always appear at one
 moment or the other as the left side of a rule. In this chapter,
 nonterminal symbols are always written in lower case letters.
 
-h3. How to test
+### How to test
 
 I'm now going to tell you the way to process the grammar file with
 `yacc`.
@@ -390,7 +390,7 @@ de  : D E
 
 I hate these semicolons so in this book I'll never use them.
 
-h3. Void rules
+### Void rules
 
 Let's now look a little more at some of the established ways of
 grammar description. I'll first introduce void rules.
@@ -424,7 +424,7 @@ section may be omitted". Compared to the rules made previously using
 two definitions, this way is shorter and we do not have to disperse
 the burden.
 
-h3. Recursive definitions
+### Recursive definitions
 
 The following example is still a little hard to understand.
 
@@ -489,12 +489,12 @@ list:
     | list ITEM ITEM
 </pre>
 
-h2. Construction of values
+## Construction of values
 
 This abstract talk lasted long enough so in this section I'd really
 like to go on with a more concrete talk.
 
-h3. Shift and reduce
+### Shift and reduce
 
 Up until now, various ways to write grammars have been explained,
 but what we want is being able to build a syntax tree.
@@ -596,7 +596,7 @@ If there's a void rule, it's possible that a symbol is generated out of "void".
 
 
 
-h3. Action
+### Action
 
 
 Now, I'll start to describe the important parts.
@@ -623,7 +623,7 @@ If it is a C code, almost all things can be written.
 
 
 
-h3. The value of a symbol
+### The value of a symbol
 
 This is further more important but,
 each symbol has "its value".
@@ -694,7 +694,7 @@ and it is called "semantic stack" for short.
 
 
 
-h3. `yacc` and types
+### `yacc` and types
 
 
 It's really cumbersome but without talking about types we cannot finish this
@@ -811,7 +811,7 @@ Defining a member for each symbol is basic.
 
 
 
-h3. Coupling the parser and the scanner together
+### Coupling the parser and the scanner together
 
 
 After all, I've finished to talk all about this and that of the values inside the parser.
@@ -856,7 +856,7 @@ Figure 2: Relationships among `yacc` related variables & functions
 
 
 
-h3. Embedded Action
+### Embedded Action
 
 
 An action is written at the last of a rule, is how it was explained.
@@ -892,10 +892,10 @@ the value of the embedded action will come out as `$3`.
 
 
 
-h2. Practical Topics
+## Practical Topics
 
 
-h3. Conflicts
+### Conflicts
 
 
 I'm not afraid of `yacc` anymore.
@@ -1041,7 +1041,7 @@ it choses shift by default when a shift/reduce conflict occurs.
 
 
 
-h3. Look-ahead
+### Look-ahead
 
 
 As an experiment,
@@ -1110,7 +1110,7 @@ but the look-ahead during executions.
 
 
 
-h3. Operator Precedence
+### Operator Precedence
 
 
 Since abstract talks have lasted for long, I'll talk more concretely.

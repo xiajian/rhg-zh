@@ -1,13 +1,15 @@
 ---
-layout: default
+layout: post
 title: 第八章：Ruby语言详解
 ---
 
-本章探讨之前没有覆盖的Ruby的语法和求值(evaluation)。这里并不打算作完全的阐述，而是有选择的挑选了一些进行描述，所以，仅仅阅读这些可能并不足以编写Ruby程序。完整的描述将在[这里][RLRM]。
+本章探讨之前没有覆盖的Ruby的语法和求值(evaluation)。这里并不打算作完全的阐述，而是有选择的挑选了一些进行描述，所以，仅仅阅读这些可能并不足以编写Ruby程序。完整的描述将在[这里](http://www.ruby-doc.org/docs/ruby-doc-bundle/Manual/man-1.4/)。
+
 
 > 原文Ruby reference manual的地址是CD-ROM中的tar文件，这里我替换为Ruby Language Reference Manual的链接地址。
 
 熟悉Ruby的可以跳过本章。
+
 
 ## 字面值(Literals)
 ----
@@ -16,8 +18,6 @@ Ruby的字面值的表现力极其丰富。个人认为，脚本语言Ruby成功
 
 单个字面值已经具有强大的力量，多个字面值组合时则力量更强。尤其是创建复杂的字面值的数组和哈希的组合，这是Ruby字面值的最大的优势。比如：可以直接创建表示正则表达式的哈希数组。
 
-What kind of expressions are valid?
-Let's look at them one by one.
 什么样的表达是有效的，且看下文，便知分晓
 
 ### Strings
@@ -25,7 +25,7 @@ Let's look at them one by one.
 Strings and regular expressions can't be missing in a scripting language.
 The expressiveness of Ruby's string is very various even more than the
 other Ruby's literals.
-字符串和正则表达式不应在任何脚本语言中遗漏，Ruby的字符串的表现力比其他字面值都强。
+字符串和正则表达式不应在任何脚本语言中缺失遗漏，Ruby的字符串的表现力比其他字面值都强。
 
 #### Single Quoted Strings
 
@@ -37,18 +37,9 @@ other Ruby's literals.
 '\''                  # 「'」
 </pre>
 
-This is the simplest form.
-In C, what enclosed in single quotes becomes a character,
-but in Ruby, it becomes a string.
-Let's call this a `'`-string. The backslash escape
-is in effect only for `\` itself and `'`. If one puts a backslash
-in front of another character the backslash remains as
-in the fourth example.
+上面是最简单的形式。在C中，单引号用来闭合字符，但在Ruby中，单引号可以用来闭合字符串。这种字符串称之为单引号的字符串(`'`-string)，其中转义符'\'只能转义自身和`'`。
 
-
-And Ruby's strings aren't divided by newline characters.
-If we write a string over several lines the newlines are contained
-in the string.
+Ruby的表达式并不会被新行所分隔，如果字符串横跨多行，则其中将包含新行符(\n\r)。
 
 <pre class="emlist">
 'multi
@@ -59,13 +50,17 @@ in the string.
 And if the `-K` option is given to the `ruby` command, multibyte strings
 will be accepted. At present the three encodings EUC-JP (`-Ke`),
 Shift JIS (`-Ks`), and UTF8 (`-Ku`) can be specified.
+如果传递`-k`选项给ruby，多字节字符串将被接受。现在可以接受三种特定的编码 EUC-JP (`-Ke`),Shift JIS (`-Ks`)以及UTF8 (`-Ku`) 。
+
+> 备注： 原文写于2004年，彼此为ruby 1.7。ruby本身自1.9开始内建支持utf-8，具体有何区别，我也不同清楚
 
 <pre class="emlist">
 '「漢字が通る」と「マルチバイト文字が通る」はちょっと違う'
+
 # 'There's a little difference between "Kanji are accepted" and "Multibyte characters are accepted".'
 </pre>
 
-h4. Double Quoted Strings
+#### Double Quoted Strings
 
 <pre class="emlist">
 "string"              # 「string」
@@ -98,7 +93,7 @@ the entire thing can be considered as an expression to express a string.
 "embedded #{"string in string"} expression"
 </pre>
 
-h4. Strings with `%`
+#### Strings with `%`
 
 <pre class="emlist">
 %q(string)            # same as 'string'
@@ -112,10 +107,10 @@ changed by using `%`.
 In the following example, the same string is written as a `"`-string and
 `%`-string.
 
-<pre class="emlist">
-"<a href=\"http://i.loveruby.net#{path}\">"
-%Q(<a href="http://i.loveruby.net#{path}">)
-</pre>
+```
+"<a href=\"http://i.loveruby.net#{path}\">"<br/>
+"%(<a href="http://i.loveruby.net#{path}">)"
+```
 
 The both expressions has the same length,
 but the `%`-one is a lot nicer to look at.
@@ -132,7 +127,7 @@ too. Like brackets or braces or `#`. Almost every symbol is fine, even
 %q%this is string%
 </pre>
 
-h4. Here Documents
+####  Here Documents
 
 Here document is a syntax which can express strings spanning multiple lines.
 A normal string starts right after the delimiter `"`
@@ -212,7 +207,7 @@ contains many backslashes.
 In Part 2, I'll explain how to parse a here document.
 But I'd like you to try to guess it before.
 
-h3. Characters
+### Characters
 
 Ruby strings are byte sequences, there are no character objects.
 Instead there are the following expressions which return the
@@ -225,7 +220,7 @@ integers which correspond a certain character in ASCII code.
 ?\C-a                 # Ctrl-a
 </pre>
 
-h3. Regular Expressions
+###  Regular Expressions
 
 <pre class="emlist">
 /regexp/
@@ -281,7 +276,7 @@ To describe regular expression in detail, it's so large that one more can be
 written, so I'd like you to read another book for this subject.
 I recommend "Mastering Regular Expression" by Jeffrey E.F. Friedl.
 
-h4. Regular Expressions with `%`
+#### Regular Expressions with `%`
 
 Also as with strings, regular expressions also have a syntax for changing
 delimiters. In this case it is `%r`. To understand this, looking at some
@@ -294,7 +289,7 @@ examples are enough to understand.
 %r{reg#{1 + 1}exp}       # embedding a Ruby expression
 </pre>
 
-h3. Arrays
+### 数组(Arrays)
 
 A comma-separated list enclosed in brackets `[]` is an array literal.
 
@@ -327,7 +322,7 @@ while i < 5
 end
 </pre>
 
-h4. Word Arrays
+#### Word Arrays
 
 When writing scripts one uses arrays of strings a lot, hence
 there is a special notation only for arrays of strings.
@@ -351,7 +346,7 @@ n = 5
 
 The author hasn't come up with a good use of `%W` yet.
 
-h3. Hashes
+###  Hashes
 
 Hash tables are data structure which store a one-to-one relation between
 arbitrary objects.
@@ -392,7 +387,7 @@ Of course in this case `set_geometry` must accept a hash as input.
 Though real keyword arguments will be transformed into parameter variables,
 it's not the case for this because this is just a "imitation".
 
-h3. Ranges
+### Ranges
 
 Range literals are oddballs which don't appear in most other languages.
 Here are some expressions which generate Range objects.
@@ -425,7 +420,7 @@ sometimes it is interpreted in a surprising way.
 I think my personality is relatively bent for Ruby grammar,
 but somehow I don't like only this specification.
 
-h3. Symbols
+### Symbols
 
 In Part 1, we talked about symbols at length.
 It's something corresponds one-to-one to an arbitrary string.
@@ -459,7 +454,7 @@ so naturally they can also be used as symbols.
 When one uses these symbols as values in an array, it'll look quite
 complicated.
 
-h3. Numerical Values
+###  Numerical Values
 
 This is the least interesting.
 One possible thing I can introduce here is that,
@@ -474,11 +469,12 @@ But even this isn't particularly interesting.
 From here on in this book,
 we'll completely forget about numerical values.
 
-h2. Methods
+## Methods
+----
 
 Let's talk about the definition and calling of methods.
 
-h3. Definition and Calls
+### Definition and Calls
 
 <pre class="emlist">
 def some_method( arg )
@@ -501,7 +497,7 @@ one usually has to create an instance with `new` as shown below.
 C.new().some_method(0)
 </pre>
 
-h3. The Return Value of Methods
+### The Return Value of Methods
 
 The return value of a method is,
 if a `return` is executed in the middle, its value.
@@ -532,7 +528,7 @@ it would automatically be `nil`,
 and an expression without a value cannot put at the end.
 Hence every method has a return value.
 
-h3. Optional Arguments
+### Optional Arguments
 
 Optional arguments can also be defined. If the number of arguments
 doesn't suffice, the parameters are automatically assigned to
@@ -563,7 +559,7 @@ def wrong_decl( arg, default = nil, arg2 )  # A middle argument cannot be option
 end
 </pre>
 
-h3. Omitting argument parentheses
+### Omitting argument parentheses
 
 In fact, the parentheses of a method call can be omitted.
 
@@ -606,7 +602,7 @@ Parentheses are often left out in method calls, but leaving out
 parentheses in the definition is not very popular.
 However if there are no arguments, the parentheses are frequently omitted.
 
-h3. Arguments and Lists
+### Arguments and Lists
 
 Because Arguments form a list of objects,
 there's nothing odd if we can do something converse: extracting a list (an
@@ -678,7 +674,7 @@ delegate(0, 1, 2)      # same as other_method(0, 1, 2)
 delegate(10, 20, 30)   # same as other_method(10, 20, 30)
 </pre>
 
-h3. Various Method Call Expressions
+### Various Method Call Expressions
 
 Being just a single feature as 'method call' does not mean its representation
 is also single. Here is about so-called syntactic sugar.
@@ -719,7 +715,7 @@ essentially the same appear in faked looks.
 
 Let's see some more details.
 
-h4. Symbol Appendices
+#### Symbol Appendices
 
 <pre class="emlist">
 obj.name?
@@ -733,7 +729,7 @@ It's just a convention at human level.
 This is probably influenced from Lisp in which a great variety
 of characters can be used in procedure names.
 
-h4. Binary Operators
+#### Binary Operators
 
 <pre class="emlist">
 1 + 2    # 1.+(2)
@@ -759,7 +755,7 @@ As listed below there are many of them. There are the general operators
 The symbols `&` and `|` are methods, but the double symbols `&&` and `||`
 are built-in operators. Remember how it is in C.
 
-h4. Unary Operators
+#### Unary Operators
 
 <pre class="emlist">
 +2
@@ -780,7 +776,7 @@ Of course they can be called by just writing `+n` or `-n`.
 part of the literal. This is a kind of optimizations.))
 
 
-h4. Attribute Assignment
+#### Attribute Assignment
 
 <pre class="emlist">
 obj.attr = val   # obj.attr=(val)
@@ -807,7 +803,7 @@ They are similar to get/set property in Delphi or slot accessors in CLOS.
 Besides, we cannot define a method such as `obj.attr(arg)=`,
 which can take another argument in the attribute assignment fashion.
 
-h4. Index Notation
+#### Index Notation
 
 <pre class="emlist">
 obj[i]    # obj.[](i)
@@ -823,7 +819,7 @@ obj[i] = val   # obj.[]=(i, val)
 Index assignment fashion.
 This is translated into a call for a method named `[]=`.
 
-h3. `super`
+### `super`
 
 We relatively often have
 a situation where we want add a little bit to the behaviour of an already
@@ -873,7 +869,7 @@ end
 B.new.test(1,2,3)
 </pre>
 
-h4. Visibility
+#### Visibility
 
 In Ruby, even when calling the same method,
 it can be or cannot be called depending on the location (meaning the
@@ -922,7 +918,7 @@ parentheses. These aren't even reserved words.
 the visibility of a particular method. But its mechanism is not interesting.
 We'll leave this out.
 
-h4. Module functions
+#### Module functions
 
 Given a module 'M'. If there are two methods with the exact same
 content
@@ -949,7 +945,7 @@ still be the same. Instance variables become extremely difficult to use.
 Hence such method is very likely a method in which only procedures are written
 (like `sin`). That's why they are called module "functions".
 
-h2. Iterators
+## Iterators
 
 Ruby's iterators differ a bit from Java's or C++'s iterator classes
 or 'Iterator' design pattern. Precisely speaking, those iterators
@@ -1008,7 +1004,7 @@ arr.each do |item|
 end
 </pre>
 
-h3. Comparison with higher order functions
+### Comparison with higher order functions
 
 What comes closest in C to iterators are functions which receive function pointers,
 it means higher order functions. But there are two points in which iterators in Ruby
@@ -1042,7 +1038,7 @@ with the inside of the iterator method ( e.g. `each`). Putting it intuitively,
 only the variables in the place which looks of the source code continued are
 visible.
 
-h3. Block Local Variables
+### Block Local Variables
 
 Local variables which are assigned inside a block stay local to that block,
 it means they become block local variables. Let's check it out.
@@ -1136,7 +1132,7 @@ changed. On this point there
 came many complains: "This is error prone. Please do shadowing."
 Each time there's nearly flaming but till now no conclusion was reached.
 
-h3. The syntax of iterators
+### The syntax of iterators
 
 There are some smaller topics left.
 
@@ -1172,7 +1168,7 @@ $stdin.grep(re) do |line|  # look repeatedly for this regular expression
 end
 </pre>
 
-h3. `yield`
+### `yield`
 
 Of course users can write their own iterators. Methods which have
 a `yield` in their definition text are iterators.
@@ -1212,7 +1208,7 @@ present method does not have a block a runtime error will occur.
         from -e:1
 </pre>
 
-h3. `Proc`
+### `Proc`
 
 I said, that iterators are like cut out code which is passed as an
 argument. But we can even more directly make code to an object
@@ -1238,7 +1234,7 @@ has the same effect as @Proc.new@. Choose whatever suits you.
 twice = lambda {|n| n * 2 }
 </pre>
 
-h4. Iterators and `Proc`
+#### Iterators and `Proc`
 
 Why did we start talking all of a sudden about @Proc@? Because there
 is a deep relationship between iterators and @Proc@.
@@ -1288,7 +1284,7 @@ each_item do |i|    # same as [0,1,2].each do |i|
 end
 </pre>
 
-h2. Expressions
+## Expressions
 
 "Expressions" in Ruby are things with which we can create other expressions or
 statements by combining with the others.
@@ -1298,7 +1294,7 @@ But literals and method calls are not always combinations of elements.
 On the contrary, "expressions", which I'm going to introduce,
 always consists of some elements.
 
-h3. `if`
+### `if`
 
 We probably do not need to explain the @if@ expression. If the conditional
 expression is true, the body is executed. As explained in Part 1,
@@ -1352,7 +1348,7 @@ p(if false then 1 end)    #=> nil
 p(if true  then   end)    #=> nil
 </pre>
 
-h3. `unless`
+### `unless`
 
 An @if@ with a negated condition is an @unless@.
 The following two expressions have the same meaning.
@@ -1372,7 +1368,7 @@ Needless to say, @then@ can be omitted.
 clause. If there's no match or the matched clause is empty,
 the value would be @nil@.
 
-h3. `and && or ||`
+### `and && or ||`
 
 The most likely utilization of the @and@ is probably a boolean operation.
 For instance in the conditional expression of an @if@.
@@ -1418,7 +1414,7 @@ valid?(key) or return nil
 @or@ and @||@ have the same relationship as @&&@ and @and@. Only the precedence is
 different.
 
-h3. The Conditional Operator
+### The Conditional Operator
 
 There is a conditional operator similar to C:
 
@@ -1436,7 +1432,7 @@ cond?iftrue:iffalse   # cond?(iftrue(:iffalse))
 The value of the conditional operator is the value of the last executed expression.
 Either the value of the true side or the value of the false side.
 
-h3. `while until`
+### `while until`
 
 Here's a `while` expression.
 
@@ -1495,7 +1491,7 @@ I might come into the world top 100, if the amount of Ruby programs
 would be counted, but I haven't used @redo@ yet. It does not seem to be
 necessary after all because I've lived happily despite of it.
 
-h3. `case`
+### `case`
 
 A special form of the @if@ expression. It performs branching on a series of
 conditions. The following left and right expressions are identical in meaning.
@@ -1524,7 +1520,7 @@ Since `case` has many grammatical elements,
 to list them all would be tedious, thus we will not cover them in this book.
 
 
-h3. Exceptions
+### Exceptions
 
 This is a control structure which can pass over method boundaries and
 transmit errors. Readers who are acquainted to C++ or Java
@@ -1662,7 +1658,7 @@ It means the last statement of the clauses aside from `ensure`.
 The reason why the @ensure@ is not counted is probably because
 @ensure@ is usually used for cleanup (thus it is not a main line).
 
-h3. Variables and Constants
+### Variables and Constants
 
 Referring a variable or a constant. The value is the object the variable points to.
 We already talked in too much detail about the various behaviors.
@@ -1692,7 +1688,7 @@ the @$?@ to hold the status of a child process,
 the @$SAFE@ to represent the security level,
 they are all thread local.
 
-h3. Assignment
+### Assignment
 
 Variable assignments are all performed by `=`. All variables are
 typeless. What is saved is a reference to an object.
@@ -1710,7 +1706,7 @@ $gvar = {'key' => 'value'}
 However, as mentioned earlier `obj.attr=val` is not an assignment
 but a method call.
 
-h3. Self Assignment
+### Self Assignment
 
 <pre class="emlist">
 var += 1
@@ -1757,7 +1753,7 @@ I am also in favor of @++@ but not as much as I can't do without,
 and I have not felt so much needs of @++@ in Ruby in the first place,
 so I've kept silent and decided to forget about it.
 
-h3. `defined?`
+### `defined?`
 
 @defined?@ is a syntax of a quite different color in Ruby. It tells whether an
 expression value is "defined" or not at runtime.
@@ -1776,7 +1772,7 @@ method call which raises an error in it.
 I would have loved to tell you more about @defined?@
 but it will not appear again in this book. What a pity.
 
-h2. Statements
+## Statements
 
 A statement is what basically cannot be combined with the other syntaxes,
 in other words, they are lined vertically.
@@ -1788,7 +1784,7 @@ However this is rarely recommended and isn't useful,
 you'd better regard them lightly in this way.
 Here we also skip about the value of each statement.
 
-h3. The Ending of a statement
+### The Ending of a statement
 
 Up to now we just said "For now one line's one statement".
 But Ruby's statement ending's aren't that straightforward.
@@ -1822,7 +1818,7 @@ p 1 + \
   2
 </pre>
 
-h3. The Modifiers `if` and `unless`
+### The Modifiers `if` and `unless`
 
 The `if` modifier is an irregular version of the normal `if`
 The programs on the left and right mean exactly the same.
@@ -1837,7 +1833,7 @@ The `unless` is the negative version.
 Guard statements ( statements which exclude exceptional conditions) can
 be conveniently written with it.
 
-h3. The Modifiers `while` and `until`
+### The Modifiers `while` and `until`
 
 `while` and `until` also have a back notation.
 
@@ -1854,7 +1850,7 @@ begin
 end while need_continue?(res)
 </pre>
 
-h3. Class Definition
+### Class Definition
 
 <pre class="emlist">
 class C < SuperClass
@@ -1870,7 +1866,7 @@ become @self@ within the statement, arbitrary expressions can be written within.
 definitions can be nested. They form the foundation of Ruby execution
 image.
 
-h3. Method Definition
+### Method Definition
 
 <pre class="emlist">
 def m(arg)
@@ -1881,7 +1877,7 @@ I've already written about method definition and won't add more.
 This section is put to make it clear that
 they also belong to statements.
 
-h3. Singleton method definition
+### Singleton method definition
 
 We already talked a lot about singleton methods in Part 1.
 They do not belong to classes but to objects, in fact, they belong
@@ -1897,7 +1893,7 @@ def obj.some_method2( arg1, arg2, darg = nil, *rest, &block )
 end
 </pre>
 
-h3. Definition of Singleton methods
+### Definition of Singleton methods
 
 <pre class="emlist">
 class << obj
@@ -1921,7 +1917,7 @@ class << obj
 end
 </pre>
 
-h3. Multiple Assignment
+### Multiple Assignment
 
 With a multiple assignment, several assignments can be done all at once.
 The following is the simplest case:
@@ -2002,7 +1998,7 @@ p rest   # [1, 2, 3, 4]
 
 When all of them are used all at once, it's extremely confusing.
 
-h4. Block parameter and multiple assignment
+#### Block parameter and multiple assignment
 
 We brushed over block parameters when we were talking about iterators.
 But there is a deep relationship between them and multiple assignment.
@@ -2039,7 +2035,7 @@ hash.each_with_index do |(key, value), index|
 end
 </pre>
 
-h3. `alias`
+### `alias`
 
 <pre class="emlist">
 class C
@@ -2055,7 +2051,7 @@ because the names themselves are independent of each other,
 even if one method name is overwritten by a subclass method, the
 other one still remains with the same behavior.
 
-h3. `undef`
+### `undef`
 
 <pre class="emlist">
 class C
@@ -2090,9 +2086,9 @@ It's because the sign put up by `undef` prohibits any kind of searches.
 
 ((errata: It can be redefined by using `def`))
 
-h2. Some more small topics
+## Some more small topics
 
-h3. Comments
+### Comments
 
 <pre class="emlist">
 # examples of bad comments.
@@ -2103,7 +2099,7 @@ alias my_id id   # my_id is an alias of id.
 From a `#` to the end of line is a comment.
 It doesn't have a meaning for the program.
 
-h3. Embedded documents
+### Embedded documents
 
 <pre class="emlist">
 =begin
@@ -2118,7 +2114,7 @@ an `=begin` outside a string at the beginning of a line
 to a `=end`. The interior can be arbitrary.
 The program ignores it as a mere comment.
 
-h3. Multi-byte strings
+### Multi-byte strings
 
 When the global variable @$KCODE@ is set to either @EUC@, @SJIS@
 or @UTF8@, strings encoded in euc-jp, shift_jis, or utf8 respectively can be
@@ -2140,5 +2136,5 @@ end
 
 But I really cannot recommend doing things like that.
 
-[RLRM]: http://www.ruby-doc.org/docs/ruby-doc-bundle/Manual/man-1.4/
+[RLRM]: 
 

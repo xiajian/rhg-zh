@@ -1,14 +1,14 @@
 Ruby Hacking Guide 中文翻译
 ==============================
 [阅读该翻译文档](http://xiajian.github.io/rhg-zh/)
-备注: 原本是自己新建的版本库，初次建立，没有经验，README都是参考的英文版的RHG翻译的。
+备注: 原本是自己新建的版本库，初次建立，没有经验，README都是参考的英文版的RHG翻译的。需要注意的是，Githu生成静态页面的分支是gh-pages，为了避免麻烦，所有修改都在gh-pages分支上，master废弃不用。
 
 本地运行
 ==========
 
 ```sh
 $ git clone https://github.com/ruby-hacking-guide/ruby-hacking-guide.github.com
-$ gem install jekyll
+$ gem install jekyll jemoji jekyll-sitemap
 $ gem install RedCloth
 $ jekyll serve -w # this compiles files and starts a server on localhost:4000.
 ```
