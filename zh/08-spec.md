@@ -1,43 +1,33 @@
 ---
 layout: default
-title: Ruby Language Details
+title: 第八章：Ruby语言详解
 ---
-h1(#chapter). Chapter 8 : Ruby Language Details
 
-I'll talk about the details of Ruby's syntax and evaluation,
-which haven't been covered yet. I didn't intend a complete exposition,
-so I left out everything which doesn't come up in this book.
-That's why you won't be able to write Ruby programs just by
-reading this. A complete exposition can be found in the
-\footnote{Ruby reference manual: `archives/ruby-refm.tar.gz` in the attached CD-ROM}
+本章探讨之前没有覆盖的Ruby的语法和求值(evaluation)。这里并不打算作完全的阐述，而是有选择的挑选了一些进行描述，所以，仅仅阅读这些可能并不足以编写Ruby程序。完整的描述将在[这里][RLRM]。
 
-Readers who know Ruby can skip over this chapter.
+> 原文Ruby reference manual的地址是CD-ROM中的tar文件，这里我替换为Ruby Language Reference Manual的链接地址。
 
-h2. Literals
+熟悉Ruby的可以跳过本章。
 
-The expressiveness of Ruby's literals is extremely high.
-In my opinion, what makes Ruby a script language
-is firstly the existence of
-the toplevel, secondly it's the expressiveness of its literals.
-Thirdly it might be the richness of its standard library.
+## 字面值(Literals)
+----
 
-A single literal already has enormous power, but even more
-when multiple literals are combined.
-Especially the ability of creating complex literals that hash and array literals
-are combined is the biggest advantage of Ruby's literal.
-One can write, for instance, a hash of arrays of regular expressions
-by constructing straightforwardly.
+Ruby的字面值的表现力极其丰富。个人认为，脚本语言Ruby成功的三要素为: 1. 顶层(toplevel)的存在 2.字面值(literal)的表现力 3.丰富的标准库
+
+单个字面值已经具有强大的力量，多个字面值组合时则力量更强。尤其是创建复杂的字面值的数组和哈希的组合，这是Ruby字面值的最大的优势。比如：可以直接创建表示正则表达式的哈希数组。
 
 What kind of expressions are valid?
 Let's look at them one by one.
+什么样的表达是有效的，且看下文，便知分晓
 
-h3. Strings
+### Strings
 
 Strings and regular expressions can't be missing in a scripting language.
 The expressiveness of Ruby's string is very various even more than the
 other Ruby's literals.
+字符串和正则表达式不应在任何脚本语言中遗漏，Ruby的字符串的表现力比其他字面值都强。
 
-h4. Single Quoted Strings
+#### Single Quoted Strings
 
 <pre class="emlist">
 'string'              # 「string」
@@ -54,6 +44,7 @@ Let's call this a `'`-string. The backslash escape
 is in effect only for `\` itself and `'`. If one puts a backslash
 in front of another character the backslash remains as
 in the fourth example.
+
 
 And Ruby's strings aren't divided by newline characters.
 If we write a string over several lines the newlines are contained
@@ -2148,3 +2139,6 @@ end
 </pre>
 
 But I really cannot recommend doing things like that.
+
+[RLRM]: http://www.ruby-doc.org/docs/ruby-doc-bundle/Manual/man-1.4/
+

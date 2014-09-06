@@ -472,9 +472,10 @@ p(C.new().hello())     # 显示"Hello"
 
 ### 变量的继承……？
 
-在Ruby中，变量（实例变量）是不能继承的。 即便可以继承，类中也不会包含这个变量的使用信息。
+在Ruby中，变量（实例变量）是不能继承的。 即便尝试继承，类也不知道哪些变量将被使用。
 
-只有方法可以继承，只要调用继承方法（通过子类实例），就会发生实例变量赋值， 也就是说，将它定义出来。 这样的话，实例变量的命名空间就完全变平，哪个类的方法都可以访问。
+但是一旦在子类实例中调用继承方法，就会发生实例变量赋值， 也就是说，将实例变量被定义了。 这样的话，实例变量的命名空间独立于每个实例，类的任何方法都可以访问该实例变量。
+
 {% highlight ruby %}
 class A
   def initialize()   # 在new的过程中调用
@@ -495,11 +496,13 @@ B.new().print_i()   # 显示"ok"
 ![Ruby对象图](/rhg-zh/images/ch_minimum_objimage.jpg)  
 图6: Ruby对象图
 
+> 这一段说的东西很不理解，变量继承什么的以及它举的这个例子都很含糊。结合例子来理解，大概说的是继承方法可以访问实例变量这样的意思。
+
 ### 模块
 
 只能指定一个超类。看起来Ruby似乎是单一继承。 但是，因为模块的存在让它拥有了与多重继承同等的能力。 下面就来讨论一下模块。
 
-一言以蔽之，模块就是“无法指定超类，无法生成实例”的类。 定义可以这样写。
+一言以蔽之，模块就是`“无法指定超类，无法生成实例”`的类。 定义可以这样写。
 
 module M
 end
@@ -629,36 +632,37 @@ p(::Const)   # 同样显示3
 开头加上::，表示“这是一个定义在顶层的常量”。就像文件系统的路径一样。 假设根目录下有个叫vmunix的文件。在/下只写vmunix就可以访问它。 而在全路径下就要写/vmunix。Const和::Const也是同样的关系。 在顶层下，可以只写Const，也可以按照全路径写::Const。
 
 那么文件系统中的目录在Ruby中相当于什么呢？答案是类定义语句和模块定义语句。 因为分别说两个显得冗长而麻烦，以后都归结为类定义。 如果是在类定义中，那么常量的层次就要会提升（进入目录）。
-
+{% highlight ruby %}
 class SomeClass
   Const = 3
 end
 
 p(::SomeClass::Const)   # 显示3
 p(  SomeClass::Const)   # 同样显示3
+{% endhighlight %}
 
 SomeClass是定义在顶层的类，所以，常量仅仅写成SomeClass也可以，写成::SomeClass也可以。 嵌套在类定义中的常量Const是“SomeClass中的常量”，它变成了::SomeClass::Const。
 
 如同在目录中可以创建新目录一样，类中同样可以定义新类。比如这样：
-
+{% highlight ruby %}
 class C        # ::C
   class C2     # ::C::C2
     class C3   # ::C::C2::C3
     end
   end
 end
-
+{% endhighlight %}
 在类定义中定义的常量必须写全路径吗？当然没有这种事。 等同于文件系统的比喻，在同级的类定义语句“中”，可以不用::。 也就是这样：
-
+{% highlight ruby %}
 class SomeClass
   Const = 3
   p(Const)   # 显示3
 end
-
+{% endhighlight %}
 没想到这样吧！在类定义语句中写可执行的程序。 我想，这对于只熟悉静态语言的人来说，相当意外。 我第一次见的时候，也是大吃一惊。
 
 多说几句，当然在方法定义中常量也是可见的。访问规则等同于类定义语句。
-
+{% highlight ruby %}
 class C
   Const = "ok" 
   def test()
@@ -667,13 +671,13 @@ class C
 end
 
 C.new().test()   # 显示"ok" 
-
+{% endhighlight %}
 ### 全部执行
 
-盯住这里所写的全部。在Ruby中，程序的大部分都是“可执行的”。 常量定义、类定义语句、方法定义语句，几乎看到的所有东西都是按顺序执行。
+盯住这里所写的全部。在Ruby中，程序的大部分都是“可执行的”。 常量定义、类定义语句、方法定义语句，`几乎看到的所有东西都是按顺序执行`。
 
 比如，看看下面的代码。迄今为止的结构在这里都用到了。
-
+{% highlight ruby %}
  1:  p("first")
  2:
  3:  class C < Object
@@ -687,8 +691,9 @@ C.new().test()   # 显示"ok"
 11:  end
 12:
 13:  p(C.new().myupcase("content"))
-
-这个程序按以下顺序执行。
+{% endhighlight %}
+这个程序按以下顺序执行:
+{% highlight ruby %}
 1: p("first") 	显示"first"。
 3: < Object 	访问常量Object，得到类对象Object
 3: class C 	以Object为超类生成一个新的类，带入常量C中
@@ -698,13 +703,16 @@ C.new().test()   # 显示"ok"
 13: C.new().myupcase(...) 	访问常量C，调用其new，进而调用myupcase。
 9: return str.upcase() 	返回"CONTENT"。
 13: p(...) 	显示"CONTENT"。
+{% endhighlight %}
+
+> 这里第三行语句执行的顺序让我很新奇，先是执行< Object，然后执行class C。全部执行的概念也让人耳目一新，不过，Ruby语言配置了解释器，大多语句的可执行很容易理解。
 
 ### 局部变量的作用域
 
 终于要来讨论局部变量的作用域了。
 
-顶层、类定义语句内、模块定义语句内、方法体内，都有各自完全独立的局部变量作用域。 也就是说，下面程序中的Ivar互不相同，互不冲突。
-
+顶层、类定义语句内、模块定义语句内、方法体内，都有各自完全独立的局部变量作用域。 也就是说，下面程序中的lvar互不相同，互不冲突。
+{% highlight ruby %}
 lvar = 'toplevel'
 
 class C
@@ -721,10 +729,13 @@ module M
 end
 
 p(lvar)   # 显示"toplevel" 
+{% endhighlight %}
+
+> 作用域什么的，是对语言理解的很重要的一步。
 
 ### 作为上下文的self
 
-之前说过，在方法执行中，可以通过self调用自己（调用方法的对象）。 这话对，但只是一半。其实，Ruby程序执行过程中，到处都设置了self。 就连顶层和类定义语句中都有self。
+之前说过，在方法执行中，可以通过self调用自己（调用方法的对象，类似C++中的this对象）。 这话对，但只是一半。其实，Ruby程序执行过程中，到处都设置了self。 就连顶层和类定义语句中都有self。
 
 比如，顶层甚至也有self。顶层的self称为main。 没什么奇怪的，它就是Object的实例。 main仅仅是为了设置self而准备的，没有什么更深层的含义。
 
@@ -738,18 +749,20 @@ main、Object和Kernel
 顺便说一下，函数风格的方法除了p、puts之外， 还有print、puts、printf、sprintf、gets、fork、exec等等，很多名称似曾相似的方法。 看到这里选择的名称，Ruby的性格就不难想象了。
 
 不管在哪里，self都会设置，即便在类定义语句中，这一事实也不会改变。 类定义中的self就那个是类（类对象）。因此会变成这样。
-
+{% highlight ruby %}
 class C
   p(self)   # C
 end
+{% endhighlight %}
 
 这个到底有什么用呢？其实这个例子非常有用。是这样。
-
+{% highlight ruby %}
 module M
 end
 class C
   include M
 end
+{% endhighlight %}
 
 其实，include是调用对象C的方法。还没有说到，Ruby的方法调用可以省略括号。 类定义的话题还没有结束，为了让它看上去不那么像方法调用，所以，这里去掉了括号。
 加载
@@ -760,12 +773,13 @@ require("library_name")
 
 同看到的一样，require是一个方法。根本没有保留字。 这样写的话，就在其所写的地方执行加载，执行就转移到那个程序库（的代码）。 因为Ruby中没有Java中包的概念，如果希望划分程序库名称的名字空间，就将文件分开放置到目录里。
 
-require("somelib/file1")
+require("somelib/file1")  
 require("somelib/file2")
 
 程序库中也是使用普通的class语句和module语句定义类和模块。 顶层的常量其作用域是平的，与文件无关，最初在一个文件里定义的类在另一个文件里也可以看见。 为了划分类名的名字空间，可以像下面这样明确的嵌套在模块中。
 
 # net程序库的名字空间划分的例子
+{% highlight ruby %}
 module Net
   class SMTP
     # ...
@@ -777,6 +791,7 @@ module Net
     # ...
   end
 end
+{% endhighlight %}
 
 ## 类的进阶
 ----
@@ -786,14 +801,14 @@ end
 之前，我们以文件系统比喻常量的作用域，不过，希望你从这里开始完全忘记这个比喻。
 
 常量还有很多结构。首先，“外部”的类可以看到常量。
-
+{% highlight ruby %}
 Const = "ok" 
 class C
   p(Const)   # 显示"ok" 
 end
-
+{% endhighlight %}
 为什么是这样呢？这是为了便于使用模块作为名字空间。怎么回事呢？ 用前面的net程序库作为例子追加说明一下。
-
+{% highlight ruby %}
 module Net
   class SMTP
     # 使用Net::SMTPHelper的方法
@@ -801,11 +816,11 @@ module Net
   class SMTPHelper   # Net::SMTP的辅助类
   end
 end
-
-在这种情况下，SMTP能访问SMTPHelper的话就方便多了。 于是便可以得到“外部类可以访问会很方便”的结论。
+{% endhighlight  %}
+在这种情况下，SMTP能访问SMTPHelper的话就方便多了。 于是便可以得到`“外部类可以访问会很方便”`的结论。
 
 无论嵌套多少层，“外部”类都可以访问。 如果多个嵌套层次中都定义了相同的常量名，访问的就是从内向外按顺序找到的第一个。
-
+{% highlight ruby %}
 Const = "far" 
 class C
   Const = "near" # 这个Const比上一个近
@@ -815,20 +830,22 @@ class C
     end
   end
 end
+{% endhighlight %}
 
 此外，常量还有一个查找路径。 一直往外层的类查找常量，如果直到顶层还没找到，就会进一步搜索自己超类的常量。
-
+{% highlight ruby %}
 class A
   Const = "ok" 
 end
 class B < A
   p(Const)   # 显示"ok" 
 end
+{% endhighlight %}
 
 完全没有那么复杂。
 
 总结一下。查找常量的时候，先搜外部类，然后是超类。 比如，虽然另类，但假设有下面这个类层次结构。
-
+{% highlight ruby %}
 class A1
 end
 class A2 < A1
@@ -848,7 +865,7 @@ class A3 < A2
     end
   end
 end
-
+{% endhighlight %}
 在C3中访问常量Const，按照图11的顺序进行查找。
 
 ![常量的查找顺序](/rhg-zh/images/ch_minimum_constref.jpg)  
@@ -864,11 +881,11 @@ end
 图12: 类的类是？
 
 这样的时候，最好在Ruby中实际确认一下。 有一个Object#class方法，它是一个“返回自己所属类（类对象）的方法”。
-
+{% highlight ruby %}
 p("string".class())   # 显示String
 p(String.class())     # 显示Class
 p(Object.class())     # 显示Class
-
+{% endhighlight %}
 看来，String属于Class类。那么进一步，Class的类是什么呢？
 
 p(Class.class())      # Class显示
@@ -883,10 +900,11 @@ Class是类的类。这种有“某某的某某”的递归结构的东西称为
 ### 元对象（Meta Object）
 
 这次的目标变为对象，考虑一下模块。模块也是对象，和类一样，它也应该有个“类”。 试一下。
-
+{% highlight ruby %}
 module M
 end
 p(M.class())   # 显示Module
+{% endhighlight %}
 
 看来，模块对象的类是Module。那么Module的类是什么呢？
 
@@ -895,11 +913,11 @@ p(Module.class())   # Class
 还是Class。
 
 这次改变一下方向，调查一下继承关系。Class和Module的超类都是什么呢？ 在Ruby中，可以用Class#superclass来检查。
-
+{% highlight ruby %}
 p(Class.superclass())    # Module
 p(Module.superclass())   # Object
 p(Object.superclass())   # nil
-
+{% endhighlight %}
 哎呀！Class居然是Module的子类。根据这些事实，画出Ruby几个重要类之间的关系， 如图14所示。
 
 ![Ruby的重要类之间的关系](/rhg-zh/images/ch_minimum_metaobjects.jpg)
@@ -914,13 +932,13 @@ Object、Module、Class是支撑Ruby的根基。 这三个对象就可以将Ruby
 对象可以调用方法。可以调用的方法由对象的类决定。但是理想情况下，方法是属于对象的。 至于类，它的存在是为了省去多次同样方法的时间。
 
 实际上，Ruby有一种机制，可以为对象（实例）单独定义方法，无论它们的类是什么。 这样写。
-
+{% highlight ruby %}
 obj = Object.new()
 def obj.my_first()
   puts("My first singleton method")
 end
 obj.my_first()   # 显示My first singleton method
-
+{% endhighlight %}
 众所周知，Object是所有类的超类。 在这么重要的类中，不可能定义一个像`my_first`名称这样怪异的方法。 obj是Object的实例。但是，obj却可以调用my_first方法。 也就是说，肯定在哪定义了这个与所属类完全没有关系的方法。 这样为某个对象定义的方法称为singleton方法（singleton method）。
 
 什么时候会用到singleton方法呢？首先是定义类似于Java和C++静态方法的时候。 也就是不生成实例也可以调用的方法。 这样的方法在Ruby中表现为类对象的singleton方法。
@@ -929,17 +947,19 @@ obj.my_first()   # 显示My first singleton method
 
 File.unlink("core")  # 删除core文件
 
-每次都说“File对象的singleton方法unlink”很麻烦，以后把它写作“File.unlink。 别写成“File#unlink”了，“File.write”表示“File类定义的write方法”。
+每次都说“File对象的singleton方法unlink”很麻烦，以后把它写作“File.unlink”。 别写成“File#unlink”了，“File.write”表示“File类定义的write方法”。
 
-▼ 方法记法总结
-记法 	调用对象 	调用示例
-File.unlink 	File类本身 	File.unlink("core")
-File#write 	File的实例 	f.write("str")
+▼ 方法记法总结  
+
+   记法     |	调用对象   |	调用示例
+----------- | ---------- | --------------------------
+File.unlink |	File类本身 |	File.unlink("core")
+File#write 	| File的实例 |	f.write("str")
 
 ### 类变量
 
 类变量是ruby 1.6加入的，是一项比较新的功能。它同常量一样，都属于某个类， 它可以在类和实例中赋值和访问。看看下面的例子。变量名以@@开头的就是类变量。
-
+{% highlight ruby %}
 class C
   @@cvar = "ok" 
   p(@@cvar)      # 显示"ok" 
@@ -950,7 +970,7 @@ class C
 end
 
 C.new().print_cvar()  # 显示"ok" 
-
+{% endhighlight %}
 类变量最初的赋值兼有定义的作用，像下面这样在赋值前访问就会造成运行时错误。 虽然前面都有@，但其行为与实例变量完全不同。
 
 % ruby -e '
@@ -962,8 +982,8 @@ end
 
 这里稍微偷了下懒，给了程序一个-e选项。'和'之间的三行是程序。
 
-再有，类变量是可继承的。子类方法可以对超类的类变量进行赋值和访问。
-
+再有，类变量是`可继承`的。子类方法可以对超类的类变量进行赋值和访问。
+{% highlight ruby %}
 class A
   @@cvar = "ok" 
 end
@@ -976,17 +996,17 @@ class B < A
 end
 
 B.new().print_cvar()   # 显示"ok" 
-
+{% endhighlight %}
 ## 全局变量
 ----
 
 最后，还有全局变量。在程序的任何位置都可以对全局变量进行赋值和访问。 变量名的第一个字符为$的就是全局变量。
 
-$gvar = "global variable" 
+$gvar = "global variable"   
 p($gvar)   # 显示"global variable" 
 
 可以把全局变量看作是实例变量，所有的名称在访问之前就已经定义好了。 也就是说，赋值前的访问会返回nil而不是造成错误。
 
 ## 总结
 ----
-
+即使是Ruby语言的最小化，也是相当的繁琐的。分别从对象、类、程序等层面进行探讨。
