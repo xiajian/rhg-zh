@@ -57,12 +57,12 @@ Ruby Hacking Guide中文版 就是将[Ruby Hacking Guide](http://ruby-hacking-gu
 ## **附录**
 ----
 - [Ruby语言参考手册](http://www.ruby-doc.org/docs/ruby-doc-bundle/Manual/man-1.4/index.html)
-  * [前言](/rhg-zh/zh/)
-  * [命令行选项](/rhg-zh/zh/)
-  * [Ruby语法](/rhg-zh/zh/)
+  * [前言](/rhg-zh/zh/r-preface)
+  * [命令行选项](/rhg-zh/zh/r-options)
+  * [Ruby语法](/rhg-zh/zh/r-syntax)
   * [标准库](/rhg-zh/zh/)
   * [Bundled库](/rhg-zh/zh/)
-  * [Ruby语法的伪BNF表达](/rhg-zh/zh/)
+  * [Ruby语法的伪BNF表达](/rhg-zh/zh/r-bnf)
 
 ## **致谢**
 ----

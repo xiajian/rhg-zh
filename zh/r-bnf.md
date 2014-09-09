@@ -4,6 +4,11 @@ title: Ruby的伪BNF语法
 ---
 
 Here is the syntax of Ruby in pseudo BNF. For more detail, see parse.y in Ruby distribution. 
+
+下面是Ruby的BNF语法描述，更多细节，参考Ruby分发包中的parse.y文件。
+
+> BNF是语言的形式化描述，是最能体现设计和品味的地方，同样也是yacc的输入文件。之前，个人曾经想要自动生成一个c--的编译器，结果一直卡在语法解释器上，也不知道如何处理，最后，由于当时还有其他的事情想做，就放弃了。
+
 {% highlight ruby %}
 PROGRAM		: COMPSTMT
 
@@ -240,4 +245,4 @@ REGEXP		: `/' any_char* `/'[`i'|`o'|`p']
 
 IDENTIFIER is the sqeunce of characters in the pattern of /[a-zA-Z_][a-zA-Z0-9_]*/.
 
-
+IDENTIFIER是/[a-zA-Z_][a-zA-Z0-9_]*/模式的字符序列。
