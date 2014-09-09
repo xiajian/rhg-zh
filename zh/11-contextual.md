@@ -11,7 +11,7 @@ I would be still figuring out what `COND_LEXPOP()` actually does._
 
 h1. Chapter 11 Finite-state scanner
 
-h2. Outline
+## Outline
 
 In theory, the scanner and the parser are completely independent of each other
 – the scanner is supposed to recognize tokens, while the parser is supposed to
@@ -21,7 +21,7 @@ is often necessary to alter the way tokens are recognized or their symbols. In
 this chapter we will take a look at the way the scanner and the parser
 cooperate.
 
-h3. Practical examples
+### Practical examples
 
 In most programming languages, spaces don’t have any specific meaning unless
 they are used to separate words. However, Ruby is not an ordinary language and
@@ -78,7 +78,7 @@ implement in practice. I couldn’t realistically give a thorough description of
 all in just one chapter, so in this one I will look at the basic principles and
 those parts which present the most difficulty.
 
-h3. `lex_state`
+### `lex_state`
 
 There is a variable called “lex_state”. “lex”, obviously, stands for “lexer”.
 Thus, it is a variable which shows the scanner’s state.
@@ -126,7 +126,7 @@ look at the scanner as a state machine. However, delving there would be veering
 off topic and too tedious. I would refer any interested readers to any textbook
 on data structures.
 
-h3. Understanding the finite-state scanner
+### Understanding the finite-state scanner
 
 The trick to reading a finite-state scanner is to not try to grasp everything
 at once. Someone writing a parser would prefer not to use a finite-state
@@ -205,7 +205,7 @@ The overall process looks like this: use a debugger or the aforementioned tool
 to observe the functioning of the program. Then look at the source code to
 confirm the acquired data and use it.
 
-h3. Description of states
+### Description of states
 
 Here I will give simple descriptions of `lex_state` states.
 
@@ -269,9 +269,9 @@ They all express similar conditions. `EXPR_CLASS` is a little different, but
 only appears in a limited number of places, not warranting any special
 attention.
 
-h2. Line-break handling
+## Line-break handling
 
-h3. The problem
+### The problem
 
 In Ruby, a statement does not necessarily require a terminator. In C or Java a
 statement must always end with a semicolon, but Ruby has no such requirement.
@@ -288,7 +288,7 @@ follows:
 
 Etc.
 
-h3. Implementation
+### Implementation
 
 So, what do we need to implement this grammar? Simply having the scanner ignore
 line-breaks is not sufficient. In a grammar like Ruby’s, where statements are
@@ -416,9 +416,9 @@ EXPR_ARG             "\n"  \n                   EXPR_BEG
 Note that `class` becomes `tIDENTIFIER` despite being a reserved word.
 This is discussed in the next section.
 
-h2. Reserved words and identical method names
+## Reserved words and identical method names
 
-h3. The problem
+### The problem
 
 In Ruby, reserved words can used as method names. However, in actuality it’s
 not as simple as “it can be used” – there exist three possible contexts:
@@ -449,7 +449,7 @@ the reserved word that comes after  `def` or `.` or `:` For the latter, make
 that into a rule. Ruby allows for both solutions to be used in each of the
 three cases.
 
-h3. Method definition
+### Method definition
 
 The name part of the method definition. This is handled by the parser.
 
@@ -482,7 +482,7 @@ fname           : tIDENTIFIER
 of simply all terminal symbols lined up, so I won’t go into detail here.
 Finally, for `tFID` the end contains symbols similarly to `gsub!` and `include?`
 
-h3. Method call
+### Method call
 
 Method calls with names identical to reserved words are handled by the scanner.
 The scan code for reserved words is shown below.
@@ -504,7 +504,7 @@ if (lex_state != EXPR_DOT) {
 reserved words are universally not processed. The symbol for reserved words
 after the dot becomes either `tIDENTIFIER` or `tCONSTANT`.
 
-h3. Symbols
+### Symbols
 
 Reserved word symbols are handled by both the scanner and the parser.
 First, the rule.
@@ -577,9 +577,9 @@ When none of the above applies, it’s all symbols. In that case, a transition t
 danger to parsing here, but if this is forgotten, the scanner will not pass
 values to reserved words and value calculation will be disrupted.
 
-h2. Modifiers
+## Modifiers
 
-h3. The problem
+### The problem
 
 For example, for `if` if there exists  a normal notation and one for postfix
 modification.
@@ -621,7 +621,7 @@ As expected, conflicts are aplenty. If you are interested, you add the option
 `-v` to `yacc` and build a log. The nature of the conflicts should be shown
 there in great detail.
 
-h3. Implementation
+### Implementation
 
 So, what is there to do? In Ruby, on the symbol level (that is, on the scanner
 level) the normal `if` is distinguished from the postfix `if` by them being
@@ -717,9 +717,9 @@ break   next    rescue  return
 if      rescue  unless  until   while
 </pre>
 
-h2. The `do` conflict
+## The `do` conflict
 
-h3. The problem
+### The problem
 
 There are two iterator forms - `do`〜`end` and `{`〜`}` Their difference is in
 priority - `{`〜`}` has a much higher priority. A higher priority means that as
@@ -776,7 +776,7 @@ However, not putting `do`〜`end` into `expr` is not a realistic goal. That
 would require all rules for `expr` (as well as for `arg` and `primary`) to be
 repeated. This leaves us only the scanner solution.
 
-h3. Rule-level solution
+### Rule-level solution
 
 Below is a simplified example of a relevant rule.
 
@@ -799,7 +799,7 @@ iterator `do` are different. For the former it’s `kDO_COND` while for the
 latter it’s `kDO` Then it’s simply a matter of pointing that distinction out to
 the scanner.
 
-h3. Symbol-level solution
+### Symbol-level solution
 
 Below is a partial view of the `yylex` section that processes reserved words.
 It’s the only part tasked with processing `do` so looking at this code should
@@ -829,7 +829,7 @@ other conditions alone.
 
 Basically, `COND_P()` is the key.
 
-h3. `COND_P()`
+### `COND_P()`
 
 h4. `cond_stack`
 
@@ -973,9 +973,9 @@ lookahead to occur, so there’s no purpose to make the distinction between `POP
 and `LEXPOP`. Basically, at this time it would be correct to say that
 `COND_LEXPOP()` has no meaning.
 
-h2. `tLPAREN_ARG`(1)
+## `tLPAREN_ARG`(1)
 
-h3. The problem
+### The problem
 
 This one is very complicated. It only became workable in Ruby 1.7 and only
 fairly recently. The core of the issue is interpreting this:
@@ -1035,7 +1035,7 @@ difference.
 ~/src/ruby % cvs diff -r1.99 -r1.100 parse.y
 </pre>
 
-h3. Investigation
+### Investigation
 
 First let us look at how the set-up works in reality. Using the `ruby-lexer`
 tool{`ruby-lexer`: located in `tools/ruby-lexer.tar.gz` on the CD} we can look
@@ -1073,7 +1073,7 @@ For normal expression parentheses it seems to be `tLPAREN`. To sum up:
 Thus the focus is distinguishing between the three. For now `tLPAREN_ARG` is
 the most important.
 
-h3. The case of one parameter
+### The case of one parameter
 
 We’ll start by looking at the `yylex()` section for `'('`
 
@@ -1148,7 +1148,7 @@ will appear from `tLPAREN_ARG` and conflict with `method_call` (see image 3)
 
 !images/ch_contextual_trees.jpg(`method_call` and `command_call`)!
 
-h3. The case of two parameters and more
+### The case of two parameters and more
 
 One might think that if the parenthesis becomes `tLPAREN_ARG` all will be well.
 That is not so. For example, consider the following
@@ -1326,9 +1326,9 @@ And `call_args2` deals with elements containing special types such as `assocs`,
 passing of arrays or passing of blocks. With this, the scope is now
 sufficiently broad.
 
-h2. `tLPAREN_ARG`(2)
+## `tLPAREN_ARG`(2)
 
-h3. The problem
+### The problem
 
 In the previous section I said that the examples provided should be sufficient
 for “most” special method call expressions. I said “most” because iterators are
@@ -1342,7 +1342,7 @@ m (a) do .... end
 In this section we will once again look at the previously introduced parts with
 solving this problem in mind.
 
-h3. Rule-level solution
+### Rule-level solution
 
 Let us start with the rules. The first part here is all familiar rules,
 so focus on the `do_block` part
@@ -1405,7 +1405,7 @@ m((a)) do .... end     # Add do〜end using primary
 
 These two conflict. This is 6 reduce/reduce conflict.
 
-h3. `{`〜`}` iterator
+### `{`〜`}` iterator
 
 This is the important part. As shown previously, you can avoid a conflict by
 changing the `do` and `'{'` symbols.
@@ -1653,7 +1653,7 @@ reduced. This time the lookahead works to our disadvantage. With this it should
 be clear that abusing the lookahead of a LALR parser is pretty tricky and not
 something a novice should be doing.
 
-h3. `do`〜`end` iterator
+### `do`〜`end` iterator
 
 So far we’ve dealt with the `{`〜`}` iterator, but we still have `do`〜`end`
 left. Since they’re both iterators, one would expect the same solutions to work,
@@ -1933,7 +1933,7 @@ This pattern can already be handled using the `do`〜`end` iterator which uses
 `kDO` and is defined in `primary` Thus, including that case would cause another
 conflict.
 
-h3. Reality and truth
+### Reality and truth
 
 Did you think we’re done? Not yet.
 Certainly, the theory is now complete, but only if everything that has been

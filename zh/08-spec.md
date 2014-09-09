@@ -27,7 +27,7 @@ The expressiveness of Ruby's string is very various even more than the
 other Ruby's literals.
 字符串和正则表达式不应在任何脚本语言中缺失遗漏，Ruby的字符串的表现力比其他字面值都强。
 
-#### Single Quoted Strings
+#### 单引号字符串(Single Quoted Strings)
 
 <pre class="emlist">
 'string'              # 「string」
@@ -60,7 +60,7 @@ Shift JIS (`-Ks`), and UTF8 (`-Ku`) can be specified.
 # 'There's a little difference between "Kanji are accepted" and "Multibyte characters are accepted".'
 </pre>
 
-#### Double Quoted Strings
+#### 双引号字符串(Double Quoted Strings)
 
 <pre class="emlist">
 "string"              # 「string」
