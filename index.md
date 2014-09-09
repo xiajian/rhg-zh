@@ -54,6 +54,16 @@ Ruby Hacking Guide中文版 就是将[Ruby Hacking Guide](http://ruby-hacking-gu
 - [Markdown语法](/rhg-zh/zh/markdown)
 - [Liquid模板语言](/rhg-zh/zh/liquid)
 
+## **附录**
+----
+- [Ruby语言参考手册](http://www.ruby-doc.org/docs/ruby-doc-bundle/Manual/man-1.4/index.html)
+  * [前言](/rhg-zh/zh/)
+  * [命令行选项](/rhg-zh/zh/)
+  * [Ruby语法](/rhg-zh/zh/)
+  * [标准库](/rhg-zh/zh/)
+  * [Bundled库](/rhg-zh/zh/)
+  * [Ruby语法的伪BNF表达](/rhg-zh/zh/)
+
 ## **致谢**
 ----
 
