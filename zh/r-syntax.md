@@ -3,10 +3,14 @@ layout: post
 title: Ruby语法
 ---
 
-Lexical structure
+## Lexical structure
+----
 
 The character set used in the Ruby source files for the current implementation is based on ASCII. The case of characters in source files is significant. All syntactic constructs except identifiers and certain literals may be separated by an arbitrary number of whitespace characters and comments. The whitespace characters are space, tab, vertical tab, backspace, carriage return, and form feed. Newlines works as whitespace only when expressions obviously continues to the next line.
-Identifiers
+
+在Ruby源程序文件的字符集的当前实现是基于ASCII。在源文件中的字符是显著的。除了标识符和某些字面值，所有的句法结构都可被任意数目的空白符和注释所分隔。空白符可以是空格，水平和垂直制表符，退格符，回车和换页符。仅当表达式明显延续到下一行时，新行被看作是空白符。
+
+### Identifiers
 
 Examples:
 
@@ -14,26 +18,36 @@ Examples:
 	ruby_is_simple
 
 Ruby identifiers are consist of alphabets, decimal digits, and the underscore character, and begin with a alphabets(including underscore). There are no restrictions on the lengths of Ruby identifiers.
-Comment
+
+Ruby的标识符由字母，数字和下划线构成，并且以字母(包括下划线)。Ruby标识符的长度没有限制。
+
+### Comment
 
 Examples:
 
 	# this is a comment line
 
 Ruby comments start with "#" outside of a string or character literal (?#) and all following text until the end of the line.
-Embedded Documentation
+
+Ruby中的注释是以"#"开头的字符串。
+
+### Embedded Documentation
 
 Example:
 
 	=begin
-	the everything between a line beginning with `=begin' and
-	that with `=end' will be skipped by the interpreter.
+	the everything between a line beginning with '=begin' and
+	that with '=end' will be skipped by the interpreter.
 	=end
 
 If the Ruby interpreter encounters a line beginning with =begin, it skips that line and all remaining lines through and including a line that begins with =end.
-Reserved words
+
+如果Ruby解释器遇到以=begin开头的行，它将跳过所有剩下的行，直到遇到以=end为开头的行。
+
+### Reserved words
 
 The reserved words are:
+保留关键字是:
 
 	BEGIN	 class	  ensure   nil	    self     when
 	END	 def	  false    not	    super    while
@@ -43,14 +57,19 @@ The reserved words are:
 	break	 elsif	  module   retry    unless
 	case	 end	  next	   return   until
 
-Program
+## Program
+----
 
 Example:
 
 	print "hello world!\n"
 
 Ruby programs are sequence of expressions. Each expression are delimited by semicolons(;) or newlines. Backslashes at the end of line does not terminate expression.
-Expression
+
+Ruby程序就是一系列的表达式。每个表达式通过';'或者换行符(newline)进行分隔。行末的反斜杠用来延续表达式，这一点跟C类似。
+
+## Expression
+----
 
 Examples:
 
@@ -60,7 +79,9 @@ Examples:
 	if test then ok else ng end
 
 Ruby expressions can be grouped by parentheses.
-String literals
+Ruby表达式可通过括号分组。
+
+### String literals
 
 Examples:
 
@@ -73,42 +94,35 @@ Examples:
 
 String expressions begin and end with double or single quote marks. Double-quoted string expressions are subject to backslash escape and expression substitution. Single-quoted strings are not (except for \' and \\).
 
-The string expressions begin with % are the special form to avoid putting too many backslashes into quoted strings. The %q/STRING/ expression is the generalized single quote. The %Q/STRING/ (or %/STRING/) expression is the generalized double quote. Any non-alphanumeric delimiter can be used in place of /, including newline. If the delimiter is an opening bracket or parenthesis, the final delimiter will be the corresponding closing bracket or parenthesis. (Embedded occurrences of the closing bracket need to be backslashed as usual.)
-Backslash notation
+字符串通过单双引号应用。双引用字符串表示接受反斜杠的转义符以及字符串替换，单引号字符串仅接受转义\'和\\。
 
-    \t
-        tab(0x09) 
-    \n
-        newline(0x0a) 
-    \r
-        carriage return(0x0d) 
-    \f
-        form feed(0x0c) 
-    \b
-        backspace(0x08) 
-    \a
-        bell(0x07) 
-    \e
-        escape(0x1b) 
-    \s
-        whitespace(0x20) 
-    \nnn
-        character in octal value nnn 
-    \xnn
-        character in hexadecimal value nn 
-    \cx
-        control x 
-    \C-x
-        control x 
-    \M-x
-        meta x (c | 0x80) 
-    \M-\C-x
-        meta control x 
-    \x
-        character x itself 
+The string expressions begin with % are the special form to avoid putting too many backslashes into quoted strings. The %q/STRING/ expression is the generalized single quote. The %Q/STRING/ (or %/STRING/) expression is the generalized double quote. Any non-alphanumeric delimiter can be used in place of /, including newline. If the delimiter is an opening bracket or parenthesis, the final delimiter will be the corresponding closing bracket or parenthesis. (Embedded occurrences of the closing bracket need to be backslashed as usual.)
+
+以%开头的字符串表达式是一种特殊的形式，用来避免在引用字符串中放置太多的反斜杠。%q/STRING/是广义单引号字符串表达式，%Q/STRING/(或者%/STRING/)是双引号字符串的通用形式。任何非字母数字符可用来代替/，包括换行符。注意分隔符前后一致，{对}、(对)。
+
+### 反斜杠记号(Backslash notation)
+
+    \t       tab(0x09)                            制表符
+    \n       newline(0x0a)                        换行 
+    \r       carriage return(0x0d)                回车
+    \f       form feed(0x0c)                      分页符
+    \b       backspace(0x08)                      退格符
+    \a       bell(0x07)           
+    \e       escape(0x1b)                         转义符
+    \s       whitespace(0x20)                     空白符
+    \nnn     character in octal value nnn         十进制字符
+    \xnn     character in hexadecimal value nn    十六进制字符
+    \cx      control x                            control + x
+    \C-x     control x                            control + x
+    \M-x     meta x (c | 0x80)                    meta键就是alt
+    \M-\C-x  meta control x 
+    \x       character x itself 
 
 The string literal expression yields new string object each time it evaluated.
-Command output
+
+字符串表达式在每次求值时，都获取新的字符串对象。
+
+### Command output
 
 Examples:
 
@@ -117,8 +131,13 @@ Examples:
 
 Strings delimited by backquotes are performed by a subshell after escape sequences interpretation and expression substitution. The standard output from the commands are taken as the value. Commands performed each time they evaluated.
 
+以反引号分隔的字符串在转义序列解析和表达式替换后，由子shell执行。命令的标准输出将作为字符串的值。命名在每次求值时被执行。
+
 The %x/STRING/ is the another form of the command output expression.
-Regular expression
+
+%x/STRING/是命令输出表达式的另一种形式。
+
+### Regular expression
 
 Examples:
 
@@ -129,84 +148,67 @@ Examples:
 
 Strings delimited by slashes are regular expressions. The characters right after latter slash denotes the option to the regular expression. Option i means that regular expression is case insensitive. Option i means that regular expression does expression substitution only once at the first time it evaluated. Option x means extended regular expression, which means whitespaces and commens are allowd in the expression. Option p denotes POSIX mode, in which newlines are treated as normal character (matches with dots).
 
+由反斜杠分隔的字符串是正则表达式，右侧的符号意味着正则表达式的选项。选项i表明正则表达式是大小写不敏感的，选项x表明使用扩展正则表达式(可以使用空格和注释)，选项p意味着POSIX模式(换行被看作常规字符，可被.匹配)。
+
 The %r/STRING/ is the another form of the regular expression.
 
-    ^
-        beginning of a line or string 
-    $
-        end of a line or string 
-    .
-        any character except newline 
-    \w
-        word character[0-9A-Za-z_] 
-    \W
-        non-word character 
-    \s
-        whitespace character[ \t\n\r\f] 
-    \S
-        non-whitespace character 
-    \d
-        digit, same as[0-9] 
-    \D
-        non-digit 
-    \A
-        beginning of a string 
-    \Z
-        end of a string, or before newline at the end 
-    \z
-        end of a string 
-    \b
-        word boundary(outside[]only) 
-    \B
-        non-word boundary 
-    \b
-        backspace(0x08)(inside[]only) 
-    [ ]
-        any single character of set 
-    *
-        0 or more previous regular expression 
-    *?
-        0 or more previous regular expression(non greedy) 
-    +
-        1 or more previous regular expression 
-    +?
-        1 or more previous regular expression(non greedy) 
-    {m,n}
-        at least m but most n previous regular expression 
-    {m,n}?
-        at least m but most n previous regular expression(non greedy) 
-    ?
-        0 or 1 previous regular expression 
-    |
-        alternation 
-    ( )
-        grouping regular expressions 
-    (?# )
-        comment 
-    (?: )
-        grouping without backreferences 
-    (?= )
-        zero-width positive look-ahead assertion 
-    (?! )
-        zero-width negative look-ahead assertion 
-    (?ix-ix)
-        turns on (or off) `i' and `x' options within regular expression. These modifiers are localized inside an enclosing group (if any). 
-    (?ix-ix: )
-        turns on (or off) `i' and `x' options within this non-capturing group. 
+ %r/STRING/是正则表达式的另一种形式。
+
+    ^          beginning of a line or string 
+    $          end of a line or string 
+    .          any character except newline 
+    \w         word character[0-9A-Za-z_] 
+    \W         non-word character 
+    \s         whitespace character[ \t\n\r\f] 
+    \S         non-whitespace character 
+    \d         digit, same as[0-9] 
+    \D         non-digit 
+    \A         beginning of a string 
+    \Z         end of a string, or before newline at the end 
+    \z         end of a string 
+    \b         word boundary(outside[]only) 
+    \B         non-word boundary 
+    \b         backspace(0x08)(inside[]only) 
+    [ ]        any single character of set 
+    *          0 or more previous regular expression 
+    *?         0 or more previous regular expression(non greedy) 
+    +          1 or more previous regular expression 
+    +?         1 or more previous regular expression(non greedy) 
+    {m,n}      at least m but most n previous regular expression 
+    {m,n}?     at least m but most n previous regular expression(non greedy) 
+    ?          0 or 1 previous regular expression 
+    |          alternation 
+    ( )        grouping regular expressions 
+    (?# )      comment 
+    (?: )      grouping without backreferences 
+    (?= )      zero-width positive look-ahead assertion 
+    (?! )      zero-width negative look-ahead assertion 
+    (?ix-ix)   turns on (or off) 'i' and 'x' options within regular expression. These modifiers are localized inside an enclosing group (if any). 
+    (?ix-ix: ) turns on (or off) 'i' and 'x' options within this non-capturing group. 
 
 Backslash notation and expression substitution available in regular expressions.
-Expression substitution in strings
+
+反斜杠记号和表达式替换可在正则表达式中使用。
+
+### 字符串中的表达式替换(Expression substitution in strings)
 
 Examples:
 
 	"my name is #{$ruby}"
 
-In double-quoted strings, regular expressions, and command output expressions, the form like "#{expression}" extended to the evaluated result of that expression. If the expressions are the variables which names begin with the character either `$',`@', expressions are not needed to be surrounded by braces. The character `#' is interpreted literally if it it not followed by characters `{',`$',`@'.
-line-oriented string literals (Here document)
+In double-quoted strings, regular expressions, and command output expressions, the form like "#{expression}" extended to the evaluated result of that expression. If the expressions are the variables which names begin with the character either '$','@', expressions are not needed to be surrounded by braces. The character '#' is interpreted literally if it it not followed by characters '{','$','@'.
 
-There's a line-oriente form of the string literals that is usually called as `here document'. Following a << you can specify a string or an identifier to terminate the string literal, and all lines following the current line up to the terminator are the value of the string. If the terminator is quoted, the type of quotes determines the type of the line-oriented string literal. Notice there must be no space between << and the terminator.
+在双引号字符串中，正则表达式、命令输出表达式以及形如"#{expression}"的表达式，将会被扩展为表达式求值的结果。如果表达式是以$或@开头的字符，不需要使用括号包围。如果#之后没有后接{,$或@，就被看作为简单的字符。
+
+### 行导向的字符串字面值-line-oriented string literals (Here document)
+
+There's a line-oriente form of the string literals that is usually called as 'here document'. Following a << you can specify a string or an identifier to terminate the string literal, and all lines following the current line up to the terminator are the value of the string. If the terminator is quoted, the type of quotes determines the type of the line-oriented string literal. Notice there must be no space between << and the terminator.
+
+行导向的字符串字面值通常被称为`here文档`。在<<之后，可以指定一个字符串或者标识符作为字符串的字符串的终结符。在终结符之间的所有行都是字符串的值。如果终结符是引用，引用类型决定了面向行的字符串字面值。注意：<<和终结符之间不能包含空格。
 
 If the - placed before the delimiter, then all leading whitespcae characters (tabs or spaces) are stripped from input lines and the line containing delimiter. This allows here-documents within scripts to be indented in a natural fashion.
+
+如果-放置在分隔符前，输入行中所有的领导的空白字符(tabs或空格)都将被遗弃。这允许here文档内嵌脚本时，可以使用自然的样式。
 
 	  print <<EOF
 	The price is #{$Price}.
@@ -242,55 +244,54 @@ If the - placed before the delimiter, then all leading whitespcae characters (ta
 	    EOS
           end
 
-Numeric literals
+### 数值字面值(Numeric literals)
 
-123
-    integer 
--123
-    integer(signed) 
-1_234
-    integer(underscore within decimal numbers ignored) 
-123.45
-    floating point number 
-1.2e-3
-    floating point number 
-0xffff
-    hexadecimal integer 
-0b01011
-    binary integer 
-0377
-    octal integer 
-?a
-    ASCII code for character `a'(97) 
-?\C-a
-    Control-a(1) 
-?\M-a
-    Meta-a(225) 
-?\M-\C-a
-    Meta-Control-a(129) 
-:symbol
-    Integer corresponding identifiers, variable names, and operators. 
+    123       integer-整数 
+    -123      integer(signed) - 带符号整数
+    1_234     integer(underscore within decimal numbers ignored) - 整数(整数中的下划线将被忽略)
+    123.45    floating point number 
+    1.2e-3    floating point number 
+    0xffff    hexadecimal integer - 十六进制数
+    0b01011   binary integer - 二进制数
+    0377      octal integer - 八进制数
+    ?a        ASCII code for character 'a'(97) - 字符a的ASCII码
+    ?\C-a     Control-a(1) 
+    ?\M-a     Meta-a(225) 
+    ?\M-\C-a  Meta-Control-a(129) 
+    :symbol   Integer corresponding identifiers, variable names, and operators. - 整数对应的标识符，变量名和操作符
 
 In ?-representation all backslash notations are available.
-Variables and constants
+
+在?-表示中，所有反斜杠符号都可用。
+
+### Variables and constants
 
 The variable in Ruby programs can be distinguished by the first character of its name. They are either global variables, instance variables, local variables, and class constants. There are no restriction for variable name length (except heap size).
-Global variables
+
+Ruby程序中的变量可通过名字的第一个字符加以区分。变量可以是全局变量，实例变量，局部变量和类常量。除了堆大小，对变量名的长度并没有限制。
+
+### Global variables
 
 Examples:
 
 	$foobar
 	$/
 
-The variable which name begins with the character `$', has global scope, and can be accessed from any location of the program. Global variables are available as long as the program lives. Non-initialized global variables has value nil.
-Instance variables
+The variable which name begins with the character '$', has global scope, and can be accessed from any location of the program. Global variables are available as long as the program lives. Non-initialized global variables has value nil.
+
+以$开头的变量，拥有全局的作用域，并且可以从程序的任意地方访问。全局变量同程序存活时间相当。未初始化的全局变量值为nil。
+
+### Instance variables
 
 Examples:
 
 	@foobar
 
-The variable which name begins which the character `@', is an instance variable of self. Instance variables are belong to the certain object. Non-initialized instance variables has value nil.
-Constants
+The variable which name begins which the character '@', is an instance variable of self. Instance variables are belong to the certain object. Non-initialized instance variables has value nil.
+
+以@开头的变量是自生的实例变量。实例变量属于某些对象，未初始化时值为nil。
+
+### Constants
 
 Examples:
 
@@ -298,25 +299,41 @@ Examples:
 
 The identifier which name begins with upper case letters ([A-Z]) is an constant. The constant definitions are done by assignment in the class definition body. Assignment to the constants must be done once. Changing the constant value or accessing to the non-initialized constants raises a NameError exception.
 
+以大写字母[A-Z]开头的标识符表示常量。常量的定义通过在类的定义中赋值，赋值必须一次完成。改变常量的值或者访问未初始化的常量将引发NameError异常。
+
 The constants can be accessed from:
 
-    the class or module body in which the constant is defined, including the method body and the nested module/class definition body.
-    the class which inherit the constant defining class.
-    the class or module which includes the constant defining module. 
+常量可通过如下三种情况中被访问:
+
+-  the class or module body in which the constant is defined, including the method body and the nested module/class definition body.
+-  常量所定义的类或模块体，包括方法体，嵌套的模块/类定义体。
+-  the class which inherit the constant defining class.
+-  继承了定义常量的类
+-  the class or module which includes the constant defining module. 
+-  通过include方法包含常量所定义的类或模块
 
 Class definition defines the constant automatically, all class names are constants.
 
+类型定义自动定义常量，所有的类名都是常量。
+
 To access constants defined in certain class/module, operator :: can be used.
 
+可通过::来访问某些类/模块中定义的常量。
+
 To access constants defined in the Object class, operator :: without the left hand side operand can be used.
+
+通过::可以直接访问Object类中定义的常量。
 
 Examples:
 
 	Foo::Bar
 	::Bar
 
-No assignment using operator `::' is permitted.
-Local variables
+No assignment using operator '::' is permitted.
+
+任何赋值都不可以使用::操作符。
+
+### Local variables
 
 Examples:
 
@@ -324,7 +341,11 @@ Examples:
 
 The identifier which name begins with lower case character or underscore, is a local variable or a method invocation. The first assignment in the local scope (bodies of class, module, method definition) to such identifiers are declarations of the local variables. Non-declared identifiers are method invocation without arguments.
 
-The local variables assigned first time in the blocks are only valid in that block. They are called `dynamic variables.' For example:
+以小写字符或下划线开头的标识符是局部变量或者方法调用。在局部作用域中(类、模块或方法定义体)中，对标识符的第一次赋值就是局部变量的声明。未定义的标识符看作为没有参数的方法调用。
+
+The local variables assigned first time in the blocks are only valid in that block. They are called 'dynamic variables'. For example:
+
+在代码块中第一次赋值的局部变量仅在块中有效。这被称为`动态类型`。例如: 
 
 	i0 = 1
 	loop {
@@ -336,25 +357,24 @@ The local variables assigned first time in the blocks are only valid in that blo
 	print defined?(i0), "\n"	# true
 	print defined?(i1), "\n"	# false
 
-Pseudo variables
+### 伪变量(Pseudo variables)
 
-There are special variables called `pseudo variables'.
+There are special variables called 'pseudo variables'.
 
-    self
-        the receiver of the current method 
-    nil
-        the sole instance of the Class NilClass(represents false) 
-    true
-        the sole instance of the Class TrueClass(typical true value) 
-    false
-        the sole instance of the Class FalseClass(represents false) 
-    __FILE__
-        the current source file name. 
-    __LINE__
-        the current line number in the source file. 
+存在一些称为伪变量的特殊变量:
+
+    self      the receiver of the current method 当前方法的接收器
+    nil       the sole instance of the Class NilClass(represents false) NilClass类的唯一实例
+    true      the sole instance of the Class TrueClass(typical true value) TrueClass类的唯一实例
+    false     the sole instance of the Class FalseClass(represents false) FalseClass类的唯一实例
+    __FILE__  the current source file name. 当前程序的文件名
+    __LINE__  the current line number in the source file. 当前源文件的当前行
 
 The values of the pseudo variables cannot be changed. Assignment to these variables causes exceptions.
-Array expression
+
+伪变量的值不可改变，赋值给这样的变量将会引发异常。
+
+### Array expression
 
 Examples:
 
@@ -362,16 +382,21 @@ Examples:
 
 Syntax:
 
-	`[' expr,...`]'
+	'[ expr,...]'
 
 Returns an array, which contains result of each expressions. Arrays are instances of the class Array.
 
+'[ expr,...]'返回包含每个表达式结果的数组，数组是类Array的实例。
+
 %w expressions make creation of the arrays of strings easier. They are equivalent to the single quoted strings split by the whitespaces. For example:
 
-	%w(foo bar baz)
+%w(foo bar baz)
 
 is equivalent to ["foo", "bar", "baz"]. Note that parenthesis right after %s is the quote delimiter, not usual parenthesis.
-Hash expression
+
+%w表达式使得数组字符串的创建更加容易，其等价于有空格分隔的单引号字符串。例如:	%w(foo bar baz) 等价于["foo", "bar", "baz"]。注意，%w之后的括号是引用分隔符而不是通常的括号。
+
+### Hash expression
 
 Examples:
 
@@ -382,7 +407,11 @@ Syntax:
 	{ expr => expr...}
 
 Returns a new Hash object, which maps each key to corresponding value. Hashes are instances of the class Hash.
-Method invocation
+
+{ expr => expr...}返回Hash对象，其中将每个键映射到对应的值。Hash对象是类Hash的实例。
+
+
+### 方法调用(Method invocation)
 
 Examples:
 
@@ -394,12 +423,16 @@ Examples:
 
 Syntax:
 
-[expr `.'] identifier [`(' expr...[`*' [expr]],[`&' ] expr`)']
-[expr `::'] identifier [`(' expr...[`*' [expr]],[`&' expr] `)']
+[expr '.'] identifier ['(' expr...['*' [expr]],['&' ] expr')']
+[expr '::'] identifier ['(' expr...['*' [expr]],['&' expr] ')']
 
 Method invocation expression invokes the method of the receiver (right hand side expression of the dot) specified by the identifier. If no receiver specified, self is used as a receiver.
 
+方法调用表达式调用接收器的方法(点号右侧的表达式)，如果没有指定接收器，则使用self作为接收器。
+
 Identifier names are normal identifiers and identifier suffixed by character ? or !. As a convention, identifier? are used as predicate names, and identifier! are used for the more destructive (or more dangerous) methods than the method which have same name without !.
+
+标识符名是常规的标识符，且其后缀可以是?或者!。作为惯例，identifier?用作谓词方法，而identifier!则是比不带！更具破坏性(或危险)的方法
 
 If the last argument expression preceded by *, the value of the expression expanded to arguments, that means
 
@@ -409,10 +442,17 @@ equals
 
 	foo(1,2,3)
 
+如果方法调用中的最后的参数以* 开头，则表达式的值将会被扩展为参数，比如`foo(*[1,2,3])` 等价于foo(1,2,3)。
+
 If the last argument expression preceded by &, the value of the expression, which must be a Proc object, is set as the block for the calling method.
 
+如果最后的参数以&作为前缀，则表达式的值必须是Proc对象，从而为调用方法设置块。
+
 Some methods are private, and can be called from function form invocations (the forms that omits receiver).
-super
+
+某些私有的方法，可以通过函数形式(即忽略接受者的方法)来调用
+
+### super
 
 Examples:
 
@@ -425,7 +465,10 @@ Syntax:
 	super(expr,...)
 
 the super invokes the method which the current method overrides. If no arguments given, arguments to the current method passed to the method.
-Assignment
+
+super调用当前方法所覆盖的父类的方法。如果给定了参数，则参数将会传递给父类的方法。
+
+### Assignment
 
 Examples:
 
@@ -437,28 +480,32 @@ Syntax:
 
 	variable '=' expr
 	constant '=' expr
-	expr`['expr..`]' '=' expr
-	expr`.'identifier '=' expr
+	expr'['expr..']' '=' expr
+	expr'.'identifier '=' expr
 
 Assignment expression are used to assign objects to the variables or such. Assignments sometimes work as declarations for local variables or class constants. The left hand side of the assignment expressions can be either:
 
-    variables
+赋值表达式用来给变量赋值对象。赋值有时用作局部变量或类常量的申明。赋值表达式的左值可以是如下这些类型:
 
-    	variables `=' expression
+- variables 变量
+      
+        variables '=' expression  
+        If the left hand side is a variables, then assignment is directly performed.
+        如果左边是变量，赋值将直接执行。
 
-    If the left hand side is a variables, then assignment is directly performed.
-    array reference
+- array reference 数组引用
 
-    	expr1`[' expr2...`]' `=' exprN
+    	   expr1'[' expr2...']' '=' exprN
+         This from is evaluated to the invocation of the method named []=, with expr1 as the receiver, and values expr2 to exprN as arguments.
+         这种形式将对expr1调用[]=方法，并expr2至exprN用作参数。
 
-    This from is evaluated to the invocation of the method named []=, with expr1 as the receiver, and values expr2 to exprN as arguments.
-    attribute reference
+- attribute reference 属性引用
 
-    	expr `.' identifier `=' expr
+    	   expr '.' identifier '=' expr
+         This from is evaluated to the invocation of the method named identifier= with the right hand side expression as a argument.
+         这种格式是通过调用expr的identifier=方法，并将右边的表达式用作参数。
 
-    This from is evaluated to the invocation of the method named identifier= with the right hand side expression as a argument.
-
-self assignment
+### 自赋值(self assignment)
 
 Examples:
 
@@ -470,10 +517,13 @@ Syntax:
 
 This form evaluated as expr = expr op expr. But right hand side expression evaluated once. op can be one of:
 
+上述赋值形式为expr = expr op expr。但是右边的表达式近被求值一次。op可以为如下的这些: 
+
 	+, -, *, /, %, **, &, |, ^, <<, >>, &&, ||
 
 There may be no space between operators and =.
-Multiple assignment
+
+### Multiple assignment
 
 Examples:
 
@@ -483,8 +533,8 @@ Examples:
 
 Syntax:
 
-	expr `,' [expr `,'...] [`*' expr] = expr [, expr...][`*' [expr]]
-	`*' expr = expr [, expr...][`*' expr]
+	expr ',' [expr ','...] ['*' expr] = expr [, expr...]['*' [expr]]
+	'*' expr = expr [, expr...]['*' expr]
 
 Multiple assignment form performs multiple assignment from expressions or an array. Each left hand side expression must be assignable. If single right hand side expression given, the value of the expression converted into an array, then each element in array assigned one by one to the left hand side expressions. If number of elements in the array is greater than left hand sides, they are just ignored. If left hand sides are longer than the array, nil will be added to the locations.
 
@@ -499,7 +549,8 @@ Multiple assignment acts like this:
 	foo,*bar = 1, 2, 3	# foo = 1; bar = [2, 3]
 
 The value of the multiple assignment expressions are the array used to assign.
-Operator expressions
+
+### Operator expressions
 
 Examples:
 
@@ -530,10 +581,12 @@ Most of operators are just method invocation in special form. But some operators
 	=, .., ..., !, not, &&, and, ||, or, !=, !~ 
 
 In addition, assignment operators(+= etc.) are not user-definable.
-Control structure
+
+### Control structure
 
 Control structures in Ruby are expressions, and have some value. Ruby has the loop abstraction feature called iterators. Iterators are user-definable loop structure.
-if
+
+**if**
 
 Examples:
 
@@ -560,7 +613,7 @@ If conditional part of if is the regular expression literal, then it evaluated l
 
 	$_ =~ /re/
 
-if modifier
+**if modifier**
 
 Examples:
 
@@ -571,7 +624,8 @@ Syntax:
 	expr if expr
 
 executes left hand side expression, if right hand side expression is true.
-unless
+
+**unless**
 
 Examples:
 
@@ -597,7 +651,7 @@ unless expressions are used for reverse conditional execution. It is equivalent 
 	  ...
 	end
 
-unless modifier
+**unless modifier**
 
 Examples:
 
@@ -608,7 +662,8 @@ Syntax:
 	expr unless expr
 
 executes left hand side expression, if right hand side expression is false.
-case
+
+**case**
 
 Examples:
 
@@ -658,7 +713,8 @@ is basically same to below:
 	end
 
 Behavior of the === method varies for each Object. See docutmentation for each class.
-and
+
+**and**
 
 Examples:
 
@@ -667,11 +723,12 @@ Examples:
 
 Syntax:
 
-	expr `&&' expr
-	expr `and' expr
+	expr '&&' expr
+	expr 'and' expr
 
 Evaluates left hand side, then if the result is true, evaluates right hand side. and is lower precedence alias.
-or
+
+**or**
 
 Examples:
 
@@ -680,11 +737,12 @@ Examples:
 
 Syntax:
 
-	expr `||' expr
+	expr '||' expr
 	expr or expr
 
 Evaluates left hand side, then if the result is false, evaluates right hand side. or is lower precedence alias.
-not
+
+**not**
 
 Examples:
 
@@ -694,19 +752,20 @@ Examples:
 
 Syntax:
 
-	`!' expr
+	'!' expr
 	not expr
 
 Returns true if false, false if true.
 
-	expr `!=' expr
+	expr '!=' expr
 
 Syntax sugar for !(expr == expr).
 
-	expr `!~' expr
+	expr '!~' expr
 
 Syntax sugar for !(expr =~ expr).
-Range expressions
+
+### Range expressions
 
 Examples:
 
@@ -715,13 +774,14 @@ Examples:
 
 Syntax:
 
-	expr `..' expr
-	expr `...' expr
+	expr '..' expr
+	expr '...' expr
 
 If range expression appears in any other place than conditional expression, it returns range object from left hand side to right hand side.
 
 If range expression appears in conditional expression, it gives false until left hand side returns true, it stays true until right hand side is true. .. acts like awk, ... acts like sed.
-while
+
+**while**
 
 Examples:
 
@@ -736,7 +796,8 @@ Syntax:
 	end
 
 Executes body while condition expression returns true.
-while modifier
+
+**while modifier**
 
 Examples:
 
@@ -747,7 +808,8 @@ Syntax:
 	expr while expr
 
 Repeats evaluation of left hand side expression, while right hand side is true. If left hand side is begin expression, while evaluates that expression at lease once.
-until
+
+**until**
 
 Examples:
 
@@ -762,7 +824,8 @@ Syntax:
 	end
 
 Executes body until condition expression returns true.
-until modifier
+
+**until modifier**
 
 Examples:
 
@@ -773,7 +836,8 @@ Syntax:
 	expr until expr
 
 Repeats evaluation of left hand side expression, until right hand side is true. If left hand side is begin expression, until evaluates that expression at lease once.
-Iterators
+
+### Iterators
 
 Examples:
 
@@ -782,8 +846,8 @@ Examples:
 
 Syntax:
 
-	method_call do [`|' expr...`|'] expr...end
-	method_call `{' [`|' expr...`|'] expr...`}'
+	method_call do ['|' expr...'|'] expr...end
+	method_call '{' ['|' expr...'|'] expr...'}'
 
 The method may be invoked with the block (do .. end or {..}). The method may be evaluate back that block from inside of the invocation. The methods that calls back the blocks are sometimes called as iterators. The evaluation of the block from iterator is done by yield.
 
@@ -797,13 +861,13 @@ The difference between do and braces are:
     Braces introduce the nested local scopes, that is newly declared local variables in the braces are valid only in the blocks. For example:
 
     	foobar {
-    	  i = 20		# local variable `i' declared in the block.
+    	  i = 20		# local variable 'i' declared in the block.
     	  ...
     	}
-    	print defined? i	# `i' is not defined here.     
+    	print defined? i	# 'i' is not defined here.     
     	foobar a, b { .. }	# it is not valid outside of the block
 
-for
+**for**
 
 Examples:
 
@@ -819,9 +883,9 @@ Syntax:
 
 Executes body for each element in the result of expression. for is the syntax sugar for:
 
-	(expr).each `{' `|' lhs..`|' expr.. `}'
+	(expr).each '{' '|' lhs..'|' expr.. '}'
 
-yield
+**yield**
 
 Examples:
 
@@ -829,11 +893,12 @@ Examples:
 
 Syntax:
 
-	yield `(' [expr [`,' expr...]])
-	yield [expr [`,' expr...]]
+	yield '(' [expr [',' expr...]])
+	yield [expr [',' expr...]]
 
 Evaluates the block given to the current method with arguments, if no argument is given, nil is used as an argument. The argument assignment to the block prameter is done just like multiple assignment. If the block is not supplied for the current method, the exception is raised.
-raise
+
+**raise**
 
 Examples:
 
@@ -854,8 +919,9 @@ Raises a exception. In the first form, re-raises last exception. In second form,
 
 The exception is assigned to the variable $!, and the position in the source file is assigned to the $@.
 
-The word `raise' is not the reserved word in Ruby. raise is the method of the Kernel module. There is an alias named fail.
-begin
+The word 'raise' is not the reserved word in Ruby. raise is the method of the Kernel module. There is an alias named fail.
+
+**begin**
 
 Examples:
 
@@ -888,7 +954,8 @@ The begin statement has an optional else clause, which must follow all rescue cl
 For the rescue clauses, the error_type is evaluated just like the arguments to the method call, and the clause matches if the value of the variable $! is the instance of any one of the error_type of its subclass. If error_type is not class nor module, the rescue clause raises TypeError exception.
 
 If ensure clause given, its clause body executed whenever beginbody exits.
-retry
+
+**retry**
 
 Examples:
 
@@ -920,7 +987,8 @@ If retry appears in the iterator, the block, or the body of the for expression, 
 	end
 
 retry out of rescue clause or iterators raises exception.
-return
+
+**return**
 
 Examples:
 
@@ -930,10 +998,11 @@ Examples:
 
 Syntax:
 
-	return [expr[`,' expr...]]
+	return [expr[',' expr...]]
 
 Exits from method with the return value. If more than two expressions are given, the array contains these values will be the return value. If no expression given, nil will be the return value.
-break
+
+**break**
 
 Examples:
 
@@ -948,7 +1017,8 @@ Syntax:
 	break
 
 Exits from the most internal loop. Notice break does not exit from case expression like C.
-next
+
+**next**
 
 Examples:
 
@@ -959,7 +1029,8 @@ Syntax:
 	next
 
 Jumps to next iteration of the most internal loop.
-redo
+
+**redo**
 
 Examples:
 
@@ -970,7 +1041,8 @@ Syntax:
 	redo
 
 Restarts this iteration of the most internal loop, without checking loop condition.
-BEGIN
+
+### BEGIN
 
 Examples:
 
@@ -989,7 +1061,8 @@ Registers the initialize routine. The block followed after BEGIN is evaluated be
 The BEGIN block introduce new local-variable scope. They don't share local variables with outer statements.
 
 The BEGIN statement can only appear at the toplevel.
-END
+
+### END
 
 Examples:
 
@@ -1006,7 +1079,8 @@ Registers finalize routine. The block followed after END is evaluated just befor
 The END statement registers its block only once at the first execution. If you want to register finalize routines many times, use at_exit.
 
 The END statement can only appear at the toplevel. Also you cannot cancel finalize routine registered by END.
-Class definitions
+
+### Class definitions
 
 Examples:
 
@@ -1019,12 +1093,13 @@ Examples:
 
 Syntax:
 
-	class identifier [`<' superclass ]
+	class identifier ['<' superclass ]
 	  expr..
 	end
 
 Defines the new class. The class names are identifiers begin with uppercase character.
-Singleton-class definitions
+
+### Singleton-class definitions
 
 Examples:
 
@@ -1037,12 +1112,13 @@ Examples:
 
 Syntax:
 
-	class `<<' expr
+	class '<<' expr
 	  expr..
 	end
 
 Defines the class attribute for certain object. The definitions within this syntax only affect the specified object.
-Module definitions
+
+### Module definitions
 
 Examples:
 
@@ -1060,7 +1136,8 @@ Syntax:
 	end
 
 Defines the new module The module names are identifiers begin with uppercase character.
-Method definitions
+
+### Method definitions
 
 Examples:
 
@@ -1074,7 +1151,7 @@ Examples:
 
 Syntax:
 
-	def method_name [`(' [arg ['=' default]]...[`,' `*' arg ]`)']
+	def method_name ['(' [arg ['=' default]]...[',' '*' arg ]')']
 	  expr..
 	end
 
@@ -1094,12 +1171,13 @@ The method definitions can not be nested.
 
 The return value of the method is the value given to the return, or that of the last evaluated expression.
 
-Some methods are marked as `private', and must be called in the function form.
+Some methods are marked as 'private', and must be called in the function form.
 
-When the method is defined outside of the class definition, the method is marked as private by default. On the other hand, the methods defined in the class definition are marked as public by default. The default visibility and the `private' mark of the methods can be changed by public or private of the Module.
+When the method is defined outside of the class definition, the method is marked as private by default. On the other hand, the methods defined in the class definition are marked as public by default. The default visibility and the 'private' mark of the methods can be changed by public or private of the Module.
 
 In addition, the methods named initialize are always defined as private methods.
-Singleton-method definitions
+
+### Singleton-method definitions
 
 Examples:
 
@@ -1109,14 +1187,15 @@ Examples:
 
 Syntax:
 
-	def expr `.' identifier [`(' [arg [`=' default]]...[`,' `*' arg ]`)']
+	def expr '.' identifier ['(' [arg ['=' default]]...[',' '*' arg ]')']
 	  expr..
 	end
 
 The singleton-method is the method which belongs to certain object. The singleton-method definitions can be nested.
 
 The singleton-methods of classes inherited to its subclasses. The singleton-methods of classes are acts like class methods in other object-oriented languages.
-alias
+
+**alias**
 
 Examples:
 
@@ -1133,7 +1212,8 @@ Gives alias to methods or global variables. Aliases can not be defined within th
 The aliase of the method keep the current definition of the method, even when methods are overridden.
 
 Making aliases for the numbered global variables ($1, $2,...) is prohibited. Overriding the builtin global variables may cause serious problems.
-undef
+
+**undef**
 
 Examples:
 
@@ -1144,7 +1224,8 @@ Syntax:
 	undef method-name
 
 Cancels the method definition. Undef can not appear in the method body. By using undef and alias, the interface of the class can be modified independently from the superclass, but notice it may be broke programs by the internal method call to self.
-defined?
+
+**defined?**
 
 Examples:
 
