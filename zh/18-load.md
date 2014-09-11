@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Loading
+title: 第十八章：加载
 ---
 Translated by Vincent ISAMBART
 

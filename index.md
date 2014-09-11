@@ -43,10 +43,10 @@ Ruby Hacking Guide中文版 就是将[Ruby Hacking Guide](http://ruby-hacking-gu
 ## **第四部分：评估器的周边**
 ----
 
-- [第十九章：加载](/rhg-zh/zh/18-load)
-- [第二十章：线程](/rhg-zh/zh/19-thread)
+- [第十八章：加载](/rhg-zh/zh/18-load)
+- [第十九章：线程](/rhg-zh/zh/19-thread)
 
-- [Ruby的未来](/rhg-zh/zh/20-fin)
+- [第二十章：Ruby的未来](/rhg-zh/zh/20-fin)
 
 ## **杂记**
 ----

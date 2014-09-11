@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Chapter 14: Context"
+title: 第十四章：上下文
 ---
 
 h1(#chapter). Chapter 14: Context

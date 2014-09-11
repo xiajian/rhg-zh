@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Chapter 17: Dynamic evaluation"
+title: 第十七章：动态评估
 ---
 h1. Chapter 17: Dynamic evaluation
 

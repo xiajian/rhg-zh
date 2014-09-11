@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Chapter 15: Methods"
+title: 第十五章：方法
 ---
 
 h1. Chapter 15: Methods

@@ -1,14 +1,14 @@
 ---
 layout: default
-title: "Chapter 12: Syntax tree construction"
+title: 第十二章：构建语法树
 ---
 
 h1(#chapter). Chapter 12: Syntax tree construction
 
-h2. Node
+## Node
 
 
-h3. @NODE@
+### @NODE@
 
 
 As I've already described, a Ruby program is first converted to a syntax tree.
@@ -121,7 +121,7 @@ and conversely we can determine the node types from the macros.
 
 
 
-h3. Node Type
+### Node Type
 
 
 I said that in the @flags@ of a @NODE@ struct its node type is stored.
@@ -181,7 +181,7 @@ the @nodetype()@ function is also available.
 
 
 
-h3. File Name and Line Number
+### File Name and Line Number
 
 
 The @nd_file@ of a @NODE@ holds (the pointer to) the name of the file where the
@@ -291,7 +291,7 @@ bigger file in order to successfully fail.
 
 
 
-h3. @rb_node_newnode()@
+### @rb_node_newnode()@
 
 
 Lastly let's look at the function @rb_node_newnode()@ that creates a node.
@@ -351,7 +351,7 @@ a struct type that has the above seven members.
 
 
 
-h2. Syntax Tree Construction
+## Syntax Tree Construction
 
 
 The role of the parser is to convert the source code that is a byte sequence to a
@@ -362,7 +362,7 @@ In this section, we'll look at the construction process of that syntax tree.
 
 
 
-h3. @YYSTYPE@
+### @YYSTYPE@
 
 
 Essentially this chapter is about actions,
@@ -390,7 +390,7 @@ You can tell the rest. The most used one is of course @node@.
 
 
 
-h3. Landscape with Syntax Trees
+### Landscape with Syntax Trees
 
 
 I mentioned that looking at the fact first is a theory of code reading.
@@ -477,7 +477,7 @@ tree in other words.
 
 
 
-h3. Leaf
+### Leaf
 
 
 First, let's start with the edges that are the leaves of the syntax tree.
@@ -557,7 +557,7 @@ you will understand after finishing to read this section.
 
 
 
-h3. Branch
+### Branch
 
 
 Next, we'll focus on "combinations" that are branches.
@@ -857,7 +857,7 @@ writing a book of @yacc@.
 
 
 
-h3. Trunk
+### Trunk
 
 
 Leaf, branch, and finally, it's trunk.
@@ -1013,7 +1013,7 @@ Fig.6: Appending is easy.
 
 
 
-h3. The two types of lists
+### The two types of lists
 
 
 Now, I've explained the outline so far.
@@ -1055,7 +1055,7 @@ I'd like you to recall this and think "Oh, this uses the length".
 
 
 
-h2. Semantic Analysis
+## Semantic Analysis
 
 
 As I briefly mentioned at the beginning of Part 2, there are two types of analysis
@@ -1066,7 +1066,7 @@ analysis inside actions.
 
 
 
-h3. Errors inside actions
+### Errors inside actions
 
 
 What does the semantic analysis precisely mean?
@@ -1170,7 +1170,7 @@ it's better to reject when compiling.
 Next, we'll look at @value_expr@ which is one of the functions to check if it takes a value.
 
 
-h3. @value_expr()@
+### @value_expr()@
 
 
 @value_expr()@ is the function to check if it is an @expr@ that has a value.
@@ -1385,7 +1385,7 @@ Hence, it can't be extracted to @goto@.
 
 
 
-h3. The whole picture of the value check
+### The whole picture of the value check
 
 
 As for value checks, we won't read the functions further.
@@ -1406,10 +1406,10 @@ Fig.7: the call graph of the value check functions
 
 
 
-h2. Local Variables
+## Local Variables
 
 
-h3. Local Variable Definitions
+### Local Variable Definitions
 
 
 The variable definitions in Ruby are really various.
@@ -1502,7 +1502,7 @@ And in fact, it is true. In @ruby@, the parser defines local variables.
 
 
 
-h3. Block Local Variables
+### Block Local Variables
 
 
 The local variables newly defined in an iterator block are called block local
@@ -1514,7 +1514,7 @@ We'll look at how is the difference from now on.
 
 
 
-h3. The data structure
+### The data structure
 
 
 We'll start with the local variable table @struct local_vars@.
@@ -1579,7 +1579,7 @@ Fig.8: The image of local variable tables at runtime
 
 
 
-h3. Local Variable Scope
+### Local Variable Scope
 
 
 When looking over the list of function names of @parse.y@,
@@ -1665,7 +1665,7 @@ Fig.9: the flow of the local variable management
 Then, let's look at the content of the function.
 
 
-h3. @push@ and @pop@
+### @push@ and @pop@
 
 
 <p class="caption">▼ @local_push()@ </p>
@@ -1757,7 +1757,7 @@ at the index 0 of the @lvtbl->tbl@.
 
 
 
-h3. Adding variables
+### Adding variables
 
 
 The function (which seems) to add a local variable is @local_cnt()@.
@@ -1875,7 +1875,7 @@ thus it's necessary that the spaces are always allocated.
 
 
 
-h3. Summary of local variables
+### Summary of local variables
 
 
 Since the description of local variables were complex in various ways,
@@ -1903,7 +1903,7 @@ Fig.11: correspondences between local variable names and the return values
 
 
 
-h3. Block Local Variables
+### Block Local Variables
 
 
 The rest is @dyna_vars@ which is a member of @struct local_vars@.
@@ -2047,7 +2047,7 @@ by using @rb_dvar_push()@ that we've just seen.
 
 
 
-h3. @ruby_dyna_vars@ in the parser
+### @ruby_dyna_vars@ in the parser
 
 
 Now, taking the above all into considerations, let's imagine the appearance of

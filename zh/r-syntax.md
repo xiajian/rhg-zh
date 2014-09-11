@@ -154,35 +154,35 @@ The %r/STRING/ is the another form of the regular expression.
 
  %r/STRING/是正则表达式的另一种形式。
 
-    ^          beginning of a line or string 
-    $          end of a line or string 
-    .          any character except newline 
+    ^          beginning of a line or string  行或字符串的开始
+    $          end of a line or string  行或字符串的结束
+    .          any character except newline 除了换行符的任何字符
     \w         word character[0-9A-Za-z_] 
     \W         non-word character 
-    \s         whitespace character[ \t\n\r\f] 
-    \S         non-whitespace character 
-    \d         digit, same as[0-9] 
-    \D         non-digit 
-    \A         beginning of a string 
-    \Z         end of a string, or before newline at the end 
-    \z         end of a string 
-    \b         word boundary(outside[]only) 
-    \B         non-word boundary 
+    \s         whitespace character[ \t\n\r\f] 空格字符
+    \S         non-whitespace character 非空格字符
+    \d         digit, same as[0-9] 数字
+    \D         non-digit 非数字
+    \A         beginning of a string 字符串的开头
+    \Z         end of a string, or before newline at the end 字符串的结尾，在换行符之前
+    \z         end of a string 字符串的结尾
+    \b         word boundary(outside[]only) 词的边界(在[]之外)
+    \B         non-word boundary  非词的边界
     \b         backspace(0x08)(inside[]only) 
     [ ]        any single character of set 
-    *          0 or more previous regular expression 
-    *?         0 or more previous regular expression(non greedy) 
-    +          1 or more previous regular expression 
-    +?         1 or more previous regular expression(non greedy) 
-    {m,n}      at least m but most n previous regular expression 
-    {m,n}?     at least m but most n previous regular expression(non greedy) 
-    ?          0 or 1 previous regular expression 
-    |          alternation 
-    ( )        grouping regular expressions 
-    (?# )      comment 
-    (?: )      grouping without backreferences 
-    (?= )      zero-width positive look-ahead assertion 
-    (?! )      zero-width negative look-ahead assertion 
+    *          0 or more previous regular expression 0个或多个先前的正则表达式
+    *?         0 or more previous regular expression(non greedy) 0个或多个先前的正则表达式(非贪婪模式)
+    +          1 or more previous regular expression 1个或多个先前的正则表达式
+    +?         1 or more previous regular expression(non greedy) 0个或多个先前的正则表达式(非贪婪模式)
+    {m,n}      at least m but most n previous regular expression 至少m，至多n个先前正则表达式
+    {m,n}?     at least m but most n previous regular expression(non greedy) 至少m，至多n个先前正则表达式(非贪婪模式)
+    ?          0 or 1 previous regular expression 0个或多个先前的正则表达式
+    |          alternation 可选符
+    ( )        grouping regular expressions 分组的正则表达式
+    (?# )      comment  注释
+    (?: )      grouping without backreferences 不带反向引用的分组
+    (?= )      zero-width positive look-ahead assertion 0宽度的正向查询断言
+    (?! )      zero-width negative look-ahead assertion 0宽度的方向查询断言
     (?ix-ix)   turns on (or off) 'i' and 'x' options within regular expression. These modifiers are localized inside an enclosing group (if any). 
     (?ix-ix: ) turns on (or off) 'i' and 'x' options within this non-capturing group. 
 
@@ -523,7 +523,9 @@ This form evaluated as expr = expr op expr. But right hand side expression evalu
 
 There may be no space between operators and =.
 
-### Multiple assignment
+注意在操作符和=之间没有空格。
+
+### 多重赋值(Multiple assignment)
 
 Examples:
 
@@ -538,7 +540,11 @@ Syntax:
 
 Multiple assignment form performs multiple assignment from expressions or an array. Each left hand side expression must be assignable. If single right hand side expression given, the value of the expression converted into an array, then each element in array assigned one by one to the left hand side expressions. If number of elements in the array is greater than left hand sides, they are just ignored. If left hand sides are longer than the array, nil will be added to the locations.
 
+多重赋值形式从表达式或数组中执行多重赋值。每个左值都应该是可赋值的。如果近给定了单个右值，表达式的值将会被装换为数组，然后数组中的每一个值都一一对应的对左边值进行赋值。如果数组的元素个数大于左值的个数，多余的将会被忽略掉; 如果左边值大于数组个数，多余的部分将赋值为nil。
+
 Multiple assignment acts like this:
+
+多重赋值的格式如下:
 
 	foo, bar = [1, 2]	# foo = 1; bar = 2
 	foo, bar = 1, 2		# foo = 1; bar = 2
@@ -550,13 +556,17 @@ Multiple assignment acts like this:
 
 The value of the multiple assignment expressions are the array used to assign.
 
-### Operator expressions
+多重赋值的表达式的值是用来赋值的数组。
+
+### 操作符表达式(Operator expressions)
 
 Examples:
 
 	1+2*3/4
 
 As a syntax sugar, several methods and control structures has operator form. Ruby has operators show below:
+
+作为语法糖，一些方法和控制结构拥有操作符形式。Ruby拥有如下的操作符：
 
 	high   ::
 	       []
@@ -578,13 +588,19 @@ As a syntax sugar, several methods and control structures has operator form. Rub
 
 Most of operators are just method invocation in special form. But some operators are not methods, but built in to the syntax:
 
+大多数的操作符是方法调用的特殊形式，但是一些操作符不是方法，而是内建到语法系统中的:
+
 	=, .., ..., !, not, &&, and, ||, or, !=, !~ 
 
 In addition, assignment operators(+= etc.) are not user-definable.
 
+此外，赋值操作符(+=)不是用户可定义的。
+
 ### Control structure
 
 Control structures in Ruby are expressions, and have some value. Ruby has the loop abstraction feature called iterators. Iterators are user-definable loop structure.
+
+在Ruby中的控制结构是表达式，并拥有一些值。Ruby拥有称为迭代器的循环抽象，迭代器是用户可定义的循环结构。
 
 **if**
 
@@ -609,7 +625,11 @@ Syntax:
 
 if expressions are used for conditional execution. The values false and nil are false, and everything else are true. Notice Ruby uses elsif, not else if nor elif.
 
+if表达式用作条件执行。false和nil的值被看作false，其他所有的表达式均被看作是true。注意，Ruby使用elsif，而不是else if或者elif。
+
 If conditional part of if is the regular expression literal, then it evaluated like:
+
+如果if的条件部分是正则表达式，其求值形式如下：
 
 	$_ =~ /re/
 
@@ -624,6 +644,8 @@ Syntax:
 	expr if expr
 
 executes left hand side expression, if right hand side expression is true.
+
+如果右边的表达式为true，则执行左边的表达式。
 
 **unless**
 
@@ -644,6 +666,8 @@ Syntax:
 	end
 
 unless expressions are used for reverse conditional execution. It is equivalent to:
+
+unless表达式用来反转条件执行，其等价于如下的形式：
 
 	if !(cond)
 	  ...
@@ -692,6 +716,8 @@ Syntax:
 
 the case expressions are also for conditional execution. Comparisons are done by operator ===. Thus:
 
+case表达式也是条件执行。通过===进行比较。所以: 
+
 	case expr0
 	when expr1, expr2
 	  stmt1
@@ -714,6 +740,8 @@ is basically same to below:
 
 Behavior of the === method varies for each Object. See docutmentation for each class.
 
+每个对象的===方法都是变化的，所以需要参考每个类的文档。
+
 **and**
 
 Examples:
@@ -728,6 +756,8 @@ Syntax:
 
 Evaluates left hand side, then if the result is true, evaluates right hand side. and is lower precedence alias.
 
+对左边表达式求值，如果左边的值为真，则对右边的部分进行求值，and是的优先级比&&低。
+
 **or**
 
 Examples:
@@ -741,6 +771,8 @@ Syntax:
 	expr or expr
 
 Evaluates left hand side, then if the result is false, evaluates right hand side. or is lower precedence alias.
+
+对左边表达式求值，如果结果为false，则继续对右边的进行求值。or是||的低优先级别名。
 
 **not**
 
@@ -765,7 +797,9 @@ Syntax sugar for !(expr == expr).
 
 Syntax sugar for !(expr =~ expr).
 
-### Range expressions
+expr '!=' expr是!(expr == expr)的语法糖表示，expr '!~' expr是!(expr =~ expr)的语法糖表示。
+
+### 区间表达式(Range expressions)
 
 Examples:
 
@@ -779,7 +813,11 @@ Syntax:
 
 If range expression appears in any other place than conditional expression, it returns range object from left hand side to right hand side.
 
+区间表达式可以出现在任何位置，而不仅仅是条件表达式，其返回从左到右的区间对象。
+
 If range expression appears in conditional expression, it gives false until left hand side returns true, it stays true until right hand side is true. .. acts like awk, ... acts like sed.
+
+如果区间表达式出现在条件表达式中，左边的值返回为true时，为false，右边值返回为true时，返回为false。其行为类似awk和sed。
 
 **while**
 
@@ -797,6 +835,8 @@ Syntax:
 
 Executes body while condition expression returns true.
 
+但条件表达式为true是执行循环体。
+
 **while modifier**
 
 Examples:
@@ -808,6 +848,8 @@ Syntax:
 	expr while expr
 
 Repeats evaluation of left hand side expression, while right hand side is true. If left hand side is begin expression, while evaluates that expression at lease once.
+
+对左边的值重复求值，直到右边的值为真。如果左边的是begin表达式，则while表达式至少求值一次。
 
 **until**
 
@@ -825,6 +867,8 @@ Syntax:
 
 Executes body until condition expression returns true.
 
+知道条件返回为真是执行循环体。
+
 **until modifier**
 
 Examples:
@@ -837,7 +881,9 @@ Syntax:
 
 Repeats evaluation of left hand side expression, until right hand side is true. If left hand side is begin expression, until evaluates that expression at lease once.
 
-### Iterators
+重复对左边进行求值，直到右边表达式为空。如果左边为begin表达式，至少求值一次。
+
+### 迭代器(Iterators)
 
 Examples:
 
@@ -850,6 +896,8 @@ Syntax:
 	method_call '{' ['|' expr...'|'] expr...'}'
 
 The method may be invoked with the block (do .. end or {..}). The method may be evaluate back that block from inside of the invocation. The methods that calls back the blocks are sometimes called as iterators. The evaluation of the block from iterator is done by yield.
+
+方法中可以传递块(do .. end 或 {..})。
 
 The difference between do and braces are:
 

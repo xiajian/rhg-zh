@@ -47,7 +47,7 @@ nd_iter:
 nd_var = (null)
 nd_body:
     NODE_LIT
-    nd_lit = 9:Fixnum
+    nd_l：:it = 9:Fixnum
 </pre>
 
 

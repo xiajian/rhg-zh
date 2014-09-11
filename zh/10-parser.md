@@ -1,10 +1,7 @@
 ---
 layout: default
-title: Parser
+title: 第十章：解析器
 ---
-Translated by Robert GRAVINA & ocha-
-
-h1. Chapter 10: Parser
 
 ## Outline of this chapter
 

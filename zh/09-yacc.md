@@ -1,10 +1,7 @@
 ---
 layout: default
-title: YACC crash course
+title: 第九章:YACC快速教程
 ---
-Translated by Vincent ISAMBART & ocha-
-
-h1. Chapter 9: `yacc` crash course
 
 ## Outline
 

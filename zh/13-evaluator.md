@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Chapter 13: Structure of the evaluator"
+title: 第十三章：评估器的结构
 ---
 
 h1(#chapter). Chapter 13: Structure of the evaluator

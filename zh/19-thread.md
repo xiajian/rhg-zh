@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Chapter 19: Threads"
+title: 第十九章：线程
 ---
 h1. Chapter 19: Threads
 
