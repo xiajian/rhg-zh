@@ -687,6 +687,8 @@ Syntax:
 
 executes left hand side expression, if right hand side expression is false.
 
+如果右边的表达式为false，就执行左边的表达式。
+
 **case**
 
 Examples:
@@ -897,16 +899,20 @@ Syntax:
 
 The method may be invoked with the block (do .. end or {..}). The method may be evaluate back that block from inside of the invocation. The methods that calls back the blocks are sometimes called as iterators. The evaluation of the block from iterator is done by yield.
 
-方法中可以传递块(do .. end 或 {..})。
+方法中可以传递块(do .. end 或 {..})。方法可以对块进行求值并在内部调用块。调用块的方法有时称之为迭代器。从迭代器中对块进行求值通过yield。
 
 The difference between do and braces are:
 
+do和花括号之间的区别是: 
+
     Braces has stronger precedence. For example:
+    花括号有很强的过程性。例如:
 
     	foobar a, b do .. end	# foobar will be called with the block.
     	foobar a, b { .. }	# b will be called with the block.
 
     Braces introduce the nested local scopes, that is newly declared local variables in the braces are valid only in the blocks. For example:
+    花括号引入嵌套局部域，即在花括号中声明的局部变量只在块中有效。例如:
 
     	foobar {
     	  i = 20		# local variable 'i' declared in the block.
@@ -914,6 +920,7 @@ The difference between do and braces are:
     	}
     	print defined? i	# 'i' is not defined here.     
     	foobar a, b { .. }	# it is not valid outside of the block
+
 
 **for**
 
@@ -931,6 +938,8 @@ Syntax:
 
 Executes body for each element in the result of expression. for is the syntax sugar for:
 
+为表达式中每个元素执行程序体。如下就是for循环的语法糖: 
+
 	(expr).each '{' '|' lhs..'|' expr.. '}'
 
 **yield**
@@ -945,6 +954,8 @@ Syntax:
 	yield [expr [',' expr...]]
 
 Evaluates the block given to the current method with arguments, if no argument is given, nil is used as an argument. The argument assignment to the block prameter is done just like multiple assignment. If the block is not supplied for the current method, the exception is raised.
+
+根据传递给当前方法的参数执行块，如果没有给定参数，使用nil作为参数。块的参数的赋值可以通过多赋值。如果当前方法不支持块，则抛出异常。
 
 **raise**
 
@@ -965,9 +976,15 @@ Syntax:
 
 Raises a exception. In the first form, re-raises last exception. In second form, if the argument is the string, creates a new RuntimeError exception, and raises it. If the argument is the exception, raise raises it. In the third form, raise creates a new exception of type error_type, and raises it. In the last form, the third argument is the traceback information for the raising exception in the format given by variable $@ or caller function.
 
+抛出一个异常。在第一种形式中，re-raise最新的异常。在第二种形式中，如果参数是字符串，则创建新的RuntimeError异常，然后抛出。如果参数是异常，再一次抛出。在第三种形式中，传见error_type类型的新异常，并抛出它。最后一种形式中，第三个参数是抛出异常的追踪信息，并以$@变量或者调用函数给定的格式显示。
+
 The exception is assigned to the variable $!, and the position in the source file is assigned to the $@.
 
-The word 'raise' is not the reserved word in Ruby. raise is the method of the Kernel module. There is an alias named fail.
+异常赋值给变量$!，源代码的位置信息放在$@中。
+
+The word 'raise' is not the reserved word in Ruby. raise is the method of the Kernel module. There is an alias named fail. 
+
+raise并不是Ruby的保留字，而是Kernel模块的方法。该方法存在一个别名为fail。
 
 **begin**
 
@@ -995,13 +1012,19 @@ Syntax:
 
 begin expression executes its body and returns the value of the last evaluated expression.
 
+begin表达式执行代码体并返回最后一个求值的表达式。
+
 If an exception occurs in the begin body, the rescue clause with the matching exception type is executed (if any). The match is done by the kind_of?. The default value of the rescue clause argument is the StandardError, which is the superclass of most built-in exceptions. Non-local jumps like SystemExit or Interrupt are not subclass of the StandardError.
+
+如果在begin代码体中发生了异常，rescue表达式匹配的异常将会被执行。
 
 The begin statement has an optional else clause, which must follow all rescue clauses. It is executed if the begin body does not raise any exception.
 
-For the rescue clauses, the error_type is evaluated just like the arguments to the method call, and the clause matches if the value of the variable $! is the instance of any one of the error_type of its subclass. If error_type is not class nor module, the rescue clause raises TypeError exception.
+For the rescue clauses, the `error_type` is evaluated just like the arguments to the method call, and the clause matches if the value of the variable $! is the instance of any one of the `error_type` of its subclass. If error_type is not class nor module, the rescue clause raises TypeError exception.
 
 If ensure clause given, its clause body executed whenever beginbody exits.
+
+如果给定了ensure表达式，无论何时，其代码体都会被执行。
 
 **retry**
 
@@ -1105,6 +1128,8 @@ Syntax:
 	'}'
 
 Registers the initialize routine. The block followed after BEGIN is evaluated before any other statement in that file (or string). If multiple BEGIN blocks are given, they are evaluated in the appearing order.
+
+注册初始化子程序。在BEGIN之后的代码块将会文件中的任何语句之前执行。
 
 The BEGIN block introduce new local-variable scope. They don't share local variables with outer statements.
 
