@@ -1036,7 +1036,9 @@ Syntax:
 
 	retry
 
-If retry appears in rescue clause of begin expression, restart from the beginning of the 1begin body.
+If retry appears in rescue clause of begin expression, restart from the beginning of the begin body.
+
+如果retry语句出现在begin表达式的rescue语句中，将从begin的代码体开始处重新执行。
 
 	begin
 	  do_something # exception raised
@@ -1046,6 +1048,8 @@ If retry appears in rescue clause of begin expression, restart from the beginnin
 	end
 
 If retry appears in the iterator, the block, or the body of the for expression, restarts the invocation of the iterator call. Arguments to the iterator is re-evaluated.
+
+如果retry出现在迭代器，代码块，或for语句的代码体中，重新调用迭代器，并对其参数重新求值。
 
 	for i in 1..5
 	  retry if some_condition # restart from i == 1
@@ -1058,6 +1062,10 @@ If retry appears in the iterator, the block, or the body of the for expression, 
 	end
 
 retry out of rescue clause or iterators raises exception.
+
+在迭代器或recuse之外的retry语句将抛出异常。
+
+======
 
 **return**
 
