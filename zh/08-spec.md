@@ -22,9 +22,6 @@ Ruby的字面值的表现力极其丰富。个人认为，脚本语言Ruby成功
 
 ### Strings
 
-Strings and regular expressions can't be missing in a scripting language.
-The expressiveness of Ruby's string is very various even more than the
-other Ruby's literals.
 字符串和正则表达式不应在任何脚本语言中缺失遗漏，Ruby的字符串的表现力比其他字面值都强。
 
 #### 单引号字符串(Single Quoted Strings)
@@ -47,10 +44,7 @@ Ruby的表达式并不会被新行所分隔，如果字符串横跨多行，则�
         string'
 </pre>
 
-And if the `-K` option is given to the `ruby` command, multibyte strings
-will be accepted. At present the three encodings EUC-JP (`-Ke`),
-Shift JIS (`-Ks`), and UTF8 (`-Ku`) can be specified.
-如果传递`-k`选项给ruby，多字节字符串将被接受。现在可以接受三种特定的编码 EUC-JP (`-Ke`),Shift JIS (`-Ks`)以及UTF8 (`-Ku`) 。
+如果传递`-k`选项给ruby，ruby将接受多字节字符串(比如中日韩的字符集)。现在可以接受三种特定的编码 EUC-JP (`-Ke`),Shift JIS (`-Ks`)以及UTF8 (`-Ku`) 。
 
 > 备注： 原文写于2004年，彼此为ruby 1.7。ruby本身自1.9开始内建支持utf-8，具体有何区别，我也不同清楚
 
@@ -77,6 +71,8 @@ However, merely listing the whole notation is not fun,
 regarding its implementation, it just means a large number of cases to be
 handled and there's nothing especially interesting.
 Therefore, they are entirely left out here.
+
+在双引号中，可以使用命令表达式和反斜杠记号。C语言中也是支持反斜杠记号的，例如，`\n`-换行符，`\b`-退格符。 在ruby中，`Ctrl-C`和ESC也是可以表达的，非常方便。但是，仅仅列出概念而不考虑其实现，毫无乐趣。概念仅仅是一大堆需要处理的情况，单调无聊。
 
 On the other hand, expression expansion is even more fantastic.
 We can write an arbitrary Ruby expression inside `#{ }` and it
