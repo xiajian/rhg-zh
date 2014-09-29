@@ -105,6 +105,9 @@ Here is a list of currently supported tags:
 ### Comments
 
 Comment is the simplest tag. It just swallows content.
+{% raw %}
+We made 1 million dollars {% comment %} in losses {% endcomment %} this year
+{% endraw %}
 
 We made 1 million dollars {% comment %} in losses {% endcomment %} this year
 
