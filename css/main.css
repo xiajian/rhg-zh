@@ -408,3 +408,65 @@ a:visited { color: #205caa; }
     margin: 0 0 15px; }
 
 }
+
+/* 表格样式控制 */
+table {
+	margin-bottom: 20px;
+	max-width: 100%;
+	border-collapse: collapse;
+	border: 1px solid rgba(50,118,177,0.167);
+	transition: all 0.3s
+}
+
+table:hover {
+	border: 1px solid rgba(50,118,177,0.35);
+	box-shadow: 0 0 3 rgba(50,118,177,0.267);
+	transition: all 0.3s
+}
+
+table thead tr th {
+	border: 1px solid rgba(50,118,177,0.167);
+	border-top: 0 none;
+	border-bottom-width: 2px;
+	vertical-align: bottom;
+	padding: 8px
+}
+
+table tbody tr td {
+	border: 1px solid rgba(50,118,177,0.167);
+	vertical-align: middle;
+	padding: 8px
+}
+
+table thead>tr {
+	background-color: rgba(249,249,249,0.9)
+}
+
+table tbody>tr:nth-child(2n+1) {
+	background-color: rgba(249,249,249,0.5)
+}
+
+table tbody tr:hover {
+	background-color: rgba(235,235,235,0.7);
+	transition: all 0.3s
+}
+
+table li {
+	margin: 5px 0
+}
+
+table img {
+	max-width: 85%;
+	margin: 0 auto;
+	display: inherit;
+	border-radius: 6px;
+	padding: 4px;
+	line-height: 1.429
+}
+
+table code {
+	background-color: rgba(255,204,204,0.3);
+	box-shadow: 0 0 1px rgba(0,0,0,0.167);
+	border: 1px solid rgba(102,102,102,0.167);
+	font-family: Monaco, Consolas, Terminal, monospace
+}
